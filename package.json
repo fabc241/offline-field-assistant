@@ -1,0 +1,45 @@
+{
+  "name": "offline-field-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Offline English-Swahili field assistant for clinic intake staff (headless core).",
+  "type": "module",
+  "engines": {
+    "node": ">=22.17"
+  },
+  "bin": {
+    "ofa": "src/cli/ofa.ts"
+  },
+  "scripts": {
+    "ofa": "tsx src/cli/ofa.ts",
+    "fetch-models": "tsx scripts/fetch-models.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --dir tests/unit",
+    "test:models": "vitest run --dir tests/models",
+    "electron:smoke": "electron .",
+    "package": "electron-forge package --arch=arm64",
+    "audit:net": "scripts/net-audit.sh"
+  },
+  "dependencies": {
+    "@qvac/sdk": "0.21.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "7.11.2",
+    "@electron-forge/maker-zip": "7.11.2",
+    "@electron-forge/plugin-base": "7.11.2",
+    "@types/node": "26.6.5",
+    "electron": "44.7.1",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.0.4"
+  },
+  "main": "electron/main.mjs",
+  "config": {
+    "forge": "./forge.config.cjs"
+  },
+  "overrides": {
+    "extract-zip": {
+      "yauzl": "3.4.0"
+    }
+  }
+}
