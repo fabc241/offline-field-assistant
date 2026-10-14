@@ -3,11 +3,13 @@
  * ofa — headless command line for the Offline Field Assistant core.
  *
  *   ofa doctor [--verify] [--load]
+ *   ofa translate --from en|sw --to sw|en [--plain] [--json] "text"
  */
 import { parseArgs } from 'node:util'
 import { loadConfig } from '../core/config.js'
 import { shutdown } from '../core/qvac.js'
 import { doctor } from './doctor.js'
+import { translateCommand } from './translate.js'
 
 type Command = (args: string[]) => Promise<boolean>
 
@@ -18,7 +20,8 @@ const commands: Record<string, Command> = {
       options: { verify: { type: 'boolean', default: false }, load: { type: 'boolean', default: false } }
     })
     return doctor(loadConfig(), { verify: values.verify, load: values.load })
-  }
+  },
+  translate: (args) => translateCommand(loadConfig(), args)
 }
 
 const [name, ...rest] = process.argv.slice(2)

@@ -1,0 +1,61 @@
+id,category,en,sw
+i01,greeting,"Good morning, my name is Amina and I am the nurse today.","Habari za asubuhi, jina langu ni Amina na mimi ni muuguzi leo."
+i02,greeting,What is your name?,Jina lako ni nani?
+i03,greeting,Please sit down here.,Tafadhali keti hapa.
+i04,consent,I am going to ask you some questions about your health.,Nitakuuliza maswali kadhaa kuhusu afya yako.
+i05,consent,Is it okay if I examine you?,"Je, ni sawa nikikuchunguza?"
+i06,demographics,How old are you?,Una umri wa miaka mingapi?
+i07,demographics,She is 34 years old.,Ana umri wa miaka 34.
+i08,demographics,The child is 5 years old.,Mtoto ana umri wa miaka 5.
+i09,demographics,Where do you live?,Unaishi wapi?
+i10,demographics,Do you have a phone number we can call?,Je una namba ya simu tunayoweza kupiga?
+i11,symptoms,What brings you to the clinic today?,Ni nini kimekuleta kliniki leo?
+i12,symptoms,How long have you had a fever?,Umekuwa na homa kwa muda gani?
+i13,symptoms,I have had a fever for 3 days.,Nimekuwa na homa kwa siku 3.
+i14,symptoms,Do you have a cough?,Je una kikohozi?
+i15,symptoms,The cough started two weeks ago.,Kikohozi kilianza wiki mbili zilizopita.
+i16,symptoms,Do you have pain when you pass urine?,Je unasikia maumivu unapokojoa?
+i17,symptoms,Where does it hurt?,Unaumia wapi?
+i18,symptoms,The pain is in my lower belly.,Maumivu yako tumboni chini.
+i19,symptoms,Have you been vomiting?,Je umekuwa ukitapika?
+i20,symptoms,He has vomited four times since this morning.,Ametapika mara nne tangu asubuhi.
+i21,symptoms,Does the child have diarrhoea?,Je mtoto anaharisha?
+i22,symptoms,The child is not breastfeeding well.,Mtoto hanyonyi vizuri.
+i23,symptoms,Is the child able to drink?,Je mtoto anaweza kunywa?
+i24,symptoms,Has the child had any convulsions?,Je mtoto amepata degedege?
+i25,symptoms,Do you feel dizzy when you stand up?,Je unasikia kizunguzungu unaposimama?
+i26,symptoms,I cannot sleep at night because of the pain.,Siwezi kulala usiku kwa sababu ya maumivu.
+i27,vitals,Your temperature is 38.5 degrees.,Joto lako ni nyuzi 38.5.
+i28,vitals,Your blood pressure is 140/90.,Shinikizo lako la damu ni 140/90.
+i29,vitals,The baby weighs 6 kg.,Mtoto ana uzito wa kilo 6.
+i30,vitals,I am going to measure your blood pressure.,Nitapima shinikizo lako la damu.
+i31,history,Have you been sick like this before?,Je umewahi kuugua hivi kabla?
+i32,history,Do you have diabetes or high blood pressure?,Je una kisukari au shinikizo la damu la juu?
+i33,history,Have you been tested for HIV?,Je umepimwa VVU?
+i34,history,Is anyone at home sick with the same problem?,Je kuna mtu nyumbani anayeugua tatizo hili hili?
+i35,history,Has the child received all vaccinations?,Je mtoto amepata chanjo zote?
+i36,pregnancy,Are you pregnant?,Je una mimba?
+i37,pregnancy,When was your last menstrual period?,Hedhi yako ya mwisho ilikuwa lini?
+i38,pregnancy,I am 7 months pregnant.,Nina mimba ya miezi 7.
+i39,pregnancy,Have you had any bleeding?,Je umetokwa na damu?
+i40,allergies,Are you allergic to any medicine?,Je una mzio wa dawa yoyote?
+i41,allergies,I am allergic to penicillin.,Nina mzio wa penisilini.
+i42,medication,Are you taking any medicine now?,Je unatumia dawa yoyote sasa?
+i43,medication,Take two tablets three times a day.,Meza vidonge viwili mara tatu kwa siku.
+i44,medication,Take one tablet every 8 hours for 5 days.,Meza kidonge kimoja kila baada ya saa 8 kwa siku 5.
+i45,medication,Give the child 5 ml of the syrup twice a day.,Mpe mtoto ml 5 za dawa ya maji mara mbili kwa siku.
+i46,medication,Take 500 mg of paracetamol when you have pain.,Meza paracetamol mg 500 unapokuwa na maumivu.
+i47,medication,Do not take more than 8 tablets in one day.,Usimeze zaidi ya vidonge 8 kwa siku moja.
+i48,medication,Finish all the medicine even if you feel better.,Maliza dawa yote hata kama unajisikia vizuri.
+i49,medication,Do not drink alcohol while taking this medicine.,Usinywe pombe wakati unatumia dawa hii.
+i50,medication,Take this medicine with food.,Meza dawa hii pamoja na chakula.
+i51,instructions,Drink plenty of clean water.,Kunywa maji mengi safi.
+i52,instructions,Mix one sachet of ORS in one litre of clean water.,Changanya pakiti moja ya ORS katika lita moja ya maji safi.
+i53,instructions,Keep the baby warm.,Mweke mtoto katika joto.
+i54,instructions,Continue breastfeeding the baby.,Endelea kumnyonyesha mtoto.
+i55,danger,Come back immediately if the child cannot drink.,Rudi mara moja ikiwa mtoto hawezi kunywa.
+i56,danger,Come back if the fever lasts more than 2 days.,Rudi ikiwa homa itaendelea zaidi ya siku 2.
+i57,danger,Go to the hospital if there is heavy bleeding.,Nenda hospitali ikiwa kuna kutokwa na damu nyingi.
+i58,appointments,Come back in one week.,Rudi baada ya wiki moja.
+i59,appointments,Your next appointment is on 12 March.,Miadi yako ijayo ni tarehe 12 Machi.
+i60,appointments,The clinic opens at 8:00 in the morning.,Kliniki inafunguliwa saa mbili asubuhi.

@@ -1,0 +1,121 @@
+id,direction,source,translation,back_translation,reference_unvetted,fidelity,flags,translate_ms
+i01,en→sw,"Good morning, my name is Amina and I am the nurse today.","Asubuhi njema, jina langu ni Amina na mimi ni muuguzi leo.","Good morning, my name is Amina and I am a nurse today.","Habari za asubuhi, jina langu ni Amina na mimi ni muuguzi leo.",0.997,,1071
+i02,en→sw,What is your name?,Jina lako ni nani?,What is your name?,Jina lako ni nani?,1.000,,550
+i03,en→sw,Please sit down here.,Tafadhali kaa chini hapa.,Please sit down here.,Tafadhali keti hapa.,1.000,,650
+i04,en→sw,I am going to ask you some questions about your health.,Nitakuuliza maswali fulani kuhusu afya yako.,I'm going to ask you some questions about your health.,Nitakuuliza maswali kadhaa kuhusu afya yako.,0.999,,868
+i05,en→sw,Is it okay if I examine you?,"Je, ni sawa nikikuchunguza?",Is it okay if I spy on you?,"Je, ni sawa nikikuchunguza?",0.841,low-fidelity,689
+i06,en→sw,How old are you?,Una umri gani?,How old are you?,Una umri wa miaka mingapi?,1.000,,500
+i07,en→sw,She is 34 years old.,Ana umri wa miaka 34.,He is 34 years old.,Ana umri wa miaka 34.,0.880,,630
+i08,en→sw,The child is 5 years old.,Mtoto ana umri wa miaka 5.,The child is 5 years old.,Mtoto ana umri wa miaka 5.,1.000,,656
+i09,en→sw,Where do you live?,Unaishi wapi?,Where do you live?,Unaishi wapi?,1.000,,466
+i10,en→sw,Do you have a phone number we can call?,"Je, una namba ya simu tunayoweza kupiga?",Do you have a phone number we can call?,Je una namba ya simu tunayoweza kupiga?,1.000,,873
+i11,en→sw,What brings you to the clinic today?,Ni nini kinachokuleta kwenye kliniki leo?,What brings you to the clinic today?,Ni nini kimekuleta kliniki leo?,1.000,,782
+i12,en→sw,How long have you had a fever?,Umekuwa na homa kwa muda gani?,How long have you had a fever?,Umekuwa na homa kwa muda gani?,1.000,,659
+i13,en→sw,I have had a fever for 3 days.,Nimekuwa na homa kwa siku 3.,I've had a fever for 3 days.,Nimekuwa na homa kwa siku 3.,0.998,,808
+i14,en→sw,Do you have a cough?,"Je, una kikohozi?",Do you have a cough?,Je una kikohozi?,1.000,,530
+i15,en→sw,The cough started two weeks ago.,Kikohozi kilianza wiki mbili zilizopita.,The cough started two weeks ago.,Kikohozi kilianza wiki mbili zilizopita.,1.000,,761
+i16,en→sw,Do you have pain when you pass urine?,"Je, una maumivu unapotoa mkojo?",Do you have pain when you urinate?,Je unasikia maumivu unapokojoa?,0.987,,846
+i17,en→sw,Where does it hurt?,Inaumiza wapi?,Where does it hurt?,Unaumia wapi?,1.000,,499
+i18,en→sw,The pain is in my lower belly.,Maumivu yapo chini ya tumbo.,The pain is in the lower abdomen.,Maumivu yako tumboni chini.,0.948,,660
+i19,en→sw,Have you been vomiting?,"Je, umekuwa ukitapika?",Have you been vomiting?,Je umekuwa ukitapika?,1.000,,632
+i20,en→sw,He has vomited four times since this morning.,Amepata kutapika mara nne tangu asubuhi ya leo.,He has vomited four times since this morning.,Ametapika mara nne tangu asubuhi.,1.000,,972
+i21,en→sw,Does the child have diarrhoea?,"Je, mtoto ana ugonjwa wa kuhara?",Does the child have diarrhea?,Je mtoto anaharisha?,0.996,,726
+i22,en→sw,The child is not breastfeeding well.,Mtoto hana unyevu wa kutosha wakati wa kunyonya.,The baby does not get enough moisture during breastfeeding.,Mtoto hanyonyi vizuri.,0.880,,931
+i23,en→sw,Is the child able to drink?,"Je, mtoto anaweza kunywa?",Can the child drink?,Je mtoto anaweza kunywa?,0.978,,630
+i24,en→sw,Has the child had any convulsions?,"Je, mtoto amekuwa na mshtuko wowote?",Has the child had any seizures?,Je mtoto amepata degedege?,0.953,,843
+i25,en→sw,Do you feel dizzy when you stand up?,"Je, unahisi kizunguzungu unaposimama?",Do you feel dizzy when you stand up?,Je unasikia kizunguzungu unaposimama?,1.000,,911
+i26,en→sw,I cannot sleep at night because of the pain.,Siwezi kulala usiku kwa sababu ya maumivu.,I can't sleep at night because of the pain.,Siwezi kulala usiku kwa sababu ya maumivu.,0.996,,879
+i27,en→sw,Your temperature is 38.5 degrees.,Joto lako ni digrii 38.5.,Your temperature is 38.5 degrees.,Joto lako ni nyuzi 38.5.,1.000,,846
+i28,en→sw,Your blood pressure is 140/90.,Shinikizo lako la damu ni 140/90.,Your blood pressure is 140/90.,Shinikizo lako la damu ni 140/90.,1.000,,975
+i29,en→sw,The baby weighs 6 kg.,Mtoto ana uzito wa kilo 6.,The baby weighs 6 kilograms.,Mtoto ana uzito wa kilo 6.,0.999,,637
+i30,en→sw,I am going to measure your blood pressure.,Nitapima shinikizo lako la damu.,I will measure your blood pressure.,Nitapima shinikizo lako la damu.,0.986,,789
+i31,en→sw,Have you been sick like this before?,"Je, umewahi kuwa mgonjwa kama huyu?",Have you ever been sick like this?,Je umewahi kuugua hivi kabla?,0.958,,835
+i32,en→sw,Do you have diabetes or high blood pressure?,"Je, una ugonjwa wa kisukari au shinikizo la juu la damu?",Do you have diabetes or high blood pressure?,Je una kisukari au shinikizo la damu la juu?,1.000,,1128
+i33,en→sw,Have you been tested for HIV?,"Je, umepimwa virusi vya UKIMWI?",Have you been tested for HIV?,Je umepimwa VVU?,1.000,,765
+i34,en→sw,Is anyone at home sick with the same problem?,"Je, kuna yeyote nyumbani aliye mgonjwa na tatizo hilohilo?",Is anyone at home sick with the same problem?,Je kuna mtu nyumbani anayeugua tatizo hili hili?,1.000,,1119
+i35,en→sw,Has the child received all vaccinations?,"Je, mtoto amepokea chanjo zote?",Has the child received all the vaccines?,Je mtoto amepata chanjo zote?,0.994,,735
+i36,en→sw,Are you pregnant?,"Je, wewe ni mjamzito?",Are you pregnant?,Je una mimba?,1.000,,638
+i37,en→sw,When was your last menstrual period?,Mara yako ya mwisho kupata hedhi ilikuwa lini?,When was the last time you had your period?,Hedhi yako ya mwisho ilikuwa lini?,0.986,,867
+i38,en→sw,I am 7 months pregnant.,Nina mimba ya miezi 7.,I am 7 months pregnant.,Nina mimba ya miezi 7.,1.000,,632
+i39,en→sw,Have you had any bleeding?,"Je, umewahi kuvuja damu?",Have you ever bled?,Je umetokwa na damu?,0.930,,636
+i40,en→sw,Are you allergic to any medicine?,"Je, una mzio kwa dawa yoyote?",Are you allergic to any medications?,Je una mzio wa dawa yoyote?,0.993,,700
+i41,en→sw,I am allergic to penicillin.,Nina mzio wa penisilini.,I'm allergic to penicillin.,Nina mzio wa penisilini.,0.999,,596
+i42,en→sw,Are you taking any medicine now?,"Je, unatumia dawa yoyote sasa?",Are you taking any medications now?,Je unatumia dawa yoyote sasa?,0.988,,732
+i43,en→sw,Take two tablets three times a day.,Chukua vidonge viwili mara tatu kwa siku.,Take two tablets three times a day.,Meza vidonge viwili mara tatu kwa siku.,1.000,,795
+i44,en→sw,Take one tablet every 8 hours for 5 days.,Chukua kidonge kimoja kila baada ya saa 8 kwa siku 5.,Take one tablet every 8 hours for 5 days.,Meza kidonge kimoja kila baada ya saa 8 kwa siku 5.,1.000,,1112
+i45,en→sw,Give the child 5 ml of the syrup twice a day.,Mpe mtoto 5 ml ya syrup mara mbili kwa siku.,Give the child 5 ml of syrup twice a day.,Mpe mtoto ml 5 za dawa ya maji mara mbili kwa siku.,0.998,,955
+i46,en→sw,Take 500 mg of paracetamol when you have pain.,Chukua 500 mg ya paracetamol unapokuwa na maumivu.,Take 500 mg of paracetamol when you have pain.,Meza paracetamol mg 500 unapokuwa na maumivu.,1.000,,1079
+i47,en→sw,Do not take more than 8 tablets in one day.,Usitumie zaidi ya vidonge 8 kwa siku moja.,Do not take more than 8 tablets in a single day.,Usimeze zaidi ya vidonge 8 kwa siku moja.,0.999,,952
+i48,en→sw,Finish all the medicine even if you feel better.,Maliza dawa zote hata kama unajisikia vizuri.,Finish all medications even if you feel better.,Maliza dawa yote hata kama unajisikia vizuri.,0.982,,950
+i49,en→sw,Do not drink alcohol while taking this medicine.,Usinywe pombe wakati unatumia dawa hii.,Do not drink alcohol while you are taking this medicine.,Usinywe pombe wakati unatumia dawa hii.,0.998,,886
+i50,en→sw,Take this medicine with food.,Tumia dawa hii pamoja na chakula.,Take this medicine with food.,Meza dawa hii pamoja na chakula.,1.000,,795
+i51,en→sw,Drink plenty of clean water.,Kunywa maji mengi na safi.,Drink plenty of clean water.,Kunywa maji mengi safi.,1.000,,669
+i52,en→sw,Mix one sachet of ORS in one litre of clean water.,Changanya sachet moja ya ORS katika lita moja ya maji safi.,Mix one sachet of ORS in one liter of clean water.,Changanya pakiti moja ya ORS katika lita moja ya maji safi.,0.995,,1043
+i53,en→sw,Keep the baby warm.,Mweke mtoto katika hali ya joto.,Keep the baby in a warm environment.,Mweke mtoto katika joto.,0.966,,731
+i54,en→sw,Continue breastfeeding the baby.,Endelea kumnyonyesha mtoto.,Continue to breast-feed the baby.,Endelea kumnyonyesha mtoto.,0.987,,704
+i55,en→sw,Come back immediately if the child cannot drink.,Rudi mara moja ikiwa mtoto hawezi kunywa.,Return immediately if the child is unable to drink.,Rudi mara moja ikiwa mtoto hawezi kunywa.,0.986,,883
+i56,en→sw,Come back if the fever lasts more than 2 days.,Rudi tena kama homa itadumu zaidi ya siku 2.,Come back if the fever lasts more than 2 days.,Rudi ikiwa homa itaendelea zaidi ya siku 2.,1.000,,1043
+i57,en→sw,Go to the hospital if there is heavy bleeding.,Nenda hospitali kama kuna kutokwa na damu nyingi.,Go to the hospital if there is heavy bleeding.,Nenda hospitali ikiwa kuna kutokwa na damu nyingi.,1.000,,948
+i58,en→sw,Come back in one week.,Rudi baada ya wiki moja.,Come back in a week.,Rudi baada ya wiki moja.,0.982,,569
+i59,en→sw,Your next appointment is on 12 March.,Mkutano wako ujao ni tarehe 12 Machi.,Your next meeting is on March 12th.,Miadi yako ijayo ni tarehe 12 Machi.,0.950,,916
+i60,en→sw,The clinic opens at 8:00 in the morning.,Kliniki hufunguliwa saa 8:00 asubuhi.,The clinic opens at 8:00 a.m.,Kliniki inafunguliwa saa mbili asubuhi.,0.987,clock-time,976
+i01,sw→en,"Habari za asubuhi, jina langu ni Amina na mimi ni muuguzi leo.","Good morning, my name is Amina and I am a nurse today.","Asubuhi njema, jina langu ni Amina na mimi ni muuguzi leo.","Good morning, my name is Amina and I am the nurse today.",0.984,,891
+i02,sw→en,Jina lako ni nani?,What is your name?,Jina lako ni nani?,What is your name?,1.000,,471
+i03,sw→en,Tafadhali keti hapa.,Please sit here.,Tafadhali kaa hapa.,Please sit down here.,0.933,,442
+i04,sw→en,Nitakuuliza maswali kadhaa kuhusu afya yako.,I'm going to ask you a few questions about your health.,Nitakuuliza maswali machache kuhusu afya yako.,I am going to ask you some questions about your health.,0.991,,822
+i05,sw→en,"Je, ni sawa nikikuchunguza?",Is it okay if I spy on you?,"Je, ni sawa kama nitakuchunguza?",Is it okay if I examine you?,0.952,,684
+i06,sw→en,Una umri wa miaka mingapi?,How old are you?,Una umri gani?,How old are you?,0.971,,467
+i07,sw→en,Ana umri wa miaka 34.,He is 34 years old.,Ana umri wa miaka 34.,She is 34 years old.,1.000,,567
+i08,sw→en,Mtoto ana umri wa miaka 5.,The child is 5 years old.,Mtoto ana umri wa miaka 5.,The child is 5 years old.,1.000,,664
+i09,sw→en,Unaishi wapi?,Where do you live?,Unaishi wapi?,Where do you live?,1.000,,465
+i10,sw→en,Je una namba ya simu tunayoweza kupiga?,Do you have a phone number we can call?,"Je, una namba ya simu tunayoweza kupiga?",Do you have a phone number we can call?,0.998,,720
+i11,sw→en,Ni nini kimekuleta kliniki leo?,What has brought you to the clinic today?,Ni nini kilichokuleta kwenye kliniki leo?,What brings you to the clinic today?,0.945,,687
+i12,sw→en,Umekuwa na homa kwa muda gani?,How long have you had a fever?,Umekuwa na homa kwa muda gani?,How long have you had a fever?,1.000,,657
+i13,sw→en,Nimekuwa na homa kwa siku 3.,I've had a fever for 3 days.,Nimekuwa na homa kwa siku 3.,I have had a fever for 3 days.,1.000,,724
+i14,sw→en,Je una kikohozi?,Do you have a cough?,"Je, una kikohozi?",Do you have a cough?,0.995,,509
+i15,sw→en,Kikohozi kilianza wiki mbili zilizopita.,The cough started two weeks ago.,Kikohozi kilianza wiki mbili zilizopita.,The cough started two weeks ago.,1.000,,625
+i16,sw→en,Je unasikia maumivu unapokojoa?,Do you feel pain when you urinate?,"Je, unahisi maumivu unapokwenda haja ndogo?",Do you have pain when you pass urine?,0.865,,690
+i17,sw→en,Unaumia wapi?,Where do you hurt?,Unaumia wapi?,Where does it hurt?,1.000,,468
+i18,sw→en,Maumivu yako tumboni chini.,The pain is in your lower abdomen.,Maumivu yapo sehemu ya chini ya tumbo.,The pain is in my lower belly.,0.876,,663
+i19,sw→en,Je umekuwa ukitapika?,Have you been vomiting?,"Je, umekuwa ukitapika?",Have you been vomiting?,0.991,,466
+i20,sw→en,Ametapika mara nne tangu asubuhi.,He has vomited four times since this morning.,Amepata kutapika mara nne tangu asubuhi ya leo.,He has vomited four times since this morning.,0.890,,724
+i21,sw→en,Je mtoto anaharisha?,Does the child have diarrhea?,"Je, mtoto ana ugonjwa wa kuhara?",Does the child have diarrhoea?,0.866,,503
+i22,sw→en,Mtoto hanyonyi vizuri.,The baby is not breast-feeding properly.,Mtoto hanyonyeshwi ipasavyo.,The child is not breastfeeding well.,0.909,,607
+i23,sw→en,Je mtoto anaweza kunywa?,Can the child drink?,"Je, mtoto anaweza kunywa?",Is the child able to drink?,0.996,,467
+i24,sw→en,Je mtoto amepata degedege?,Has the child been diagnosed?,"Je, mtoto huyo amepatwa na ugonjwa huo?",Has the child had any convulsions?,0.866,,501
+i25,sw→en,Je unasikia kizunguzungu unaposimama?,Do you feel dizzy when you stand?,"Je, unahisi kizunguzungu unaposimama?",Do you feel dizzy when you stand up?,0.960,,665
+i26,sw→en,Siwezi kulala usiku kwa sababu ya maumivu.,I can't sleep at night because of the pain.,Siwezi kulala usiku kwa sababu ya maumivu.,I cannot sleep at night because of the pain.,1.000,,762
+i27,sw→en,Joto lako ni nyuzi 38.5.,Your temperature is 38.5 degrees.,Joto lako ni digrii 38.5.,Your temperature is 38.5 degrees.,0.984,,726
+i28,sw→en,Shinikizo lako la damu ni 140/90.,Your blood pressure is 140/90.,Shinikizo lako la damu ni 140/90.,Your blood pressure is 140/90.,1.000,,789
+i29,sw→en,Mtoto ana uzito wa kilo 6.,The baby weighs 6 kilograms.,Mtoto ana uzito wa kilo 6.,The baby weighs 6 kg.,1.000,,535
+i30,sw→en,Nitapima shinikizo lako la damu.,I will measure your blood pressure.,Nitapima shinikizo lako la damu.,I am going to measure your blood pressure.,1.000,,630
+i31,sw→en,Je umewahi kuugua hivi kabla?,Have you ever been sick like this before?,"Je, umewahi kuwa mgonjwa kama huyu kabla?",Have you been sick like this before?,0.811,,692
+i32,sw→en,Je una kisukari au shinikizo la damu la juu?,Do you have diabetes or high blood pressure?,"Je, una ugonjwa wa kisukari au shinikizo la juu la damu?",Do you have diabetes or high blood pressure?,0.952,,694
+i33,sw→en,Je umepimwa VVU?,Have you been tested for HIV?,"Je, umepimwa virusi vya UKIMWI?",Have you been tested for HIV?,0.736,low-fidelity,540
+i34,sw→en,Je kuna mtu nyumbani anayeugua tatizo hili hili?,Does anyone in the house suffer from this problem?,"Je, kuna yeyote katika nyumba anayesumbuliwa na tatizo hilo?",Is anyone at home sick with the same problem?,0.868,,732
+i35,sw→en,Je mtoto amepata chanjo zote?,Has the child received all the vaccinations?,"Je, mtoto amepata chanjo zote?",Has the child received all vaccinations?,0.993,,664
+i36,sw→en,Je una mimba?,Are you pregnant?,"Je, wewe ni mjamzito?",Are you pregnant?,0.785,,435
+i37,sw→en,Hedhi yako ya mwisho ilikuwa lini?,When was your last menstrual period?,Mara yako ya mwisho kupata hedhi ilikuwa lini?,When was your last menstrual period?,0.930,,627
+i38,sw→en,Nina mimba ya miezi 7.,I am 7 months pregnant.,Nina mimba ya miezi 7.,I am 7 months pregnant.,1.000,,541
+i39,sw→en,Je umetokwa na damu?,Have you been bleeding?,"Je, umekuwa ukivuja damu?",Have you had any bleeding?,0.906,,476
+i40,sw→en,Je una mzio wa dawa yoyote?,Are you allergic to any medication?,"Je, una mzio wa dawa yoyote?",Are you allergic to any medicine?,0.997,,622
+i41,sw→en,Nina mzio wa penisilini.,I'm allergic to penicillin.,Nina mzio wa penisilini.,I am allergic to penicillin.,1.000,,566
+i42,sw→en,Je unatumia dawa yoyote sasa?,Are you taking any medication now?,"Je, unatumia dawa yoyote sasa?",Are you taking any medicine now?,0.979,,635
+i43,sw→en,Meza vidonge viwili mara tatu kwa siku.,Take two tablets three times a day.,Chukua vidonge viwili mara tatu kwa siku.,Take two tablets three times a day.,0.965,,662
+i44,sw→en,Meza kidonge kimoja kila baada ya saa 8 kwa siku 5.,Take one tablet every 8 hours for 5 days.,Chukua kidonge kimoja kila baada ya saa 8 kwa siku 5.,Take one tablet every 8 hours for 5 days.,0.974,,797
+i45,sw→en,Mpe mtoto ml 5 za dawa ya maji mara mbili kwa siku.,Give the child 5 ml of water twice a day.,Mpe mtoto maji 5ml mara mbili kwa siku.,Give the child 5 ml of the syrup twice a day.,0.945,,804
+i46,sw→en,Meza paracetamol mg 500 unapokuwa na maumivu.,Take paracetamol mg 500 when you have pain.,Tumia paracetamol mg 500 unapokuwa na maumivu.,Take 500 mg of paracetamol when you have pain.,0.994,,866
+i47,sw→en,Usimeze zaidi ya vidonge 8 kwa siku moja.,Do not take more than 8 tablets in a day.,Usitumie zaidi ya vidonge 8 kwa siku.,Do not take more than 8 tablets in one day.,0.972,,797
+i48,sw→en,Maliza dawa yote hata kama unajisikia vizuri.,Finish the medication even if you feel better.,Maliza dawa hata kama unajisikia vizuri.,Finish all the medicine even if you feel better.,0.953,,701
+i49,sw→en,Usinywe pombe wakati unatumia dawa hii.,Do not drink alcohol while you are taking this medicine.,Usinywe pombe wakati unatumia dawa hii.,Do not drink alcohol while taking this medicine.,1.000,,760
+i50,sw→en,Meza dawa hii pamoja na chakula.,Take this medicine with food.,Tumia dawa hii pamoja na chakula.,Take this medicine with food.,0.988,,594
+i51,sw→en,Kunywa maji mengi safi.,Drink plenty of fresh water.,Kunywa maji safi kwa wingi.,Drink plenty of clean water.,0.900,,503
+i52,sw→en,Changanya pakiti moja ya ORS katika lita moja ya maji safi.,Mix one packet of ORS in one liter of clean water.,Changanya pakiti moja ya ORS katika lita moja ya maji safi.,Mix one sachet of ORS in one litre of clean water.,1.000,,832
+i53,sw→en,Mweke mtoto katika joto.,Keep the baby warm.,Mweke mtoto katika hali ya joto.,Keep the baby warm.,0.992,,475
+i54,sw→en,Endelea kumnyonyesha mtoto.,Continue to breast-feed the baby.,Endelea kumnyonyesha mtoto.,Continue breastfeeding the baby.,1.000,,629
+i55,sw→en,Rudi mara moja ikiwa mtoto hawezi kunywa.,Return immediately if the child is unable to drink.,Rudi mara moja ikiwa mtoto hawezi kunywa.,Come back immediately if the child cannot drink.,1.000,,724
+i56,sw→en,Rudi ikiwa homa itaendelea zaidi ya siku 2.,Return if fever persists for more than 2 days.,Rudi kama homa itaendelea kwa zaidi ya siku 2.,Come back if the fever lasts more than 2 days.,0.969,,762
+i57,sw→en,Nenda hospitali ikiwa kuna kutokwa na damu nyingi.,Go to the hospital if there is heavy bleeding.,Nenda hospitali kama kuna kutokwa na damu nyingi.,Go to the hospital if there is heavy bleeding.,0.992,,735
+i58,sw→en,Rudi baada ya wiki moja.,Come back in a week.,Rudi baada ya wiki moja.,Come back in one week.,1.000,,506
+i59,sw→en,Miadi yako ijayo ni tarehe 12 Machi.,Your next appointment is March 12.,Mkutano wako unaofuata ni Machi 12.,Your next appointment is on 12 March.,0.959,,704
+i60,sw→en,Kliniki inafunguliwa saa mbili asubuhi.,The clinic opens at 8:00 a.m.,Kliniki hufunguliwa saa 8:00 asubuhi.,The clinic opens at 8:00 in the morning.,0.826,numbers-changed clock-time,795

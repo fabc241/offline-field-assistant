@@ -16,6 +16,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --dir tests/unit",
     "test:models": "vitest run --dir tests/models",
+    "eval": "npm run eval:translate",
+    "eval:translate": "tsx eval/run-translate.ts",
     "electron:smoke": "electron .",
     "package": "electron-forge package --arch=arm64",
     "audit:net": "scripts/net-audit.sh"

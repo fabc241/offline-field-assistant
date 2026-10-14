@@ -1,3 +1,5 @@
+import type { ModelSpec } from './qvac.js'
+
 /**
  * The models this app ships with, keyed by role. Registry names are QVAC SDK
  * model constants (see @qvac/sdk model registry); they are only used by the
@@ -19,3 +21,36 @@ export type ModelRole = keyof typeof MODEL_CATALOG
 export type ModelName = (typeof MODEL_CATALOG)[ModelRole]
 
 export const ALL_MODEL_NAMES: string[] = [...new Set(Object.values(MODEL_CATALOG))]
+
+/**
+ * Translator load config, from the SDK's validated AfriqueGemma example. The
+ * SDK applies the TranslatePsy model card's own sampling per call; the stop
+ * sequence keeps each call to one line, so callers translate line by line.
+ */
+const TRANSLATOR_CONFIG = { ctx_size: 2048, predict: 256, stop_sequences: ['\n'] }
+
+/** Any TranslatePsy-AfriSLM size, for the A/B eval. */
+export const translatorSpec = (name: string = MODEL_CATALOG.translator): ModelSpec => ({
+  name,
+  config: TRANSLATOR_CONFIG
+})
+
+/**
+ * How each runtime model is loaded. Features and the doctor share these, so
+ * the runtime sees one spec (and keeps one loaded instance) per model.
+ */
+export const MODEL_SPECS = {
+  translator: translatorSpec(),
+  stt: { name: MODEL_CATALOG.stt, companions: { vadModelSrc: MODEL_CATALOG.vad } },
+  tts: {
+    name: MODEL_CATALOG.ttsT3,
+    config: { ttsEngine: 'chatterbox', language: 'sw' },
+    companions: { s3genModelSrc: MODEL_CATALOG.ttsS3gen }
+  },
+  embedder: { name: MODEL_CATALOG.embedder },
+  ocr: {
+    name: MODEL_CATALOG.ocrRecognizer,
+    config: { langList: ['en'] },
+    companions: { detectorModelSrc: MODEL_CATALOG.ocrDetector }
+  }
+} satisfies Record<string, ModelSpec>

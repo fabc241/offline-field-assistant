@@ -29,6 +29,12 @@ class FakeSdk implements SdkPort {
   async systemMemoryBytes() {
     return this.memory
   }
+  async translate() {
+    return ''
+  }
+  async embed() {
+    return []
+  }
 }
 
 beforeEach(async () => {

@@ -1,0 +1,296 @@
+{
+  "dataset": "eval/datasets/intake.csv",
+  "sentences": 60,
+  "models": {
+    "TRANSLATEPSY_AFRISLM_0_8B_TRANSLATION_Q4_K_M": {
+      "sizeMB": 672,
+      "loadMs": 2499,
+      "en→sw": {
+        "chrF": 75.254,
+        "translateMs": {
+          "median": 171,
+          "p90": 217
+        },
+        "checkMs": {
+          "median": 138,
+          "p90": 171
+        },
+        "fidelity": {
+          "min": 0.607,
+          "p05": 0.864,
+          "median": 0.992
+        },
+        "flagged": 3,
+        "flags": {
+          "empty-output": [],
+          "untranslated": [],
+          "numbers-changed": [],
+          "negation-changed": [],
+          "low-fidelity": [
+            "i05",
+            "i19"
+          ],
+          "clock-time": [
+            "i60"
+          ]
+        }
+      },
+      "sw→en": {
+        "chrF": 75.241,
+        "translateMs": {
+          "median": 129,
+          "p90": 161
+        },
+        "checkMs": {
+          "median": 173,
+          "p90": 233
+        },
+        "fidelity": {
+          "min": 0.74,
+          "p05": 0.845,
+          "median": 0.974
+        },
+        "flagged": 2,
+        "flags": {
+          "empty-output": [],
+          "untranslated": [],
+          "numbers-changed": [],
+          "negation-changed": [],
+          "low-fidelity": [
+            "i33"
+          ],
+          "clock-time": [
+            "i60"
+          ]
+        }
+      }
+    },
+    "TRANSLATEPSY_AFRISLM_2B_TRANSLATION_Q4_K_M": {
+      "sizeMB": 1560,
+      "loadMs": 2282,
+      "en→sw": {
+        "chrF": 78.044,
+        "translateMs": {
+          "median": 350,
+          "p90": 459
+        },
+        "checkMs": {
+          "median": 283,
+          "p90": 349
+        },
+        "fidelity": {
+          "min": 0.806,
+          "p05": 0.883,
+          "median": 1
+        },
+        "flagged": 2,
+        "flags": {
+          "empty-output": [],
+          "untranslated": [],
+          "numbers-changed": [],
+          "negation-changed": [],
+          "low-fidelity": [
+            "i24"
+          ],
+          "clock-time": [
+            "i60"
+          ]
+        }
+      },
+      "sw→en": {
+        "chrF": 80.119,
+        "translateMs": {
+          "median": 279,
+          "p90": 345
+        },
+        "checkMs": {
+          "median": 368,
+          "p90": 494
+        },
+        "fidelity": {
+          "min": 0.736,
+          "p05": 0.806,
+          "median": 0.978
+        },
+        "flagged": 2,
+        "flags": {
+          "empty-output": [],
+          "untranslated": [],
+          "numbers-changed": [
+            "i60"
+          ],
+          "negation-changed": [],
+          "low-fidelity": [
+            "i33"
+          ],
+          "clock-time": [
+            "i60"
+          ]
+        }
+      }
+    },
+    "TRANSLATEPSY_AFRISLM_4B_TRANSLATION_Q4_K_M": {
+      "sizeMB": 3066,
+      "loadMs": 3315,
+      "en→sw": {
+        "chrF": 77.892,
+        "translateMs": {
+          "median": 795,
+          "p90": 1043
+        },
+        "checkMs": {
+          "median": 671,
+          "p90": 807
+        },
+        "fidelity": {
+          "min": 0.841,
+          "p05": 0.93,
+          "median": 0.999
+        },
+        "flagged": 2,
+        "flags": {
+          "empty-output": [],
+          "untranslated": [],
+          "numbers-changed": [],
+          "negation-changed": [],
+          "low-fidelity": [
+            "i05"
+          ],
+          "clock-time": [
+            "i60"
+          ]
+        }
+      },
+      "sw→en": {
+        "chrF": 79.856,
+        "translateMs": {
+          "median": 663,
+          "p90": 797
+        },
+        "checkMs": {
+          "median": 820,
+          "p90": 1070
+        },
+        "fidelity": {
+          "min": 0.736,
+          "p05": 0.826,
+          "median": 0.988
+        },
+        "flagged": 2,
+        "flags": {
+          "empty-output": [],
+          "untranslated": [],
+          "numbers-changed": [
+            "i60"
+          ],
+          "negation-changed": [],
+          "low-fidelity": [
+            "i33"
+          ],
+          "clock-time": [
+            "i60"
+          ]
+        }
+      }
+    }
+  },
+  "calibration": {
+    "fidelity": {
+      "real round trip en→sw→en": {
+        "n": 60,
+        "min": 0.806,
+        "p05": 0.883,
+        "median": 1,
+        "belowEnThreshold": 1,
+        "belowSwThreshold": 0
+      },
+      "real round trip sw→en→sw": {
+        "n": 60,
+        "min": 0.736,
+        "p05": 0.806,
+        "median": 0.978,
+        "belowEnThreshold": 6,
+        "belowSwThreshold": 1
+      },
+      "negation flipped": {
+        "n": 56,
+        "min": 0.776,
+        "p05": 0.813,
+        "median": 0.872,
+        "belowEnThreshold": 19,
+        "belowSwThreshold": 0
+      },
+      "number changed": {
+        "n": 19,
+        "min": 0.696,
+        "p05": 0.696,
+        "median": 0.833,
+        "belowEnThreshold": 10,
+        "belowSwThreshold": 3
+      },
+      "unrelated sentence": {
+        "n": 60,
+        "min": 0.376,
+        "p05": 0.392,
+        "median": 0.493,
+        "belowEnThreshold": 60,
+        "belowSwThreshold": 60
+      }
+    },
+    "detection": {
+      "negation-changed on negation flips": "56/56",
+      "numbers-changed on number changes": "19/19",
+      "false numbers-changed on real en round trips": "0/60",
+      "false negation-changed on real en round trips": "0/60"
+    }
+  },
+  "crossModelBackTranslation": {
+    "TRANSLATEPSY_AFRISLM_0_8B_TRANSLATION_Q4_K_M": {
+      "en→sw": {
+        "fidelity": {
+          "min": 0.851,
+          "p05": 0.892,
+          "median": 0.998
+        },
+        "flagged": [
+          "i60 [clock-time]"
+        ]
+      },
+      "sw→en": {
+        "fidelity": {
+          "min": 0.74,
+          "p05": 0.811,
+          "median": 0.982
+        },
+        "flagged": [
+          "i33 [low-fidelity]",
+          "i60 [numbers-changed clock-time]"
+        ]
+      }
+    },
+    "TRANSLATEPSY_AFRISLM_4B_TRANSLATION_Q4_K_M": {
+      "en→sw": {
+        "fidelity": {
+          "min": 0.841,
+          "p05": 0.913,
+          "median": 0.999
+        },
+        "flagged": [
+          "i05 [low-fidelity]",
+          "i60 [clock-time]"
+        ]
+      },
+      "sw→en": {
+        "fidelity": {
+          "min": 0.736,
+          "p05": 0.85,
+          "median": 0.988
+        },
+        "flagged": [
+          "i33 [low-fidelity]",
+          "i60 [numbers-changed clock-time]"
+        ]
+      }
+    }
+  }
+}

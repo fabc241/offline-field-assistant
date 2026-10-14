@@ -1,17 +1,11 @@
 import { performance } from 'node:perf_hooks'
-import { ALL_MODEL_NAMES, MODEL_CATALOG as M } from '../core/catalog.js'
+import { ALL_MODEL_NAMES, MODEL_SPECS } from '../core/catalog.js'
 import type { AppConfig } from '../core/config.js'
 import { ModelStore } from '../core/model-store.js'
-import { QvacRuntime, createSdkPort, sdkVersion, systemResources, type ModelSpec } from '../core/qvac.js'
+import { QvacRuntime, createSdkPort, sdkVersion, systemResources } from '../core/qvac.js'
 
 /** One load per runtime model, with the companions it cannot load without. */
-const SMOKE_SPECS: ModelSpec[] = [
-  { name: M.translator, config: { ctx_size: 2048 } },
-  { name: M.stt, companions: { vadModelSrc: M.vad } },
-  { name: M.ttsT3, config: { ttsEngine: 'chatterbox', language: 'sw' }, companions: { s3genModelSrc: M.ttsS3gen } },
-  { name: M.embedder },
-  { name: M.ocrRecognizer, config: { langList: ['en'] }, companions: { detectorModelSrc: M.ocrDetector } }
-]
+const SMOKE_SPECS = Object.values(MODEL_SPECS)
 
 const gb = (b: number) => (b < 1024 ** 3 ? `${(b / 1024 ** 2).toFixed(0)} MB` : `${(b / 1024 ** 3).toFixed(2)} GB`)
 

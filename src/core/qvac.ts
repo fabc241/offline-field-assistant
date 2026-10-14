@@ -12,12 +12,24 @@ export interface LoadRequest {
   modelConfig: Record<string, unknown>
 }
 
-/** The slice of the SDK the runtime needs. Faked in unit tests. */
+export interface TranslateRequest {
+  modelId: string
+  text: string
+  /** SDK language codes, e.g. "en", "swh_Latn". */
+  from: string
+  to: string
+}
+
+/** The slice of the SDK the app needs. Faked in unit tests. */
 export interface SdkPort {
   loadModel(req: LoadRequest): Promise<string>
   unloadModel(modelId: string): Promise<void>
   /** Total system memory in bytes, when the SDK can observe it. */
   systemMemoryBytes(): Promise<number | undefined>
+  /** One line of text through an LLM translation model. */
+  translate(req: TranslateRequest): Promise<string>
+  /** One vector per input text. */
+  embed(req: { modelId: string; texts: string[] }): Promise<number[][]>
 }
 
 export interface ModelSpec {
@@ -71,7 +83,8 @@ export class QvacRuntime {
 
   constructor(
     private readonly store: ModelStore,
-    private readonly sdk: SdkPort,
+    /** Inference calls go through here, with a model id from `use()`. */
+    readonly sdk: SdkPort,
     private readonly opts: { memoryBudgetBytes: number },
     private readonly now: () => number = Date.now
   ) {}
@@ -220,6 +233,14 @@ export function createSdkPort(): SdkPort {
       const res = await systemResources()
       const total = res.capabilities.memory.totalBytes
       return total.status === 'supported' ? total.value : undefined
+    },
+    async translate({ modelId, text, from, to }) {
+      const sdk = await loadSdk()
+      return sdk.translate({ modelId, text, from, to, modelType: 'llamacpp-completion', stream: false }).text
+    },
+    async embed({ modelId, texts }) {
+      const sdk = await loadSdk()
+      return (await sdk.embed({ modelId, text: texts })).embedding
     }
   }
 }
