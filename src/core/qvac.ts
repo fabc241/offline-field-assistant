@@ -3,6 +3,7 @@
  * through QvacRuntime, which loads from local files only, keeps loaded models
  * under a memory budget and runs one request at a time per model.
  */
+import { f32leBytes } from './audio.js'
 import type { ModelStore } from './model-store.js'
 import { assertLocalSource } from './model-store.js'
 
@@ -20,9 +21,17 @@ export interface TranslateRequest {
   to: string
 }
 
+export interface TranscriptSegment {
+  text: string
+  startMs: number
+  endMs: number
+}
+
 /** The slice of the SDK the app needs. Faked in unit tests. */
 export interface SdkPort {
   loadModel(req: LoadRequest): Promise<string>
+  /** Merges `modelConfig` into a loaded model's config without reloading weights. */
+  reconfigure(req: { modelId: string; modelType: string; modelConfig: Record<string, unknown> }): Promise<void>
   unloadModel(modelId: string): Promise<void>
   /** Total system memory in bytes, when the SDK can observe it. */
   systemMemoryBytes(): Promise<number | undefined>
@@ -30,6 +39,10 @@ export interface SdkPort {
   translate(req: TranslateRequest): Promise<string>
   /** One vector per input text. */
   embed(req: { modelId: string; texts: string[] }): Promise<number[][]>
+  /** Speech to text; `audio` is 16 kHz mono float32, matching the model's `audio_format: 'f32le'`. */
+  transcribe(req: { modelId: string; audio: Float32Array }): Promise<TranscriptSegment[]>
+  /** Text to speech; samples are 16-bit PCM values. */
+  synthesize(req: { modelId: string; text: string }): Promise<{ samples: number[]; sampleRate: number }>
 }
 
 export interface ModelSpec {
@@ -40,6 +53,13 @@ export interface ModelSpec {
   /** `modelConfig` keys whose value is another manifest model, e.g. { s3genModelSrc: 'TTS_S3GEN_…' }. */
   companions?: Record<string, string>
 }
+
+/**
+ * Scratch state that lives exactly as long as one loaded instance of a model,
+ * e.g. a setting changed with `reconfigure`. Model ids are a hash of the load
+ * request, so a reloaded model gets the same id but starts from its spec again.
+ */
+export type InstanceState = Record<string, unknown>
 
 export interface LoadedModelInfo {
   key: string
@@ -66,6 +86,7 @@ interface Entry {
   lastUsed: number
   active: number
   modelId: Promise<string>
+  state: InstanceState
   /** Tail of the per-model request queue. */
   queue: Promise<unknown>
 }
@@ -90,10 +111,10 @@ export class QvacRuntime {
   ) {}
 
   /** Runs `fn` with a loaded model; calls for the same model are serialized. */
-  async use<T>(spec: ModelSpec, fn: (modelId: string) => Promise<T>): Promise<T> {
+  async use<T>(spec: ModelSpec, fn: (modelId: string, state: InstanceState) => Promise<T>): Promise<T> {
     const entry = await this.acquire(spec)
     entry.active++
-    const run = entry.queue.then(async () => fn(await entry.modelId))
+    const run = entry.queue.then(async () => fn(await entry.modelId, entry.state))
     entry.queue = run.catch(() => undefined)
     try {
       return await run
@@ -101,6 +122,11 @@ export class QvacRuntime {
       entry.active--
       entry.lastUsed = this.now()
     }
+  }
+
+  /** The SDK model type a spec loads as, e.g. "whispercpp-transcription". */
+  modelType(spec: ModelSpec): string {
+    return this.store.entry(spec.name).engine
   }
 
   loaded(): LoadedModelInfo[] {
@@ -174,6 +200,7 @@ export class QvacRuntime {
       lastUsed: this.now(),
       active: 0,
       modelId: this.sdk.loadModel({ modelSrc, modelType: this.store.entry(spec.name).engine, modelConfig }),
+      state: {},
       queue: Promise.resolve()
     }
     this.entries.set(key, entry)
@@ -225,6 +252,10 @@ export function createSdkPort(): SdkPort {
       // modelType is a runtime string from the manifest; the SDK validates it.
       return sdk.loadModel(req as unknown as Parameters<Sdk['loadModel']>[0])
     },
+    async reconfigure({ modelId, modelType, modelConfig }) {
+      const sdk = await loadSdk()
+      await sdk.loadModel({ modelId, modelType, modelConfig } as unknown as Parameters<Sdk['loadModel']>[0])
+    },
     async unloadModel(modelId) {
       const sdk = await loadSdk()
       await sdk.unloadModel({ modelId, clearStorage: false })
@@ -241,6 +272,23 @@ export function createSdkPort(): SdkPort {
     async embed({ modelId, texts }) {
       const sdk = await loadSdk()
       return (await sdk.embed({ modelId, text: texts })).embedding
+    },
+    async transcribe({ modelId, audio }) {
+      const sdk = await loadSdk()
+      // Raw f32le PCM, no container. The SDK types the buffer as bare-buffer's
+      // Buffer; the Node client only calls toString('base64') on it.
+      const bytes = f32leBytes(audio)
+      const audioChunk = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength) as unknown as Parameters<Sdk['transcribe']>[0]['audioChunk']
+      const segments = await sdk.transcribe({ modelId, audioChunk, metadata: true })
+      return segments.map(({ text, startMs, endMs }) => ({ text, startMs, endMs }))
+    },
+    async synthesize({ modelId, text }) {
+      const sdk = await loadSdk()
+      const result = sdk.textToSpeech({ modelId, text, inputType: 'text', stream: false })
+      const samples = await result.buffer
+      const sampleRate = await result.sampleRate
+      if (!sampleRate) throw new Error('The TTS engine did not report a sample rate')
+      return { samples, sampleRate }
     }
   }
 }

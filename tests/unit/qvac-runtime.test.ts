@@ -3,39 +3,12 @@ import os from 'node:os'
 import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { ModelStore, writeManifest } from '../../src/core/model-store.js'
-import { ModelDoesNotFitError, QvacRuntime, type LoadRequest, type SdkPort } from '../../src/core/qvac.js'
+import { ModelDoesNotFitError, QvacRuntime } from '../../src/core/qvac.js'
+import { FakeSdk } from './fake-sdk.js'
 
 const GB = 1024 ** 3
 let dir: string
 let store: ModelStore
-
-class FakeSdk implements SdkPort {
-  loads: LoadRequest[] = []
-  unloads: string[] = []
-  memory: number | undefined = undefined
-  failNext = false
-
-  async loadModel(req: LoadRequest) {
-    if (this.failNext) {
-      this.failNext = false
-      throw new Error('load failed')
-    }
-    this.loads.push(req)
-    return `id-${this.loads.length}`
-  }
-  async unloadModel(id: string) {
-    this.unloads.push(id)
-  }
-  async systemMemoryBytes() {
-    return this.memory
-  }
-  async translate() {
-    return ''
-  }
-  async embed() {
-    return []
-  }
-}
 
 beforeEach(async () => {
   dir = await fs.mkdtemp(path.join(os.tmpdir(), 'ofa-rt-'))
@@ -142,6 +115,20 @@ describe('QvacRuntime', () => {
     // A is busy when B is admitted, so B must be refused rather than overcommit.
     expect(results.map((r) => r.status)).toEqual(['fulfilled', 'rejected'])
     expect(sdk.loads).toHaveLength(1)
+  })
+
+  it('gives each loaded instance fresh state, even when the reload reuses the model id', async () => {
+    const sdk = new FakeSdk()
+    sdk.stableIds = true
+    const rt = new QvacRuntime(store, sdk, { memoryBudgetBytes: 10 * GB })
+    await rt.use({ name: 'A' }, async (_id, state) => {
+      state.language = 'sw'
+    })
+    expect(await rt.use({ name: 'A' }, async (_id, state) => state.language)).toBe('sw')
+    await rt.unloadAll()
+    const [id, language] = await rt.use({ name: 'A' }, async (id, state) => [id, state.language])
+    expect(id).toBe('id-A')
+    expect(language).toBeUndefined()
   })
 
   it('keeps the queue usable after a request fails', async () => {

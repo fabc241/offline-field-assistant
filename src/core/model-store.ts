@@ -16,6 +16,8 @@ export interface ManifestEntry {
   addon: string
   /** Canonical QVAC model type, e.g. "llamacpp-completion"; passed as `modelType` for local loads. */
   engine: string
+  /** Where a model that is not in the QVAC registry came from, and how it was made. */
+  source?: string
 }
 
 export interface Manifest {

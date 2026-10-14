@@ -16,11 +16,15 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --dir tests/unit",
     "test:models": "vitest run --dir tests/models",
-    "eval": "npm run eval:translate",
+    "eval": "npm run eval:translate && npm run eval:stt",
     "eval:translate": "tsx eval/run-translate.ts",
     "electron:smoke": "electron .",
     "package": "electron-forge package --arch=arm64",
-    "audit:net": "scripts/net-audit.sh"
+    "audit:net": "scripts/net-audit.sh",
+    "fetch-fleurs": "tsx scripts/fetch-fleurs.ts",
+    "eval:make-intake-audio": "tsx eval/make-intake-audio.ts",
+    "eval:stt": "tsx eval/run-stt.ts",
+    "import-paza": "tsx scripts/import-paza.ts"
   },
   "dependencies": {
     "@qvac/sdk": "0.21.0"

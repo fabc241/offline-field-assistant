@@ -4,11 +4,13 @@
  *
  *   ofa doctor [--verify] [--load]
  *   ofa translate --from en|sw --to sw|en [--plain] [--json] "text"
+ *   ofa stt --lang en|sw [--model NAME] [--json] clip.wav
  */
 import { parseArgs } from 'node:util'
 import { loadConfig } from '../core/config.js'
 import { shutdown } from '../core/qvac.js'
 import { doctor } from './doctor.js'
+import { sttCommand } from './stt.js'
 import { translateCommand } from './translate.js'
 
 type Command = (args: string[]) => Promise<boolean>
@@ -21,7 +23,8 @@ const commands: Record<string, Command> = {
     })
     return doctor(loadConfig(), { verify: values.verify, load: values.load })
   },
-  translate: (args) => translateCommand(loadConfig(), args)
+  translate: (args) => translateCommand(loadConfig(), args),
+  stt: (args) => sttCommand(loadConfig(), args)
 }
 
 const [name, ...rest] = process.argv.slice(2)
