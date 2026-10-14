@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { cosine, countNegations, looksUntranslated, mentionsClockTime } from '../../src/features/translate/checks.js'
-import { diffQuantities, extractQuantities, formatQuantity } from '../../src/features/translate/quantities.js'
+import { diffQuantities, extractQuantities, formatQuantity, splitGluedSwahili } from '../../src/features/translate/quantities.js'
 import { reassemble, segment, splitSentences } from '../../src/features/translate/segment.js'
 import type { Lang } from '../../src/core/engines.js'
 
@@ -29,12 +29,19 @@ describe('extractQuantities', () => {
     ['Take 1 tablet every 8 hours for 5 days.', 'en', ['1 tablet', '8 hour', '5 day']],
     ['Meza kidonge kimoja kila baada ya saa 8 kwa siku 5.', 'sw', ['1 tablet', '8 hour', '5 day']],
     ['Give 500mg twice a day.', 'en', ['500 mg', '2 time']],
-    ['Mpe mtoto ml 5 za dawa', 'sw', ['5']],
+    ['Mpe mtoto ml 5 za dawa', 'sw', ['5 ml']],
+    ['Kunywa miligramu mia tano, mililita tano.', 'sw', ['500 mg', '5 ml']],
     ['A 5-year-old with 38.5°C fever.', 'en', ['5 year', '38.5 °c']],
     ['Joto lako ni nyuzi 38,5.', 'sw', ['38.5 °c']],
     ['BP 140/90, weight 1,250 g.', 'en', ['140/90', '1250 g']],
     ['one hundred and fifty, twenty-five', 'en', ['150', '25']],
+    ['five hundred thousand, two thousand five hundred', 'en', ['500000', '2500']],
     ['kumi na mbili, mia tano, elfu mbili', 'sw', ['12', '500', '2000']],
+    ['thirty-eight point five degrees, zero point two five', 'en', ['38.5 °c', '0.25']],
+    ['nyuzi joto thelathini na nane nukta tano', 'sw', ['38.5 °c']],
+    // Whisper's Swahili glues words together
+    ['Mpemtoto mililitatano za dawa ya magi marambili kwa siku.', 'sw', ['5 ml', '2 time']],
+    ['Meza paracetamol miligramu miatano, tarehe kuminambili.', 'sw', ['500 mg', '12']],
     ['Opens at 8:00 a.m., closes at 5 pm.', 'en', ['8:00', '17:00']],
     ['Mweke mwili wa mtoto katika joto.', 'sw', []]
   ])('%s', (text, lang, expected) => {
@@ -97,5 +104,19 @@ describe('checks', () => {
     expect(cosine([1, 0], [1, 0])).toBeCloseTo(1)
     expect(cosine([1, 0], [0, 2])).toBeCloseTo(0)
     expect(cosine([0, 0], [1, 1])).toBe(0)
+  })
+})
+
+describe('splitGluedSwahili', () => {
+  it('splits tokens made only of number words and units', () => {
+    expect(splitGluedSwahili('kuminambili')).toEqual(['kumi', 'na', 'mbili'])
+    expect(splitGluedSwahili('sikutatu')).toEqual(['siku', 'tatu'])
+    expect(splitGluedSwahili('mililitatano')).toEqual(['mililita', 'tano'])
+  })
+
+  it('leaves other words alone', () => {
+    for (const w of ['mtoto', 'nane', 'sitini', 'siku', 'nanasi', 'tanona', 'mara', 'sikuna', 'kidonge']) {
+      expect(splitGluedSwahili(w)).toEqual([w])
+    }
   })
 })

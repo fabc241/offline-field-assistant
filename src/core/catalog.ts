@@ -1,3 +1,4 @@
+import type { Lang } from './engines.js'
 import type { ModelSpec } from './qvac.js'
 
 /**
@@ -76,10 +77,35 @@ export const sttSpec = (name: string = MODEL_CATALOG.stt): ModelSpec => ({
   companions: { vadModelSrc: MODEL_CATALOG.vad }
 })
 
-/** Chatterbox multilingual; the language is fixed at load time. */
-export const ttsSpec = (language: 'en' | 'sw'): ModelSpec => ({
+export interface TtsOptions {
+  /**
+   * Speech tokens per streamed chunk (25 ≈ 1 s of audio); 0 or unset
+   * synthesizes each sentence whole. Chunks start the audio sooner but cost
+   * more in total, since each re-runs S3Gen over the speech so far.
+   */
+  chunkTokens?: number
+  /** Speaking-rate multiplier (time-stretch, pitch kept); 1 is unchanged. */
+  speed?: number
+  /** A consented recording to speak with (absolute path, checked by features/voice/voices.ts). */
+  referenceAudio?: string
+}
+
+/**
+ * Chatterbox multilingual on Metal; the language is fixed at load time. The
+ * engine defaults to CPU, which took 3–4.5 s per second of audio on the M4
+ * (RTF 3–4.5) against ~0.6 s on the GPU. The seed is the engine's default
+ * (42), so a sentence always sounds the same.
+ */
+export const ttsSpec = (language: Lang, opts: TtsOptions = {}): ModelSpec => ({
   name: MODEL_CATALOG.ttsT3,
-  config: { ttsEngine: 'chatterbox', language },
+  config: {
+    ttsEngine: 'chatterbox',
+    language,
+    useGPU: true,
+    ...(opts.chunkTokens ? { streamChunkTokens: opts.chunkTokens, streamFirstChunkTokens: Math.min(20, opts.chunkTokens) } : {}),
+    ...(opts.speed && opts.speed !== 1 ? { ttsSpeed: opts.speed } : {}),
+    ...(opts.referenceAudio ? { referenceAudioSrc: opts.referenceAudio } : {})
+  },
   companions: { s3genModelSrc: MODEL_CATALOG.ttsS3gen }
 })
 

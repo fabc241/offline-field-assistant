@@ -176,3 +176,91 @@ not tried: medium decodes slower than turbo and its weights are share-alike.
   Both are F3 risks to measure first.
 - Resampling 10 s of 48 kHz audio takes ~0.3 s; the recorder should deliver
   16 kHz directly.
+
+## F3 — Text-to-speech, read aloud (done 2026-10-14)
+
+`Speaker` on Chatterbox multilingual (Q4_0) **on Metal**, one loaded instance
+per language (the language is fixed at load). `ReadAloud` speaks sentence by
+sentence, so the first sentence plays while the next is synthesized, and
+spells out numbers, doses, units, clock times, ratios and ranges first
+(`src/features/voice/spoken.ts`). Optional consented reference voice per
+language (`OFA_VOICE_EN` / `OFA_VOICE_SW`). It is refused without a consent
+record next to the recording.
+
+| Check | Result |
+|---|---|
+| Unit tests (`npm test`) | 168/168 pass |
+| Real-model tests (`npm run test:models`) | 22/22 pass |
+| Network audit, full eval (5 variants, 700 renders + 700 transcriptions) | no sockets opened |
+
+### Method (no human listener)
+Each of the 60 intake sentences, plus 10 three-sentence paragraphs, is
+rendered per language and variant, then transcribed by the F2 Whisper.
+- **WER/CER**: hypothesis and reference both go through the spoken form, so
+  "500 mg" and "five hundred milligrams" match.
+- **Doses heard back**: a sentence passes when every quantity (value and unit)
+  comes back unchanged through F1's quantity parser.
+- **Stall**: total silence a listener would hear mid-speech if playback started
+  with the first audio and the next audio was late.
+
+Whisper's own errors count against the TTS. On real human speech the same
+Whisper gets FLEURS CER 8.4 (sw) and 2.0 (en), so that is the floor. Renders:
+`var/eval-audio/tts-<variant>-<lang>/` (usable as `eval:stt` sets). Per render:
+`eval/outputs/tts-<variant>.csv`. Summary: `eval/outputs/tts-summary.json`.
+
+### Results (sentences; M4, warm)
+
+| Variant | Lang | WER / CER | Doses heard back | First audio median / p90 | RTF median | Sentences with a stall |
+|---|---|---|---|---|---|---|
+| **spoken (default)** | en | **3.4 / 1.1** | **19/19** | 1.66 / 2.03 s | 0.90 | 0/60 |
+| raw (digits as written) | en | 6.0 / 4.2 | 17/19 | 1.88 / 2.26 s | 1.05 | 0/60 |
+| stream50 | en | 3.4 / 1.1 | 19/19 | 1.47 / 1.65 s | 1.38 | 45/60 |
+| stream25 | en | 3.1 / 1.0 | 19/19 | 1.51 / 1.71 s | 1.70 | 59/60 |
+| slow (0.85) | en | 3.4 / 1.2 | 19/19 | 1.82 / 2.19 s | 0.84 | 0/60 |
+| **spoken (default)** | sw | **61.4 / 15.3** | **11/21** | 1.93 / 2.68 s | 0.91 | 0/60 |
+| raw (digits as written) | sw | 64.6 / 20.1 | 4/21 | 2.01 / 3.12 s | 0.97 | 0/60 |
+| stream50 | sw | 62.8 / 16.2 | 10/21 | 1.59 / 1.98 s | 1.37 | 51/60 |
+| stream25 | sw | 62.0 / 16.2 | 10/21 | 1.64 / 1.90 s | 1.79 | 59/60 |
+| slow (0.85) | sw | 62.8 / 16.7 | 10/21 | 1.99 / 2.79 s | 0.77 | 0/60 |
+
+Paragraphs (default): en first audio 1.67 s for 5.3 s of speech, RTF 0.90;
+sw 2.36 s for 6.5 s, RTF 0.95. Load ~0.4–0.9 s per language. The first
+synthesis after a load is ~0.3–1 s slower (Metal warm-up).
+Timings vary ~10 % between runs (a first full run had en RTF 0.81, sw 0.83).
+Quality numbers are identical, since synthesis is seeded and decoding is greedy.
+
+Decisions:
+- **Metal on.** The engine defaults to CPU: RTF 3–4.5 on the M4 against ~0.6–0.9
+  on the GPU. This also accounts for F2's "0.25× real time".
+- **Whole sentences, no chunk streaming.** Chunks start the audio only
+  0.2–0.35 s sooner, but each chunk re-runs S3Gen over the speech so far.
+  Total RTF rises above 1 and playback would stall in most sentences
+  (28–62 s of stalls over 60 sentences). `--chunk-tokens` stays available.
+- **Spell numbers out.** Doses heard back: sw 4/21 → 11/21, en 17/19 → 19/19.
+  CER sw 20.1 → 15.3, en 4.2 → 1.1. As written, "38.5 °C" came back as
+  "3023 °C" in English and "500 mg" as noise in Swahili.
+- **Normal speed.** 0.85× did not help (sw CER 16.7).
+
+### Findings
+- **No KV-cache reload is needed.** The same sentence, repeated on one loaded
+  instance and interleaved with other sentences, gives bit-identical audio
+  (real-model test). The distorted or repeated audio problem did not reproduce.
+- **English read-aloud is close to clean** (51/60 sentences word-perfect).
+- **Swahili stays the weak side.** CER 15.3 against Whisper's 8.4 on human
+  Swahili. 10/21 dose sentences still lose a number, through slips such as
+  "tatu" → "chatu", "thelathini na nne" → "lakini nenni", "tisini" → "tesini".
+  Whisper alone cannot tell whether Chatterbox or Whisper made each slip.
+  Treat Swahili read-aloud of doses as unreliable: vetted phrase recordings
+  (F6) remain the plan for critical phrases.
+- **Swahili numbers are read in counting form** ("vidonge mbili"), not with
+  noun-class agreement ("vidonge viwili"), and clock times as written ("saa
+  8:00" → "saa nane"). F1's `clock-time` flag covers the meaning.
+- **Whisper glues Swahili number words** ("miatano", "kuminambili",
+  "marambili"). F1's quantity parser now splits tokens made only of number
+  words and units, reads spoken decimals ("nukta tano"), units placed before
+  the number ("miligramu mia tano"), and "five hundred thousand" (it gave 1500
+  before). F4 feeds Whisper's Swahili into this parser. Rechecked on all 600
+  recorded F1 checks: no result changed.
+- **Duration flags** (`too-long`, `too-short`) did not fire in 700 renders.
+  Observed 48–116 ms per letter (en) and 64–158 (sw). Bounds are set at about
+  half and twice that, for gross failures only.

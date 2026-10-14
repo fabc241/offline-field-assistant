@@ -24,7 +24,7 @@ export const formatQuantity = (q: Quantity) => (q.unit && q.unit !== 'clock' ? `
 /** Abbreviated and metric units, written after the number in both languages. */
 const METRIC: Record<string, string> = {
   mg: 'mg', milligram: 'mg', milligrams: 'mg', miligramu: 'mg',
-  mcg: 'mcg', µg: 'mcg', microgram: 'mcg', micrograms: 'mcg',
+  mcg: 'mcg', µg: 'mcg', microgram: 'mcg', micrograms: 'mcg', mikrogramu: 'mcg',
   g: 'g', gm: 'g', gram: 'g', grams: 'g', gramu: 'g',
   kg: 'kg', kgs: 'kg', kilogram: 'kg', kilograms: 'kg', kilo: 'kg', kilos: 'kg', kilogramu: 'kg',
   ml: 'ml', mls: 'ml', millilitre: 'ml', millilitres: 'ml', milliliter: 'ml', milliliters: 'ml', mililita: 'ml',
@@ -86,7 +86,7 @@ const EN_SMALL: Record<string, number> = {
 const EN_TIMES: Record<string, number> = { once: 1, twice: 2, thrice: 3 }
 
 const SW_SMALL: Record<string, number> = {
-  mbili: 2, sita: 6, saba: 7, nane: 8, tisa: 9, kumi: 10, ishirini: 20, thelathini: 30, arobaini: 40,
+  sifuri: 0, mbili: 2, sita: 6, saba: 7, nane: 8, tisa: 9, kumi: 10, ishirini: 20, thelathini: 30, arobaini: 40,
   hamsini: 50, sitini: 60, sabini: 70, themanini: 80, tisini: 90
 }
 /** Numbers 1–5 agree with the noun class: mmoja, viwili, watatu, minne, matano… */
@@ -106,6 +106,8 @@ interface Lexicon {
   joiner: string
   /** Fractions that stand alone. */
   fraction: Record<string, number>
+  /** Decimal point read aloud: "thirty-eight point five", "thelathini na nane nukta tano". */
+  point: string
 }
 
 const EN_LEX: Lexicon = {
@@ -113,7 +115,8 @@ const EN_LEX: Lexicon = {
   scale: { hundred: 100, thousand: 1000 },
   scaleFollowsCount: true,
   joiner: 'and',
-  fraction: { half: 0.5, quarter: 0.25 }
+  fraction: { half: 0.5, quarter: 0.25 },
+  point: 'point'
 }
 
 const SW_LEX: Lexicon = {
@@ -121,7 +124,8 @@ const SW_LEX: Lexicon = {
   scale: { mia: 100, elfu: 1000 },
   scaleFollowsCount: false,
   joiner: 'na',
-  fraction: { nusu: 0.5, robo: 0.25 }
+  fraction: { nusu: 0.5, robo: 0.25 },
+  point: 'nukta'
 }
 
 // ---------------------------------------------------------------------------
@@ -131,7 +135,34 @@ const SW_LEX: Lexicon = {
 /** Punctuation is kept as tokens so separate numbers never merge ("twenty, five"). */
 const TOKEN = /\d{1,2}:\d{2}|\d+\/\d+|\d+(?:[.,]\d+)*|[\p{L}°%µ']+|[,.;:!?()]/gu
 
-function tokenize(text: string): string[] {
+/**
+ * Pieces Whisper glues into one Swahili word: "miatano" (mia tano),
+ * "kuminambili" (kumi na mbili), "marambili" (mara mbili), "mililitatano".
+ */
+const SW_GLUE_NUMBERS = new Set([
+  'moja', 'mbili', 'tatu', 'nne', 'tano', 'sita', 'saba', 'nane', 'tisa', 'kumi', 'ishirini', 'thelathini', 'arobaini',
+  'hamsini', 'sitini', 'sabini', 'themanini', 'tisini', 'mia', 'elfu', 'nusu', 'robo'
+])
+const SW_GLUE_PIECES = new Set([...SW_GLUE_NUMBERS, 'na', 'nukta', ...Object.keys(SW_UNITS), ...Object.keys(METRIC).filter((k) => /^\p{L}{3,}$/u.test(k))])
+
+/**
+ * Splits a token made entirely of number words and units, with at least one
+ * number and not starting or ending on "na"; anything else is left alone.
+ */
+export function splitGluedSwahili(token: string): string[] {
+  const best: (string[] | undefined)[] = [[]]
+  for (let end = 1; end <= token.length; end++) {
+    for (let start = 0; start < end && !best[end]; start++) {
+      const piece = token.slice(start, end)
+      if (best[start] && SW_GLUE_PIECES.has(piece)) best[end] = [...best[start]!, piece]
+    }
+  }
+  const pieces = best[token.length]
+  if (!pieces || pieces.length < 2 || pieces[0] === 'na' || pieces.at(-1) === 'na') return [token]
+  return pieces.some((p) => SW_GLUE_NUMBERS.has(p)) ? pieces : [token]
+}
+
+function tokenize(text: string, lang: Lang): string[] {
   const normalised = text
     .toLowerCase()
     .replace(/[’`]/g, "'")
@@ -140,7 +171,8 @@ function tokenize(text: string): string[] {
     .replace(/(\d)(?=[\p{L}°%µ])/gu, '$1 ')
     .replace(/([\p{L}])(?=\d)/gu, '$1 ')
     .replace(/[-–]/g, ' ')
-  return normalised.match(TOKEN) ?? []
+  const tokens = normalised.match(TOKEN) ?? []
+  return lang === 'sw' ? tokens.flatMap(splitGluedSwahili) : tokens
 }
 
 /** "8:00", "8:00am" and "8 am" are the same time; "8:00pm" becomes "20:00". */
@@ -182,8 +214,13 @@ function readWords(tokens: string[], i: number, lex: Lexicon): Span | undefined 
       current += small
     } else if (scale !== undefined) {
       if (lex.scaleFollowsCount) {
-        total += (current || 1) * scale
-        current = 0
+        // "five hundred thousand": hundred scales the count so far, thousand closes a group.
+        if (scale < 1000) {
+          current = (current || 1) * scale
+        } else {
+          total += (current || 1) * scale
+          current = 0
+        }
       } else {
         const next = tokens[j + 1] !== undefined ? lex.small(tokens[j + 1]!) : undefined
         total += scale * (next ?? 1)
@@ -196,13 +233,24 @@ function readWords(tokens: string[], i: number, lex: Lexicon): Span | undefined 
     }
     end = j
   }
-  return { value: String(total + current), start: i, end }
+  // Decimals read aloud: one digit word at a time after the point.
+  let decimals = ''
+  if (tokens[end + 1] === lex.point) {
+    for (let j = end + 2; j < tokens.length; j++) {
+      const digit = lex.small(tokens[j]!)
+      if (digit === undefined || digit > 9) break
+      decimals += digit
+    }
+    if (decimals) end += 1 + decimals.length
+  }
+  const value = total + current
+  return { value: decimals ? String(Number(`${value}.${decimals}`)) : String(value), start: i, end }
 }
 
 const isNumberWord = (w: string, lex: Lexicon) => lex.small(w) !== undefined || lex.scale[w] !== undefined
 
 export function extractQuantities(text: string, lang: Lang): Quantity[] {
-  const tokens = tokenize(text)
+  const tokens = tokenize(text, lang)
   const lex = lang === 'en' ? EN_LEX : SW_LEX
   const spans: Span[] = []
 
@@ -243,8 +291,9 @@ function unitFor(tokens: string[], span: Span, lang: Lang): string | undefined {
   const next = tokens[span.end + 1]
   if (lang === 'en') return next !== undefined ? EN_UNITS[next] : undefined
   if (next !== undefined && METRIC[next]) return METRIC[next]
+  // Spoken Swahili puts every unit first: "miligramu mia tano", "ml 5".
   const prev = tokens[span.start - 1]
-  return prev !== undefined ? SW_UNITS[prev] : undefined
+  return prev !== undefined ? (SW_UNITS[prev] ?? METRIC[prev]) : undefined
 }
 
 // ---------------------------------------------------------------------------

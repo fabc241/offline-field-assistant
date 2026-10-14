@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import type { Lang } from './engines.js'
 
 export const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 
@@ -10,6 +11,11 @@ export interface AppConfig {
   modelsDir: string
   /** Upper bound for the summed size of loaded models, in bytes. */
   memoryBudgetBytes: number
+  /**
+   * Consented native-speaker recordings to read aloud with, per language
+   * (OFA_VOICE_EN, OFA_VOICE_SW). Unset: Chatterbox's built-in voice.
+   */
+  voices: Partial<Record<Lang, string>>
 }
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
@@ -19,6 +25,10 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   }
   return {
     modelsDir: path.resolve(env.OFA_MODELS_DIR ?? path.join(PROJECT_ROOT, 'models')),
-    memoryBudgetBytes: budgetGb * GB
+    memoryBudgetBytes: budgetGb * GB,
+    voices: {
+      ...(env.OFA_VOICE_EN ? { en: path.resolve(env.OFA_VOICE_EN) } : {}),
+      ...(env.OFA_VOICE_SW ? { sw: path.resolve(env.OFA_VOICE_SW) } : {})
+    }
   }
 }

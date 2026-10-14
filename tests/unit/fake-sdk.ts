@@ -1,4 +1,4 @@
-import type { LoadRequest, SdkPort, TranscriptSegment } from '../../src/core/qvac.js'
+import type { LoadRequest, PcmChunk, SdkPort, TranscriptSegment } from '../../src/core/qvac.js'
 
 /** Records calls; inference methods return canned values. */
 export class FakeSdk implements SdkPort {
@@ -39,7 +39,11 @@ export class FakeSdk implements SdkPort {
     this.transcribed.push(req)
     return this.segments
   }
-  async synthesize() {
-    return { samples: [0, 16384, -16384], sampleRate: 24_000 }
+  synthesized: { modelId: string; text: string }[] = []
+  /** Chunks each synthesis emits, as 16-bit PCM values. */
+  pcmChunks: number[][] = [[0, 16384], [-16384]]
+  async synthesize(req: { modelId: string; text: string; onChunk: (chunk: PcmChunk) => void }) {
+    this.synthesized.push({ modelId: req.modelId, text: req.text })
+    for (const samples of this.pcmChunks) req.onChunk({ samples, sampleRate: 24_000 })
   }
 }

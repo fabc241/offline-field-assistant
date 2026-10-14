@@ -27,6 +27,7 @@ import {
   type CheckedTranslation
 } from '../src/features/translate/translation-service.js'
 import { parseCsv, toCsv } from './csv.js'
+import { quantile, round } from './stats.js'
 
 const SIZES = ['0_8B', '2B', '4B'].map((s) => `TRANSLATEPSY_AFRISLM_${s}_TRANSLATION_Q4_K_M`)
 const DEFAULT_MODEL = translatorSpec().name
@@ -254,15 +255,6 @@ function chrF(hyps: string[], refs: string[], maxN = 6, beta = 2): number {
   return p + r ? (100 * (1 + b2) * p * r) / (b2 * p + r) : 0
 }
 
-function quantile(xs: number[], q: number): number {
-  const s = [...xs].sort((a, b) => a - b)
-  return s[Math.min(s.length - 1, Math.floor(q * s.length))] ?? NaN
-}
-
 function quantiles(xs: number[]) {
   return { min: round(quantile(xs, 0)), p05: round(quantile(xs, 0.05)), median: round(quantile(xs, 0.5)) }
-}
-
-function round(x: number, digits = 3): number {
-  return Number(x.toFixed(digits))
 }

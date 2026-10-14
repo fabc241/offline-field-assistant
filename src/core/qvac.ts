@@ -41,8 +41,18 @@ export interface SdkPort {
   embed(req: { modelId: string; texts: string[] }): Promise<number[][]>
   /** Speech to text; `audio` is 16 kHz mono float32, matching the model's `audio_format: 'f32le'`. */
   transcribe(req: { modelId: string; audio: Float32Array }): Promise<TranscriptSegment[]>
-  /** Text to speech; samples are 16-bit PCM values. */
-  synthesize(req: { modelId: string; text: string }): Promise<{ samples: number[]; sampleRate: number }>
+  /**
+   * Text to speech for one sentence. `onChunk` gets 16-bit PCM values as the
+   * engine produces them: the whole sentence at once, or every few speech
+   * tokens when the model was loaded with `streamChunkTokens`.
+   */
+  synthesize(req: { modelId: string; text: string; onChunk: (chunk: PcmChunk) => void }): Promise<void>
+}
+
+export interface PcmChunk {
+  /** 16-bit PCM values. */
+  samples: number[]
+  sampleRate: number
 }
 
 export interface ModelSpec {
@@ -191,7 +201,9 @@ export class QvacRuntime {
     for (const [configKey, companionName] of companions) {
       modelConfig[configKey] = this.store.resolve(companionName)
     }
-    for (const v of [modelSrc, ...companions.map(([k]) => modelConfig[k] as string)]) assertLocalSource(v)
+    // Every file the SDK will open: the model, its companions, a reference voice.
+    assertLocalSource(modelSrc)
+    for (const [k, v] of Object.entries(modelConfig)) if (k.endsWith('Src') && typeof v === 'string') assertLocalSource(v)
 
     const entry: Entry = {
       key,
@@ -282,13 +294,18 @@ export function createSdkPort(): SdkPort {
       const segments = await sdk.transcribe({ modelId, audioChunk, metadata: true })
       return segments.map(({ text, startMs, endMs }) => ({ text, startMs, endMs }))
     },
-    async synthesize({ modelId, text }) {
+    async synthesize({ modelId, text, onChunk }) {
       const sdk = await loadSdk()
-      const result = sdk.textToSpeech({ modelId, text, inputType: 'text', stream: false })
-      const samples = await result.buffer
-      const sampleRate = await result.sampleRate
-      if (!sampleRate) throw new Error('The TTS engine did not report a sample rate')
-      return { samples, sampleRate }
+      // The sentence-stream mode is the one that hands over whole chunks with
+      // their boundaries; plain streaming yields one sample at a time.
+      const result = sdk.textToSpeech({ modelId, text, inputType: 'text', stream: true, sentenceStream: true })
+      for await (const chunk of result.chunkUpdates!) {
+        if (chunk.buffer.length === 0) continue
+        const sampleRate = chunk.sampleRate ?? (await result.sampleRate)
+        if (!sampleRate) throw new Error('The TTS engine did not report a sample rate')
+        onChunk({ samples: chunk.buffer, sampleRate })
+      }
+      await result.done
     }
   }
 }

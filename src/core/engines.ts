@@ -2,7 +2,7 @@
  * The small model interfaces features depend on, and their QVAC-backed
  * implementations. Unit tests pass fakes instead.
  */
-import { MODEL_SPECS } from './catalog.js'
+import { MODEL_SPECS, ttsSpec } from './catalog.js'
 import type { ModelSpec, QvacRuntime, TranscriptSegment } from './qvac.js'
 
 export type { TranscriptSegment } from './qvac.js'
@@ -37,12 +37,17 @@ export interface Transcriber {
 }
 
 export interface SpeechAudio {
+  /** Samples in [-1, 1]. */
   samples: Float32Array
   sampleRate: number
 }
 
 export interface Speaker {
-  synthesize(text: string): Promise<SpeechAudio>
+  /**
+   * Speaks one sentence, exactly as given (the caller spells out numbers).
+   * `onAudio` receives the audio as the engine produces it, in order.
+   */
+  speak(text: string, lang: Lang, onAudio: (chunk: SpeechAudio) => void): Promise<void>
 }
 
 /** ISO 639-1 codes, as whisper.cpp expects. */
@@ -94,12 +99,20 @@ export function qvacTranscriber(runtime: QvacRuntime, spec: ModelSpec = MODEL_SP
   }
 }
 
-/** Minimal for now (F2 uses it to render eval clips); F3 builds the real Speaker. */
-export function qvacSpeaker(runtime: QvacRuntime, spec: ModelSpec): Speaker {
+/**
+ * Chatterbox fixes the language when it loads, so each language is its own
+ * instance (~1.1 GB each); the runtime evicts an idle one when memory is short.
+ */
+export function qvacSpeaker(runtime: QvacRuntime, spec: (lang: Lang) => ModelSpec = (lang) => ttsSpec(lang)): Speaker {
   return {
-    async synthesize(text) {
-      const { samples, sampleRate } = await runtime.use(spec, (modelId) => runtime.sdk.synthesize({ modelId, text }))
-      return { samples: Float32Array.from(samples, (s) => s / 32768), sampleRate }
+    async speak(text, lang, onAudio) {
+      await runtime.use(spec(lang), (modelId) =>
+        runtime.sdk.synthesize({
+          modelId,
+          text,
+          onChunk: ({ samples, sampleRate }) => onAudio({ samples: Float32Array.from(samples, (s) => s / 32768), sampleRate })
+        })
+      )
     }
   }
 }

@@ -19,6 +19,7 @@ import { QvacRuntime, createSdkPort, shutdown } from '../src/core/qvac.js'
 import { STT_FLAGS, SpeechToText, type Transcript } from '../src/features/speech/speech-service.js'
 import { readSet, type Clip } from './audio-sets.js'
 import { toCsv } from './csv.js'
+import { quantile, round } from './stats.js'
 import { corpusRates, errorCounts, type ErrorCounts } from './wer.js'
 
 const SETS = ['fleurs-sw', 'intake-tts-sw', 'fleurs-en', 'intake-tts-en']
@@ -108,12 +109,3 @@ summary.models = perModel
 
 await fs.writeFile(path.join(outDir, 'stt-summary.json'), JSON.stringify(summary, null, 2) + '\n')
 await shutdown()
-
-function quantile(xs: number[], q: number): number {
-  const s = [...xs].sort((a, b) => a - b)
-  return s[Math.min(s.length - 1, Math.floor(q * s.length))] ?? NaN
-}
-
-function round(x: number, digits: number): number {
-  return Number(x.toFixed(digits))
-}

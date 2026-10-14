@@ -1,0 +1,783 @@
+{
+  "sentences": 60,
+  "paragraphs": 10,
+  "wer": "WER/CER of Whisper large-v3-turbo transcripts; both sides in spoken form (numbers as words), then eval/wer.ts normalization",
+  "quantities": "sentences whose every quantity (value and unit, F1 parser) Whisper heard back unchanged",
+  "variants": {
+    "spoken": "default: whole sentences, numbers spelled out",
+    "raw": "text as written (digits, units, symbols)",
+    "stream50": "native chunk streaming, 50 tokens (~2 s), first chunk 20",
+    "stream25": "native chunk streaming, 25 tokens (~1 s), first chunk 20",
+    "slow": "speaking rate 0.85 (time-stretched)"
+  },
+  "results": {
+    "spoken": {
+      "en": {
+        "loadMs": 375,
+        "coldFirstSentence": {
+          "firstAudioMs": 1802,
+          "audioMs": 2400
+        },
+        "sentences": {
+          "wer": 3.4,
+          "cer": 1.1,
+          "perfect": 51,
+          "quantitiesHeardBack": "19/19",
+          "quantitiesLost": {},
+          "audioS": 110,
+          "firstAudioMs": {
+            "median": 1656,
+            "p90": 2032,
+            "max": 2354
+          },
+          "rtf": {
+            "median": 0.9
+          },
+          "stall": {
+            "sentences": 0,
+            "totalMs": 0
+          },
+          "msPerLetter": {
+            "min": 48,
+            "p05": 52,
+            "median": 64,
+            "p95": 83,
+            "max": 97
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 0.6,
+          "audioMs": {
+            "median": 5300,
+            "p90": 6780,
+            "max": 6780
+          },
+          "firstAudioMs": {
+            "median": 1667,
+            "p90": 2083,
+            "max": 2083
+          },
+          "synthMs": {
+            "median": 4751,
+            "p90": 5457,
+            "max": 5457
+          },
+          "rtf": {
+            "median": 0.9
+          },
+          "stallMs": {
+            "median": 0,
+            "p90": 403,
+            "max": 403
+          }
+        }
+      },
+      "sw": {
+        "loadMs": 373,
+        "coldFirstSentence": {
+          "firstAudioMs": 3004,
+          "audioMs": 3800
+        },
+        "sentences": {
+          "wer": 61.4,
+          "cer": 15.3,
+          "perfect": 1,
+          "quantitiesHeardBack": "11/21",
+          "quantitiesLost": {
+            "i07": "34 year",
+            "i13": "3 day",
+            "i15": "2 week",
+            "i20": "4 time",
+            "i27": "38.5 °c +8.5",
+            "i28": "140 90 +41",
+            "i43": "2 tablet",
+            "i44": "8 hour",
+            "i56": "2 day",
+            "i60": "2 hour"
+          },
+          "audioS": 135,
+          "firstAudioMs": {
+            "median": 1928,
+            "p90": 2679,
+            "max": 3072
+          },
+          "rtf": {
+            "median": 0.91
+          },
+          "stall": {
+            "sentences": 0,
+            "totalMs": 0
+          },
+          "msPerLetter": {
+            "min": 64,
+            "p05": 69,
+            "median": 81,
+            "p95": 113,
+            "max": 132
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 8.8,
+          "audioMs": {
+            "median": 6540,
+            "p90": 8700,
+            "max": 8700
+          },
+          "firstAudioMs": {
+            "median": 2362,
+            "p90": 3060,
+            "max": 3060
+          },
+          "synthMs": {
+            "median": 6118,
+            "p90": 8100,
+            "max": 8100
+          },
+          "rtf": {
+            "median": 0.95
+          },
+          "stallMs": {
+            "median": 0,
+            "p90": 631,
+            "max": 631
+          }
+        }
+      }
+    },
+    "raw": {
+      "en": {
+        "loadMs": 838,
+        "coldFirstSentence": {
+          "firstAudioMs": 2016,
+          "audioMs": 2400
+        },
+        "sentences": {
+          "wer": 6,
+          "cer": 4.2,
+          "perfect": 47,
+          "quantitiesHeardBack": "17/19",
+          "quantitiesLost": {
+            "i27": "38.5 °c +3023 °c",
+            "i28": "140 +24"
+          },
+          "audioS": 108,
+          "firstAudioMs": {
+            "median": 1876,
+            "p90": 2257,
+            "max": 2685
+          },
+          "rtf": {
+            "median": 1.05
+          },
+          "stall": {
+            "sentences": 0,
+            "totalMs": 0
+          },
+          "msPerLetter": {
+            "min": 48,
+            "p05": 52,
+            "median": 69,
+            "p95": 100,
+            "max": 115
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 4.8,
+          "audioMs": {
+            "median": 5260,
+            "p90": 6500,
+            "max": 6500
+          },
+          "firstAudioMs": {
+            "median": 1791,
+            "p90": 2108,
+            "max": 2108
+          },
+          "synthMs": {
+            "median": 5363,
+            "p90": 5963,
+            "max": 5963
+          },
+          "rtf": {
+            "median": 0.99
+          },
+          "stallMs": {
+            "median": 24,
+            "p90": 520,
+            "max": 520
+          }
+        }
+      },
+      "sw": {
+        "loadMs": 789,
+        "coldFirstSentence": {
+          "firstAudioMs": 2640,
+          "audioMs": 3800
+        },
+        "sentences": {
+          "wer": 64.6,
+          "cer": 20.1,
+          "perfect": 1,
+          "quantitiesHeardBack": "4/21",
+          "quantitiesLost": {
+            "i07": "34 year",
+            "i08": "5 year",
+            "i13": "3 day",
+            "i15": "2 week",
+            "i20": "4 time",
+            "i27": "38.5 °c",
+            "i28": "140 90",
+            "i29": "6 kg",
+            "i38": "7 month",
+            "i43": "2 tablet",
+            "i44": "8 hour 5 day",
+            "i45": "5 ml",
+            "i46": "500 mg",
+            "i47": "8 tablet",
+            "i56": "2 day",
+            "i59": "12",
+            "i60": "2 hour"
+          },
+          "audioS": 134,
+          "firstAudioMs": {
+            "median": 2013,
+            "p90": 3117,
+            "max": 3536
+          },
+          "rtf": {
+            "median": 0.97
+          },
+          "stall": {
+            "sentences": 0,
+            "totalMs": 0
+          },
+          "msPerLetter": {
+            "min": 65,
+            "p05": 69,
+            "median": 84,
+            "p95": 127,
+            "max": 143
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 16.3,
+          "audioMs": {
+            "median": 6540,
+            "p90": 7900,
+            "max": 7900
+          },
+          "firstAudioMs": {
+            "median": 2019,
+            "p90": 3183,
+            "max": 3183
+          },
+          "synthMs": {
+            "median": 5767,
+            "p90": 6392,
+            "max": 6392
+          },
+          "rtf": {
+            "median": 0.88
+          },
+          "stallMs": {
+            "median": 0,
+            "p90": 533,
+            "max": 533
+          }
+        }
+      }
+    },
+    "stream50": {
+      "en": {
+        "loadMs": 743,
+        "coldFirstSentence": {
+          "firstAudioMs": 1483,
+          "audioMs": 2400
+        },
+        "sentences": {
+          "wer": 3.4,
+          "cer": 1.1,
+          "perfect": 51,
+          "quantitiesHeardBack": "19/19",
+          "quantitiesLost": {},
+          "audioS": 110,
+          "firstAudioMs": {
+            "median": 1466,
+            "p90": 1646,
+            "max": 1821
+          },
+          "rtf": {
+            "median": 1.38
+          },
+          "stall": {
+            "sentences": 45,
+            "totalMs": 27895
+          },
+          "msPerLetter": {
+            "min": 48,
+            "p05": 52,
+            "median": 64,
+            "p95": 83,
+            "max": 97
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 0.3,
+          "audioMs": {
+            "median": 5300,
+            "p90": 6780,
+            "max": 6780
+          },
+          "firstAudioMs": {
+            "median": 1460,
+            "p90": 1676,
+            "max": 1676
+          },
+          "synthMs": {
+            "median": 6694,
+            "p90": 8598,
+            "max": 8598
+          },
+          "rtf": {
+            "median": 1.3
+          },
+          "stallMs": {
+            "median": 1368,
+            "p90": 2318,
+            "max": 2318
+          }
+        }
+      },
+      "sw": {
+        "loadMs": 883,
+        "coldFirstSentence": {
+          "firstAudioMs": 1767,
+          "audioMs": 3800
+        },
+        "sentences": {
+          "wer": 62.8,
+          "cer": 16.2,
+          "perfect": 1,
+          "quantitiesHeardBack": "10/21",
+          "quantitiesLost": {
+            "i07": "34 year",
+            "i13": "3 day",
+            "i15": "2 week",
+            "i20": "4 time",
+            "i27": "38.5 °c +8.5",
+            "i28": "140 90 +41",
+            "i38": "7 month",
+            "i43": "2 tablet",
+            "i44": "8 hour",
+            "i56": "2 day",
+            "i60": "2 hour"
+          },
+          "audioS": 135,
+          "firstAudioMs": {
+            "median": 1589,
+            "p90": 1981,
+            "max": 2209
+          },
+          "rtf": {
+            "median": 1.37
+          },
+          "stall": {
+            "sentences": 51,
+            "totalMs": 41834
+          },
+          "msPerLetter": {
+            "min": 64,
+            "p05": 69,
+            "median": 81,
+            "p95": 113,
+            "max": 132
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 8.4,
+          "audioMs": {
+            "median": 6540,
+            "p90": 8700,
+            "max": 8700
+          },
+          "firstAudioMs": {
+            "median": 1675,
+            "p90": 2124,
+            "max": 2124
+          },
+          "synthMs": {
+            "median": 8432,
+            "p90": 10959,
+            "max": 10959
+          },
+          "rtf": {
+            "median": 1.28
+          },
+          "stallMs": {
+            "median": 1409,
+            "p90": 2644,
+            "max": 2644
+          }
+        }
+      }
+    },
+    "stream25": {
+      "en": {
+        "loadMs": 910,
+        "coldFirstSentence": {
+          "firstAudioMs": 1484,
+          "audioMs": 2400
+        },
+        "sentences": {
+          "wer": 3.1,
+          "cer": 1,
+          "perfect": 52,
+          "quantitiesHeardBack": "19/19",
+          "quantitiesLost": {},
+          "audioS": 110,
+          "firstAudioMs": {
+            "median": 1506,
+            "p90": 1714,
+            "max": 1788
+          },
+          "rtf": {
+            "median": 1.7
+          },
+          "stall": {
+            "sentences": 59,
+            "totalMs": 40552
+          },
+          "msPerLetter": {
+            "min": 48,
+            "p05": 52,
+            "median": 64,
+            "p95": 83,
+            "max": 97
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 0.5,
+          "audioMs": {
+            "median": 5300,
+            "p90": 6780,
+            "max": 6780
+          },
+          "firstAudioMs": {
+            "median": 1555,
+            "p90": 1853,
+            "max": 1853
+          },
+          "synthMs": {
+            "median": 8872,
+            "p90": 10469,
+            "max": 10469
+          },
+          "rtf": {
+            "median": 1.59
+          },
+          "stallMs": {
+            "median": 2847,
+            "p90": 3502,
+            "max": 3502
+          }
+        }
+      },
+      "sw": {
+        "loadMs": 835,
+        "coldFirstSentence": {
+          "firstAudioMs": 2054,
+          "audioMs": 3800
+        },
+        "sentences": {
+          "wer": 62,
+          "cer": 16.2,
+          "perfect": 0,
+          "quantitiesHeardBack": "10/21",
+          "quantitiesLost": {
+            "i07": "34 year",
+            "i13": "3 day",
+            "i15": "2 week",
+            "i20": "4 time",
+            "i27": "38.5 °c +8.5",
+            "i28": "140 90 +41",
+            "i38": "7 month",
+            "i43": "2 tablet",
+            "i44": "8 hour",
+            "i56": "2 day",
+            "i60": "2 hour"
+          },
+          "audioS": 135,
+          "firstAudioMs": {
+            "median": 1640,
+            "p90": 1898,
+            "max": 2044
+          },
+          "rtf": {
+            "median": 1.79
+          },
+          "stall": {
+            "sentences": 59,
+            "totalMs": 61736
+          },
+          "msPerLetter": {
+            "min": 64,
+            "p05": 69,
+            "median": 81,
+            "p95": 113,
+            "max": 132
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 8.9,
+          "audioMs": {
+            "median": 6540,
+            "p90": 8700,
+            "max": 8700
+          },
+          "firstAudioMs": {
+            "median": 1653,
+            "p90": 2073,
+            "max": 2073
+          },
+          "synthMs": {
+            "median": 11415,
+            "p90": 14513,
+            "max": 14513
+          },
+          "rtf": {
+            "median": 1.66
+          },
+          "stallMs": {
+            "median": 3607,
+            "p90": 4870,
+            "max": 4870
+          }
+        }
+      }
+    },
+    "slow": {
+      "en": {
+        "loadMs": 824,
+        "coldFirstSentence": {
+          "firstAudioMs": 2271,
+          "audioMs": 2859
+        },
+        "sentences": {
+          "wer": 3.4,
+          "cer": 1.2,
+          "perfect": 50,
+          "quantitiesHeardBack": "19/19",
+          "quantitiesLost": {},
+          "audioS": 131,
+          "firstAudioMs": {
+            "median": 1822,
+            "p90": 2189,
+            "max": 2710
+          },
+          "rtf": {
+            "median": 0.84
+          },
+          "stall": {
+            "sentences": 0,
+            "totalMs": 0
+          },
+          "msPerLetter": {
+            "min": 58,
+            "p05": 63,
+            "median": 75,
+            "p95": 100,
+            "max": 116
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 0.3,
+          "audioMs": {
+            "median": 6239,
+            "p90": 7988,
+            "max": 7988
+          },
+          "firstAudioMs": {
+            "median": 1795,
+            "p90": 2196,
+            "max": 2196
+          },
+          "synthMs": {
+            "median": 5008,
+            "p90": 5749,
+            "max": 5749
+          },
+          "rtf": {
+            "median": 0.79
+          },
+          "stallMs": {
+            "median": 0,
+            "p90": 268,
+            "max": 268
+          }
+        }
+      },
+      "sw": {
+        "loadMs": 623,
+        "coldFirstSentence": {
+          "firstAudioMs": 2720,
+          "audioMs": 4501
+        },
+        "sentences": {
+          "wer": 62.8,
+          "cer": 16.7,
+          "perfect": 1,
+          "quantitiesHeardBack": "10/21",
+          "quantitiesLost": {
+            "i07": "34 year",
+            "i13": "3 day",
+            "i15": "2 week",
+            "i20": "4 time",
+            "i27": "38.5 °c +8.5",
+            "i28": "140 90",
+            "i38": "7 month",
+            "i43": "2 tablet",
+            "i44": "8 hour",
+            "i56": "2 day",
+            "i60": "2 hour"
+          },
+          "audioS": 161,
+          "firstAudioMs": {
+            "median": 1986,
+            "p90": 2786,
+            "max": 3216
+          },
+          "rtf": {
+            "median": 0.77
+          },
+          "stall": {
+            "sentences": 0,
+            "totalMs": 0
+          },
+          "msPerLetter": {
+            "min": 76,
+            "p05": 82,
+            "median": 97,
+            "p95": 135,
+            "max": 158
+          },
+          "flags": {
+            "no-audio": [],
+            "too-long": [],
+            "too-short": []
+          },
+          "sttFlags": {
+            "no-speech": [],
+            "repetition": []
+          }
+        },
+        "paragraphs": {
+          "cer": 8.6,
+          "audioMs": {
+            "median": 7711,
+            "p90": 10249,
+            "max": 10249
+          },
+          "firstAudioMs": {
+            "median": 2055,
+            "p90": 2931,
+            "max": 2931
+          },
+          "synthMs": {
+            "median": 5804,
+            "p90": 7075,
+            "max": 7075
+          },
+          "rtf": {
+            "median": 0.75
+          },
+          "stallMs": {
+            "median": 0,
+            "p90": 260,
+            "max": 260
+          }
+        }
+      }
+    }
+  }
+}
