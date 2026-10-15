@@ -1,6 +1,20 @@
-/** Minimal RFC 4180 CSV for eval datasets and outputs. */
+/** Minimal RFC 4180 CSV for content packs, eval datasets and outputs. */
+
+export interface CsvTable {
+  header: string[]
+  /** Data rows keyed by header; blank lines are skipped. */
+  rows: Record<string, string>[]
+  /** Number of fields in each data row as written, to catch rows that are too long or too short. */
+  widths: number[]
+}
 
 export function parseCsv(text: string): Record<string, string>[] {
+  return parseCsvTable(text).rows
+}
+
+/** Like parseCsv, but keeps the header as written (spreadsheet exports start with a BOM, which is dropped). */
+export function parseCsvTable(text: string): CsvTable {
+  if (text.startsWith('\uFEFF')) text = text.slice(1)
   const rows: string[][] = []
   let row: string[] = []
   let field = ''
@@ -33,8 +47,12 @@ export function parseCsv(text: string): Record<string, string>[] {
   }
   if (field || row.length) rows.push([...row, field])
   const [header, ...body] = rows.filter((r) => r.some((f) => f !== ''))
-  if (!header) return []
-  return body.map((r) => Object.fromEntries(header.map((h, i) => [h, r[i] ?? ''])))
+  if (!header) return { header: [], rows: [], widths: [] }
+  return {
+    header,
+    rows: body.map((r) => Object.fromEntries(header.map((h, i) => [h, r[i] ?? '']))),
+    widths: body.map((r) => r.length)
+  }
 }
 
 export function toCsv(rows: Record<string, string | number>[]): string {

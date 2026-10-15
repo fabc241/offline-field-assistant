@@ -32,6 +32,11 @@ npm run ofa -- doctor --verify --load
 | `npm run eval:tts` | F3 eval: speed (RTF, first audio, stalls) and intelligibility (what Whisper hears back) per variant → `eval/outputs/` |
 | `npm run ofa -- converse --side clinician turn.wav --play` | One conversation turn: speech to text, translation, read-aloud in the other language, with the back-translation check alongside (`--side patient`: Swahili speaker; `--out-dir DIR`, default `var/conversation/`; `--json`: timings and every partial result) |
 | `npm run eval:converse` | F4 eval: end-to-end turns with all models loaded: time of each stage, wait for the first translated audio, peak memory, chrF against reference translations → `eval/outputs/` |
+| `npm run ofa -- pack build content/sample` | Validates a pack's CSVs and recordings (every problem at once), embeds the cards, writes an unsigned `.ofapack` to `var/pack-builds/` (`--out FILE`) |
+| `npm run ofa -- pack sign --key keys/NAME.key.pem PACK` | Signs a pack with Ed25519 (in place; `--out FILE`). `ofa pack keygen --out keys/NAME` makes a key pair |
+| `npm run ofa -- pack verify PACK` | Checks a pack against the app's built-in keys and prints what is in it (`--json`; `--trust PUB.pem` adds a key for this check only) |
+| `npm run ofa -- pack install PACK` / `pack list` | Verifies and installs a pack into `var/packs/` (`OFA_PACKS_DIR`), refusing any version older than one installed before |
+| `npm run eval:packs` | F5 eval: build and load times, every-byte tamper sweeps, vector recompute, cross-language card alignment → `eval/outputs/` |
 | `npm run electron:smoke` | Runs the Electron main process, which loads a model and exits |
 | `npm run package` | Packages the arm64 app with Electron Forge + the QVAC plugin |
 
@@ -44,6 +49,17 @@ A voice is cloned only with a consent record next to it, `<file>.wav.consent.jso
 ```json
 { "speaker": "Full name", "consentDate": "2026-10-01", "scope": "What they agreed to" }
 ```
+
+## Content packs
+
+Guidance cards and phrases reach a device as a signed `.ofapack`, built from a
+directory of CSVs (see [`content/sample/`](content/sample/) and
+`src/features/packs/content.ts` for the columns). The app accepts only packs
+signed by a key in `src/features/packs/trusted-keys.ts`.
+
+The development key is `keys/ofa-dev-2026.key.pem`, git-ignored and on the dev
+machine only; it is not for release. Set `OFA_PACK_KEY_PASSPHRASE` before
+`pack keygen` to encrypt a new key, and before `pack sign` to use it.
 
 ## Rules
 

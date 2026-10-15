@@ -18,7 +18,7 @@ import { ModelStore } from '../src/core/model-store.js'
 import { QvacRuntime, createSdkPort, shutdown } from '../src/core/qvac.js'
 import { STT_FLAGS, SpeechToText, type Transcript } from '../src/features/speech/speech-service.js'
 import { readSet, type Clip } from './audio-sets.js'
-import { toCsv } from './csv.js'
+import { toCsv } from '../src/core/csv.js'
 import { quantile, round } from './stats.js'
 import { corpusRates, errorCounts, type ErrorCounts } from './wer.js'
 

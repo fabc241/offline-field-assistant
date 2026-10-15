@@ -328,7 +328,7 @@ describe('createConversation', () => {
     sdk.pcmChunks = [new Array(RATE).fill(1000)] // 1 s, long enough for speech-to-text to run on
     return new QvacRuntime(await ModelStore.open(dir), sdk, { memoryBudgetBytes: budgetGb * GB })
   }
-  const config = (modelsDir: string) => ({ modelsDir, memoryBudgetBytes: 0, voices: {} })
+  const config = (modelsDir: string) => ({ modelsDir, memoryBudgetBytes: 0, voices: {}, packsDir: dir })
 
   it('keeps STT, translator, embedder and one TTS per language loaded together', async () => {
     const rt = await runtime(6)

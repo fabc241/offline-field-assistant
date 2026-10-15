@@ -1,0 +1,31 @@
+id,category,en,sw,audio_en,audio_sw,vetted_by
+greet-hello,greeting,Hello. I am a health worker from the clinic.,Habari. Mimi ni mhudumu wa afya kutoka kliniki.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+greet-device,greeting,This device helps us understand each other.,Kifaa hiki kinatusaidia kuelewana.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+greet-slowly,greeting,Please speak slowly.,Tafadhali ongea polepole.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+greet-repeat,greeting,Please say that again.,Tafadhali rudia tena.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+greet-thanks,greeting,Thank you for your time.,Asante kwa muda wako.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+consent-questions,consent,May I ask you some questions about your health?,Naweza kukuuliza maswali kuhusu afya yako?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+consent-examine,consent,May I examine you?,Naweza kukupima?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+consent-private,consent,What you tell me stays private.,Unachoniambia kitabaki kuwa siri.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+consent-stop,consent,You can ask me to stop at any time.,Unaweza kuniambia niache wakati wowote.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+sym-pain,symptoms,Where does it hurt?,Unaumwa wapi?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+sym-days,symptoms,How many days have you been sick?,Umekuwa mgonjwa kwa siku ngapi?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+sym-fever,symptoms,Do you have a fever?,Una homa?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+sym-cough,symptoms,Do you have a cough?,Una kikohozi?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+sym-vomit,symptoms,Have you vomited today?,Umetapika leo?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+sym-diarrhoea,symptoms,Do you have diarrhoea?,Unaharisha?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+sym-breathing,symptoms,Is it hard to breathe?,Unapumua kwa shida?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+sym-bleeding,symptoms,Are you bleeding?,Unatoka damu?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+hist-age,history,How old are you?,Una umri gani?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+hist-pregnant,history,Are you pregnant?,Una mimba?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+hist-medicine,history,Are you taking any medicine?,Unatumia dawa yoyote?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+hist-allergy,history,Are you allergic to any medicine?,Una mzio wa dawa yoyote?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+hist-child-eating,history,Is the child eating and drinking?,Mtoto anakula na kunywa?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+hist-vaccines,history,Has the child had all the vaccinations?,Mtoto amepata chanjo zote?,,,PLACEHOLDER – NOT CLINICALLY VETTED
+inst-wait,instructions,Please wait here.,Tafadhali subiri hapa.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+inst-sit,instructions,Please sit down.,Tafadhali keti.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+inst-referral,instructions,You need to see a clinician today.,Unahitaji kumwona mhudumu wa afya leo.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+inst-come-back,instructions,Come back if you feel worse.,Rudi kama hali yako itakuwa mbaya zaidi.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+inst-drink,instructions,Drink plenty of clean water.,Kunywa maji safi mengi.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+inst-card,instructions,Keep this card and bring it next time.,Hifadhi kadi hii na uje nayo wakati ujao.,,,PLACEHOLDER – NOT CLINICALLY VETTED
+inst-questions,instructions,Do you have any questions?,Una swali lolote?,,,PLACEHOLDER – NOT CLINICALLY VETTED

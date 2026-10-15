@@ -1,0 +1,131 @@
+{
+  "source": "content/sample",
+  "pack": {
+    "id": "sample-intake",
+    "version": "0.1.0",
+    "cards": 10,
+    "phrases": 30,
+    "recordings": 0
+  },
+  "bytes": {
+    "pack": 102332,
+    "perFile": {
+      "content.json": 18382,
+      "embeddings.json": 82550
+    }
+  },
+  "build": {
+    "coldMs": 2210,
+    "warmMs": 170,
+    "embedWarmMs": 167,
+    "signMs": 3.1,
+    "dims": 768
+  },
+  "load": {
+    "medianMs": 0.9,
+    "p90Ms": 1.31
+  },
+  "tamperSweep": {
+    "flipped": 102332,
+    "exhaustive": true,
+    "accepted": 0,
+    "acceptedAt": [],
+    "byProblem": {
+      "malformed": 102332
+    },
+    "seconds": 1.2
+  },
+  "tamperSweepCrcRepaired": {
+    "flipped": 101902,
+    "accepted": 0,
+    "byProblem": {
+      "bad-signature": 861,
+      "malformed": 94,
+      "unknown-key": 15,
+      "hash-mismatch": 100932
+    },
+    "byFile": {
+      "manifest.json": 788,
+      "manifest.sig": 182,
+      "content.json": 18382,
+      "embeddings.json": 82550
+    },
+    "acceptedAt": [],
+    "seconds": 10.3
+  },
+  "recompute": {
+    "ms": 182,
+    "status": "recomputed",
+    "minCosineToPacked": 1,
+    "maxAbsDiff": 0
+  },
+  "vectorNorm": {
+    "min": 1,
+    "max": 1
+  },
+  "crossLanguage": {
+    "top1": "9/10",
+    "cards": [
+      {
+        "id": "burns",
+        "rank": 2,
+        "own": 0.678,
+        "best": "wound-care"
+      },
+      {
+        "id": "cough-child",
+        "rank": 1,
+        "own": 0.722,
+        "best": "cough-child"
+      },
+      {
+        "id": "dehydration-child",
+        "rank": 1,
+        "own": 0.755,
+        "best": "dehydration-child"
+      },
+      {
+        "id": "diarrhoea-adult",
+        "rank": 1,
+        "own": 0.704,
+        "best": "diarrhoea-adult"
+      },
+      {
+        "id": "fever-child",
+        "rank": 1,
+        "own": 0.755,
+        "best": "fever-child"
+      },
+      {
+        "id": "malaria-adult",
+        "rank": 1,
+        "own": 0.759,
+        "best": "malaria-adult"
+      },
+      {
+        "id": "malnutrition-child",
+        "rank": 1,
+        "own": 0.62,
+        "best": "malnutrition-child"
+      },
+      {
+        "id": "newborn-danger",
+        "rank": 1,
+        "own": 0.765,
+        "best": "newborn-danger"
+      },
+      {
+        "id": "pregnancy-danger",
+        "rank": 1,
+        "own": 0.713,
+        "best": "pregnancy-danger"
+      },
+      {
+        "id": "wound-care",
+        "rank": 1,
+        "own": 0.544,
+        "best": "wound-care"
+      }
+    ]
+  }
+}

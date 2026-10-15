@@ -16,6 +16,8 @@ export interface AppConfig {
    * (OFA_VOICE_EN, OFA_VOICE_SW). Unset: Chatterbox's built-in voice.
    */
   voices: Partial<Record<Lang, string>>
+  /** Installed content packs (OFA_PACKS_DIR). */
+  packsDir: string
 }
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
@@ -29,6 +31,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     voices: {
       ...(env.OFA_VOICE_EN ? { en: path.resolve(env.OFA_VOICE_EN) } : {}),
       ...(env.OFA_VOICE_SW ? { sw: path.resolve(env.OFA_VOICE_SW) } : {})
-    }
+    },
+    packsDir: path.resolve(env.OFA_PACKS_DIR ?? path.join(PROJECT_ROOT, 'var/packs'))
   }
 }

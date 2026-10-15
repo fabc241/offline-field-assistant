@@ -50,7 +50,7 @@ import { diffQuantities, extractQuantities, formatQuantity } from '../src/featur
 import { TranslationService } from '../src/features/translate/translation-service.js'
 import { readSet } from './audio-sets.js'
 import { chrF } from './chrf.js'
-import { parseCsv, toCsv } from './csv.js'
+import { parseCsv, toCsv } from '../src/core/csv.js'
 import { quantile, round } from './stats.js'
 
 const { values } = parseArgs({ options: { sets: { type: 'string' }, limit: { type: 'string' } } })

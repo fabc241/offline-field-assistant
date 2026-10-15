@@ -5,7 +5,7 @@ import { PROJECT_ROOT } from '../../src/core/config.js'
 import { LANGS, type Lang } from '../../src/core/engines.js'
 import { extractQuantities, formatQuantity } from '../../src/features/translate/quantities.js'
 import { spellNumber, toSpokenForm } from '../../src/features/voice/spoken.js'
-import { parseCsv } from '../../eval/csv.js'
+import { parseCsv } from '../../src/core/csv.js'
 
 const values = (text: string, lang: Lang) => extractQuantities(text, lang).map((q) => q.value)
 /** Quantities with units; a ratio counts as its two numbers ("120/80" is spoken "one hundred and twenty over eighty"). */

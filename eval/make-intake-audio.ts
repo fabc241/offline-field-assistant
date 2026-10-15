@@ -20,7 +20,7 @@ import { ModelStore } from '../src/core/model-store.js'
 import { QvacRuntime, createSdkPort, shutdown } from '../src/core/qvac.js'
 import { ReadAloud } from '../src/features/voice/read-aloud.js'
 import { EVAL_AUDIO_DIR, writeSet, type Clip } from './audio-sets.js'
-import { parseCsv } from './csv.js'
+import { parseCsv } from '../src/core/csv.js'
 
 const rows = parseCsv(await fs.readFile(path.join(PROJECT_ROOT, 'eval/datasets/intake.csv'), 'utf8')).filter(
   (_, i) => i % 2 === 0

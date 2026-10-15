@@ -27,7 +27,7 @@ import {
   type CheckedTranslation
 } from '../src/features/translate/translation-service.js'
 import { chrF } from './chrf.js'
-import { parseCsv, toCsv } from './csv.js'
+import { parseCsv, toCsv } from '../src/core/csv.js'
 import { quantile, round } from './stats.js'
 
 const SIZES = ['0_8B', '2B', '4B'].map((s) => `TRANSLATEPSY_AFRISLM_${s}_TRANSLATION_Q4_K_M`)

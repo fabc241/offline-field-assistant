@@ -6,7 +6,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { PROJECT_ROOT } from '../src/core/config.js'
 import { isLang, type Lang } from '../src/core/engines.js'
-import { parseCsv, toCsv } from './csv.js'
+import { parseCsv, toCsv } from '../src/core/csv.js'
 
 export const EVAL_AUDIO_DIR = path.join(PROJECT_ROOT, 'var/eval-audio')
 

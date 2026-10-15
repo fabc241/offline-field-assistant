@@ -7,3 +7,6 @@ dist/
 ~$*
 .DS_Store
 qvac/
+# Pack signing keys: only public keys are committed.
+keys/*
+!keys/*.pub.pem

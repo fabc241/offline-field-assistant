@@ -399,3 +399,72 @@ Decisions:
 - Translated speech is written to `var/conversation/<id>.wav` as plain WAV.
   This is patient audio at rest, unencrypted; retention and encryption belong
   to F9.
+
+## F5 — Content packs (done 2026-10-15)
+
+`ofa pack build <dir>` reads `pack.json`, `cards.csv` and `phrases.csv`
+(zod schemas, every problem reported at once by file, row and column),
+checks that each referenced recording is a readable WAV inside the
+directory, embeds every card in both languages with EmbeddingGemma, and
+writes an unsigned `.ofapack`: `manifest.json` (id, version, created, the
+embedding model's sha256 and recipe, size and sha256 of every file),
+`content.json`, `embeddings.json` and `audio/`. `ofa pack sign` adds
+`manifest.sig`, an Ed25519 signature (`node:crypto`) over the manifest's
+canonical bytes. `PackLoader.verifyAndLoad()` checks the signature against the
+keys built into the app before it parses anything else, then each file's
+sha256, the version floor and the content. `PackStore` installs packs and keeps
+the newest version ever installed per pack, so an older signed pack cannot come
+back even after the newer file is deleted.
+
+Sample content: `content/sample/`, 10 cards and 30 phrases, every item marked
+`PLACEHOLDER – NOT CLINICALLY VETTED`; no recordings yet (F6).
+
+| Check | Result |
+|---|---|
+| Unit tests (`npm test`) | 209/209 pass (23 new) |
+| Real-model tests (`npm run test:models`) | 27/27 pass |
+| Network audit, F5 eval and `test:models` | no sockets opened |
+
+### Results (M4, sample pack)
+
+| Measure | Result |
+|---|---|
+| Pack size | 100 KB: `embeddings.json` 81 KB (20 × 768 float32, base64), `content.json` 18 KB |
+| Build | 2.2 s cold (loads EmbeddingGemma), 0.17 s warm; signing 3 ms |
+| Verify and load | median 0.9 ms, p90 1.3 ms |
+| Tamper sweep: every byte of the signed pack flipped in turn | **0 / 102,332 accepted** (all caught by the archive's strict layout and CRCs) |
+| Same, with the CRCs repaired after each flip | **0 / 101,902 accepted**: 100,932 hash-mismatch, 861 bad-signature, 94 malformed, 15 unknown-key |
+| Recompute on a device with another model hash | 0.18 s for 10 cards; same model gives bit-identical vectors |
+| Cross-language: a card's Swahili vector nearest its own English vector | 9/10 (own similarity 0.54–0.77) |
+
+Unit tests also cover: unsigned pack, untrusted key, a signature that claims
+a trusted key's id, a manifest edited after signing, a file swapped or
+unlisted or missing (re-signed), refusing to sign a pack whose files do not
+match, downgrade through the loader and through the store, and unsafe paths.
+
+### Findings
+- **The container is a ZIP in one exact layout.** Entries are stored, with fixed
+  timestamps and attributes, and the reader cross-checks every header field.
+  So every byte is a fixed value, a cross-checked length or offset, a CRC, or
+  content under the manifest's sha256: no byte can change unnoticed (both
+  sweeps above). Deflate was left out on purpose. Its padding bits can change
+  without changing the output, the content barely compresses (vectors and
+  WAVs), and storing leaves nothing to decompress on a device. `unzip -l`
+  still opens a pack.
+- **Canonical JSON is enforced, not just written.** `manifest.json` and
+  `manifest.sig` must be byte-identical to their canonical form, and the
+  signature's base64 must be canonical. Otherwise a flipped low bit in the
+  last base64 character would decode to the same signature and the flip would
+  go unnoticed.
+- **Key ids are derived, not declared** (sha256 of the public key). A
+  signature that copies a trusted key's id fails as `bad-signature`.
+- **One cross-language miss: burns.** Its Swahili text is closest to the
+  English *wound care* card; its own English card ranks second (0.68). Both
+  are injury cards whose steps are to rinse with clean water and cover with
+  something clean. F7's hybrid search adds
+  keyword matching in both languages and should be measured on real queries
+  before tuning the card text recipe (`card-v1`; a recipe change triggers
+  recompute on devices).
+- The development signing key is unencrypted and git-ignored. Release
+  signing needs a vendor key (encrypted with `OFA_PACK_KEY_PASSPHRASE`, or
+  kept off the build machine) and a new entry in `trusted-keys.ts` (F10).
