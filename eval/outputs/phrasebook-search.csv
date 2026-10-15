@@ -1,0 +1,241 @@
+variant,query,lang,kind,expected,rank,top
+other language 0.8 (default),fever,en,keyword,sym-fever,1,sym-fever 1.00
+other language 0.8 (default),cough,en,keyword,sym-cough,1,sym-cough 1.00
+other language 0.8 (default),diarrhoea,en,keyword,sym-diarrhoea,1,sym-diarrhoea 1.00
+other language 0.8 (default),bleeding,en,keyword,sym-bleeding,1,sym-bleeding 1.00
+other language 0.8 (default),pregnant,en,keyword,hist-pregnant,1,hist-pregnant 1.00
+other language 0.8 (default),allergic,en,keyword,hist-allergy,1,hist-allergy 1.00
+other language 0.8 (default),vaccinations,en,keyword,hist-vaccines,1,hist-vaccines 1.00
+other language 0.8 (default),breathe,en,keyword,sym-breathing,1,sym-breathing 1.00
+other language 0.8 (default),hurt,en,keyword,sym-pain,1,sym-pain 1.00
+other language 0.8 (default),how old,en,keyword,hist-age,1,hist-age 1.00 | sym-days 0.45
+other language 0.8 (default),how many days sick,en,keyword,sym-days,1,sym-days 1.00 | hist-age 0.22
+other language 0.8 (default),vomited,en,keyword,sym-vomit,1,sym-vomit 1.00
+other language 0.8 (default),examine,en,keyword,consent-examine,1,consent-examine 1.00
+other language 0.8 (default),private,en,keyword,consent-private,1,consent-private 1.00
+other language 0.8 (default),stop,en,keyword,consent-stop,1,consent-stop 1.00
+other language 0.8 (default),speak slowly,en,keyword,greet-slowly,1,greet-slowly 1.00
+other language 0.8 (default),say again,en,keyword,greet-repeat,1,greet-repeat 1.00
+other language 0.8 (default),thank you,en,keyword,greet-thanks,1,greet-thanks 1.00 | consent-questions 0.15 | consent-examine 0.15
+other language 0.8 (default),wait here,en,keyword,inst-wait,1,inst-wait 1.00 | sym-pain 0.36
+other language 0.8 (default),sit down,en,keyword,inst-sit,1,inst-sit 1.00
+other language 0.8 (default),clinician,en,keyword,inst-referral,1,inst-referral 1.00
+other language 0.8 (default),feel worse,en,keyword,inst-come-back,1,inst-come-back 1.00 | greet-hello 0.27
+other language 0.8 (default),clean water,en,keyword,inst-drink,1,inst-drink 1.00
+other language 0.8 (default),card,en,keyword,inst-card,1,inst-card 1.00
+other language 0.8 (default),health worker,en,keyword,greet-hello,1,greet-hello 1.00 | consent-questions 0.45
+other language 0.8 (default),device,en,keyword,greet-device,1,greet-device 1.00
+other language 0.8 (default),taking medicine,en,keyword,hist-medicine,1,hist-medicine 1.00 | hist-allergy 0.45
+other language 0.8 (default),child eating,en,keyword,hist-child-eating,1,hist-child-eating 1.00 | hist-vaccines 0.45
+other language 0.8 (default),any questions,en,keyword,inst-questions,1,inst-questions 1.00 | consent-questions 0.57 | consent-stop 0.43
+other language 0.8 (default),questions about your health,en,keyword,consent-questions,1,consent-questions 1.00 | greet-hello 0.24 | greet-thanks 0.24
+other language 0.8 (default),vacc,en,partial,hist-vaccines,1,hist-vaccines 0.90
+other language 0.8 (default),pregn,en,partial,hist-pregnant,1,hist-pregnant 0.90
+other language 0.8 (default),breath,en,partial,sym-breathing,1,sym-breathing 0.90
+other language 0.8 (default),vomit,en,partial,sym-vomit,1,sym-vomit 0.90
+other language 0.8 (default),allerg,en,partial,hist-allergy,1,hist-allergy 0.90
+other language 0.8 (default),diarr,en,partial,sym-diarrhoea,1,sym-diarrhoea 0.90
+other language 0.8 (default),bleed,en,partial,sym-bleeding,1,sym-bleeding 0.90
+other language 0.8 (default),exam,en,partial,consent-examine,1,consent-examine 0.90
+other language 0.8 (default),feaver,en,typo,sym-fever,1,sym-fever 0.60
+other language 0.8 (default),cought,en,typo,sym-cough,1,sym-cough 0.60
+other language 0.8 (default),diarrhea,en,typo,sym-diarrhoea,1,sym-diarrhoea 0.60
+other language 0.8 (default),diarhea,en,typo,sym-diarrhoea,0,
+other language 0.8 (default),pregnent,en,typo,hist-pregnant,1,hist-pregnant 0.60
+other language 0.8 (default),vacinations,en,typo,hist-vaccines,1,hist-vaccines 0.60
+other language 0.8 (default),alergic,en,typo,hist-allergy,1,hist-allergy 0.60
+other language 0.8 (default),bleading,en,typo,sym-bleeding,1,sym-bleeding 0.60
+other language 0.8 (default),breth,en,typo,sym-breathing,1,sym-breathing 0.60
+other language 0.8 (default),medecine,en,typo,hist-medicine,1,hist-medicine 0.60 | hist-allergy 0.60
+other language 0.8 (default),clinican,en,typo,inst-referral,1,inst-referral 0.60
+other language 0.8 (default),pregnancy,en,form,hist-pregnant,1,hist-pregnant 0.60
+other language 0.8 (default),allergy,en,form,hist-allergy,1,hist-allergy 0.60
+other language 0.8 (default),vaccine,en,form,hist-vaccines,1,hist-vaccines 0.60
+other language 0.8 (default),breathing,en,form,sym-breathing,1,sym-breathing 0.81
+other language 0.8 (default),vomiting,en,form,sym-vomit,1,sym-vomit 0.81
+other language 0.8 (default),pain,en,synonym,sym-pain,0,
+other language 0.8 (default),temperature,en,synonym,sym-fever,0,
+other language 0.8 (default),throwing up,en,synonym,sym-vomit,0,
+other language 0.8 (default),age,en,synonym,hist-age,0,
+other language 0.8 (default),medication,en,synonym,hist-medicine,0,
+other language 0.8 (default),homa,sw,keyword,sym-fever,1,sym-fever 1.00
+other language 0.8 (default),kikohozi,sw,keyword,sym-cough,1,sym-cough 1.00
+other language 0.8 (default),unaharisha,sw,keyword,sym-diarrhoea,1,sym-diarrhoea 1.00
+other language 0.8 (default),damu,sw,keyword,sym-bleeding,1,sym-bleeding 1.00
+other language 0.8 (default),mimba,sw,keyword,hist-pregnant,1,hist-pregnant 1.00
+other language 0.8 (default),mzio,sw,keyword,hist-allergy,1,hist-allergy 1.00
+other language 0.8 (default),chanjo,sw,keyword,hist-vaccines,1,hist-vaccines 1.00
+other language 0.8 (default),umri,sw,keyword,hist-age,1,hist-age 1.00
+other language 0.8 (default),siku ngapi,sw,keyword,sym-days,1,sym-days 1.00
+other language 0.8 (default),umetapika,sw,keyword,sym-vomit,1,sym-vomit 1.00
+other language 0.8 (default),kukupima,sw,keyword,consent-examine,1,consent-examine 1.00
+other language 0.8 (default),siri,sw,keyword,consent-private,1,consent-private 1.00
+other language 0.8 (default),niache,sw,keyword,consent-stop,1,consent-stop 1.00
+other language 0.8 (default),polepole,sw,keyword,greet-slowly,1,greet-slowly 1.00
+other language 0.8 (default),rudia,sw,keyword,greet-repeat,1,greet-repeat 1.00 | inst-come-back 0.60
+other language 0.8 (default),asante,sw,keyword,greet-thanks,1,greet-thanks 1.00
+other language 0.8 (default),subiri,sw,keyword,inst-wait,1,inst-wait 1.00
+other language 0.8 (default),keti,sw,keyword,inst-sit,1,inst-sit 1.00
+other language 0.8 (default),maji safi,sw,keyword,inst-drink,1,inst-drink 1.00
+other language 0.8 (default),kadi,sw,keyword,inst-card,1,inst-card 1.00
+other language 0.8 (default),kliniki,sw,keyword,greet-hello,1,greet-hello 1.00
+other language 0.8 (default),kifaa,sw,keyword,greet-device,1,greet-device 1.00
+other language 0.8 (default),unatumia dawa,sw,keyword,hist-medicine,1,hist-medicine 1.00 | hist-allergy 0.45
+other language 0.8 (default),swali,sw,keyword,inst-questions,1,inst-questions 1.00 | consent-questions 0.80
+other language 0.8 (default),maswali,sw,keyword,consent-questions,1,consent-questions 1.00
+other language 0.8 (default),anakula,sw,keyword,hist-child-eating,1,hist-child-eating 1.00
+other language 0.8 (default),mbaya zaidi,sw,keyword,inst-come-back,1,inst-come-back 1.00 | greet-device 0.27
+other language 0.8 (default),unapumua,sw,keyword,sym-breathing,1,sym-breathing 1.00
+other language 0.8 (default),unaumwa wapi,sw,keyword,sym-pain,1,sym-pain 1.00
+other language 0.8 (default),kumwona mhudumu,sw,keyword,inst-referral,1,inst-referral 1.00 | greet-hello 0.45
+other language 0.8 (default),harisha,sw,partial,sym-diarrhoea,1,sym-diarrhoea 0.80
+other language 0.8 (default),tapika,sw,partial,sym-vomit,1,sym-vomit 0.80
+other language 0.8 (default),pumua,sw,partial,sym-breathing,1,sym-breathing 0.80
+other language 0.8 (default),umwa,sw,partial,sym-pain,1,sym-pain 0.80
+other language 0.8 (default),mgonjwa,sw,partial,sym-days,1,sym-days 1.00
+other language 0.8 (default),kohozi,sw,partial,sym-cough,1,sym-cough 0.80
+other language 0.8 (default),kula,sw,partial,hist-child-eating,1,hist-child-eating 0.80
+other language 0.8 (default),pima,sw,partial,consent-examine,1,consent-examine 0.80
+other language 0.8 (default),kikohzi,sw,typo,sym-cough,1,sym-cough 0.60
+other language 0.8 (default),kikohosi,sw,typo,sym-cough,1,sym-cough 0.60
+other language 0.8 (default),unaarisha,sw,typo,sym-diarrhoea,1,sym-diarrhoea 0.60
+other language 0.8 (default),homma,sw,typo,sym-fever,1,sym-fever 0.60
+other language 0.8 (default),tafathali subiri,sw,typo,inst-wait,1,inst-wait 0.84 | greet-slowly 0.23 | greet-repeat 0.23
+other language 0.8 (default),mizio,sw,typo,hist-allergy,1,hist-allergy 0.60
+other language 0.8 (default),umetapka,sw,typo,sym-vomit,1,sym-vomit 0.60
+other language 0.8 (default),chango,sw,typo,hist-vaccines,1,hist-vaccines 0.60
+other language 0.8 (default),mimbaa,sw,typo,hist-pregnant,1,hist-pregnant 0.60
+other language 0.8 (default),homa ya child,sw,mixed,sym-fever,1,sym-fever 0.31 | hist-child-eating 0.21 | hist-vaccines 0.21
+other language 0.8 (default),fever,sw,mixed,sym-fever,1,sym-fever 0.80
+other language 0.8 (default),cough,sw,mixed,sym-cough,1,sym-cough 0.80
+other language 0.8 (default),homa,en,mixed,sym-fever,1,sym-fever 0.80
+other language 0.8 (default),damu,en,mixed,sym-bleeding,1,sym-bleeding 0.80
+other language 0.8 (default),mimba,en,mixed,hist-pregnant,1,hist-pregnant 0.80
+other language 0.8 (default),mtoto vaccine,sw,mixed,hist-vaccines,1,hist-vaccines 0.72 | hist-child-eating 0.45
+other language 0.8 (default),mgonjwa days,sw,mixed,sym-days,1,sym-days 0.90
+other language 0.8 (default),kutapika,sw,form,sym-vomit,1,sym-vomit 0.72
+other language 0.8 (default),kuhara,sw,form,sym-diarrhoea,0,
+other language 0.8 (default),kupumua,sw,form,sym-breathing,1,sym-breathing 0.72
+other language 0.8 (default),mjamzito,sw,synonym,hist-pregnant,0,
+other language 0.8 (default),maumivu,sw,synonym,sym-pain,0,
+other language 0.8 (default),joto,sw,synonym,sym-fever,0,
+own language only,fever,en,keyword,sym-fever,1,sym-fever 1.00
+own language only,cough,en,keyword,sym-cough,1,sym-cough 1.00
+own language only,diarrhoea,en,keyword,sym-diarrhoea,1,sym-diarrhoea 1.00
+own language only,bleeding,en,keyword,sym-bleeding,1,sym-bleeding 1.00
+own language only,pregnant,en,keyword,hist-pregnant,1,hist-pregnant 1.00
+own language only,allergic,en,keyword,hist-allergy,1,hist-allergy 1.00
+own language only,vaccinations,en,keyword,hist-vaccines,1,hist-vaccines 1.00
+own language only,breathe,en,keyword,sym-breathing,1,sym-breathing 1.00
+own language only,hurt,en,keyword,sym-pain,1,sym-pain 1.00
+own language only,how old,en,keyword,hist-age,1,hist-age 1.00 | sym-days 0.45
+own language only,how many days sick,en,keyword,sym-days,1,sym-days 1.00 | hist-age 0.22
+own language only,vomited,en,keyword,sym-vomit,1,sym-vomit 1.00
+own language only,examine,en,keyword,consent-examine,1,consent-examine 1.00
+own language only,private,en,keyword,consent-private,1,consent-private 1.00
+own language only,stop,en,keyword,consent-stop,1,consent-stop 1.00
+own language only,speak slowly,en,keyword,greet-slowly,1,greet-slowly 1.00
+own language only,say again,en,keyword,greet-repeat,1,greet-repeat 1.00
+own language only,thank you,en,keyword,greet-thanks,1,greet-thanks 1.00 | consent-questions 0.15 | consent-examine 0.15
+own language only,wait here,en,keyword,inst-wait,1,inst-wait 1.00 | sym-pain 0.36
+own language only,sit down,en,keyword,inst-sit,1,inst-sit 1.00
+own language only,clinician,en,keyword,inst-referral,1,inst-referral 1.00
+own language only,feel worse,en,keyword,inst-come-back,1,inst-come-back 1.00 | greet-hello 0.27
+own language only,clean water,en,keyword,inst-drink,1,inst-drink 1.00
+own language only,card,en,keyword,inst-card,1,inst-card 1.00
+own language only,health worker,en,keyword,greet-hello,1,greet-hello 1.00 | consent-questions 0.45
+own language only,device,en,keyword,greet-device,1,greet-device 1.00
+own language only,taking medicine,en,keyword,hist-medicine,1,hist-medicine 1.00 | hist-allergy 0.45
+own language only,child eating,en,keyword,hist-child-eating,1,hist-child-eating 1.00 | hist-vaccines 0.45
+own language only,any questions,en,keyword,inst-questions,1,inst-questions 1.00 | consent-questions 0.57 | consent-stop 0.43
+own language only,questions about your health,en,keyword,consent-questions,1,consent-questions 1.00 | greet-hello 0.24 | greet-thanks 0.24
+own language only,vacc,en,partial,hist-vaccines,1,hist-vaccines 0.90
+own language only,pregn,en,partial,hist-pregnant,1,hist-pregnant 0.90
+own language only,breath,en,partial,sym-breathing,1,sym-breathing 0.90
+own language only,vomit,en,partial,sym-vomit,1,sym-vomit 0.90
+own language only,allerg,en,partial,hist-allergy,1,hist-allergy 0.90
+own language only,diarr,en,partial,sym-diarrhoea,1,sym-diarrhoea 0.90
+own language only,bleed,en,partial,sym-bleeding,1,sym-bleeding 0.90
+own language only,exam,en,partial,consent-examine,1,consent-examine 0.90
+own language only,feaver,en,typo,sym-fever,1,sym-fever 0.60
+own language only,cought,en,typo,sym-cough,1,sym-cough 0.60
+own language only,diarrhea,en,typo,sym-diarrhoea,1,sym-diarrhoea 0.60
+own language only,diarhea,en,typo,sym-diarrhoea,0,
+own language only,pregnent,en,typo,hist-pregnant,1,hist-pregnant 0.60
+own language only,vacinations,en,typo,hist-vaccines,1,hist-vaccines 0.60
+own language only,alergic,en,typo,hist-allergy,1,hist-allergy 0.60
+own language only,bleading,en,typo,sym-bleeding,1,sym-bleeding 0.60
+own language only,breth,en,typo,sym-breathing,1,sym-breathing 0.60
+own language only,medecine,en,typo,hist-medicine,1,hist-medicine 0.60 | hist-allergy 0.60
+own language only,clinican,en,typo,inst-referral,1,inst-referral 0.60
+own language only,pregnancy,en,form,hist-pregnant,1,hist-pregnant 0.60
+own language only,allergy,en,form,hist-allergy,1,hist-allergy 0.60
+own language only,vaccine,en,form,hist-vaccines,1,hist-vaccines 0.60
+own language only,breathing,en,form,sym-breathing,1,sym-breathing 0.81
+own language only,vomiting,en,form,sym-vomit,1,sym-vomit 0.81
+own language only,pain,en,synonym,sym-pain,0,
+own language only,temperature,en,synonym,sym-fever,0,
+own language only,throwing up,en,synonym,sym-vomit,0,
+own language only,age,en,synonym,hist-age,0,
+own language only,medication,en,synonym,hist-medicine,0,
+own language only,homa,sw,keyword,sym-fever,1,sym-fever 1.00
+own language only,kikohozi,sw,keyword,sym-cough,1,sym-cough 1.00
+own language only,unaharisha,sw,keyword,sym-diarrhoea,1,sym-diarrhoea 1.00
+own language only,damu,sw,keyword,sym-bleeding,1,sym-bleeding 1.00
+own language only,mimba,sw,keyword,hist-pregnant,1,hist-pregnant 1.00
+own language only,mzio,sw,keyword,hist-allergy,1,hist-allergy 1.00
+own language only,chanjo,sw,keyword,hist-vaccines,1,hist-vaccines 1.00
+own language only,umri,sw,keyword,hist-age,1,hist-age 1.00
+own language only,siku ngapi,sw,keyword,sym-days,1,sym-days 1.00
+own language only,umetapika,sw,keyword,sym-vomit,1,sym-vomit 1.00
+own language only,kukupima,sw,keyword,consent-examine,1,consent-examine 1.00
+own language only,siri,sw,keyword,consent-private,1,consent-private 1.00
+own language only,niache,sw,keyword,consent-stop,1,consent-stop 1.00
+own language only,polepole,sw,keyword,greet-slowly,1,greet-slowly 1.00
+own language only,rudia,sw,keyword,greet-repeat,1,greet-repeat 1.00 | inst-come-back 0.60
+own language only,asante,sw,keyword,greet-thanks,1,greet-thanks 1.00
+own language only,subiri,sw,keyword,inst-wait,1,inst-wait 1.00
+own language only,keti,sw,keyword,inst-sit,1,inst-sit 1.00
+own language only,maji safi,sw,keyword,inst-drink,1,inst-drink 1.00
+own language only,kadi,sw,keyword,inst-card,1,inst-card 1.00
+own language only,kliniki,sw,keyword,greet-hello,1,greet-hello 1.00
+own language only,kifaa,sw,keyword,greet-device,1,greet-device 1.00
+own language only,unatumia dawa,sw,keyword,hist-medicine,1,hist-medicine 1.00 | hist-allergy 0.45
+own language only,swali,sw,keyword,inst-questions,1,inst-questions 1.00 | consent-questions 0.80
+own language only,maswali,sw,keyword,consent-questions,1,consent-questions 1.00
+own language only,anakula,sw,keyword,hist-child-eating,1,hist-child-eating 1.00
+own language only,mbaya zaidi,sw,keyword,inst-come-back,1,inst-come-back 1.00 | greet-device 0.27
+own language only,unapumua,sw,keyword,sym-breathing,1,sym-breathing 1.00
+own language only,unaumwa wapi,sw,keyword,sym-pain,1,sym-pain 1.00
+own language only,kumwona mhudumu,sw,keyword,inst-referral,1,inst-referral 1.00 | greet-hello 0.45
+own language only,harisha,sw,partial,sym-diarrhoea,1,sym-diarrhoea 0.80
+own language only,tapika,sw,partial,sym-vomit,1,sym-vomit 0.80
+own language only,pumua,sw,partial,sym-breathing,1,sym-breathing 0.80
+own language only,umwa,sw,partial,sym-pain,1,sym-pain 0.80
+own language only,mgonjwa,sw,partial,sym-days,1,sym-days 1.00
+own language only,kohozi,sw,partial,sym-cough,1,sym-cough 0.80
+own language only,kula,sw,partial,hist-child-eating,1,hist-child-eating 0.80
+own language only,pima,sw,partial,consent-examine,1,consent-examine 0.80
+own language only,kikohzi,sw,typo,sym-cough,1,sym-cough 0.60
+own language only,kikohosi,sw,typo,sym-cough,1,sym-cough 0.60
+own language only,unaarisha,sw,typo,sym-diarrhoea,1,sym-diarrhoea 0.60
+own language only,homma,sw,typo,sym-fever,1,sym-fever 0.60
+own language only,tafathali subiri,sw,typo,inst-wait,1,inst-wait 0.84 | greet-slowly 0.23 | greet-repeat 0.23
+own language only,mizio,sw,typo,hist-allergy,1,hist-allergy 0.60
+own language only,umetapka,sw,typo,sym-vomit,1,sym-vomit 0.60
+own language only,chango,sw,typo,hist-vaccines,1,hist-vaccines 0.60
+own language only,mimbaa,sw,typo,hist-pregnant,1,hist-pregnant 0.60
+own language only,homa ya child,sw,mixed,sym-fever,1,sym-fever 0.27
+own language only,fever,sw,mixed,sym-fever,0,
+own language only,cough,sw,mixed,sym-cough,0,
+own language only,homa,en,mixed,sym-fever,0,
+own language only,damu,en,mixed,sym-bleeding,0,
+own language only,mimba,en,mixed,hist-pregnant,0,
+own language only,mtoto vaccine,sw,mixed,hist-vaccines,2,hist-child-eating 0.38 | hist-vaccines 0.38
+own language only,mgonjwa days,sw,mixed,sym-days,1,sym-days 0.42
+own language only,kutapika,sw,form,sym-vomit,1,sym-vomit 0.72
+own language only,kuhara,sw,form,sym-diarrhoea,0,
+own language only,kupumua,sw,form,sym-breathing,1,sym-breathing 0.72
+own language only,mjamzito,sw,synonym,hist-pregnant,0,
+own language only,maumivu,sw,synonym,sym-pain,0,
+own language only,joto,sw,synonym,sym-fever,0,

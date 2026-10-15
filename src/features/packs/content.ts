@@ -8,6 +8,11 @@
  *     phrases.csv    id,category,en,sw,audio_en,audio_sw,vetted_by
  *     recordings/    WAV files that phrases.csv refers to (relative paths)
  *
+ * Every phrase needs a recording in both languages: the phrasebook plays
+ * recordings as they are and never falls back to text-to-speech. A recording
+ * made with text-to-speech as a placeholder carries a record saying so
+ * (recordings.ts) and is tagged `synthetic` in the pack.
+ *
  * Lists inside a cell (danger signs, steps, tags) are separated by "|".
  * Every problem in the source is reported at once, with its file and row.
  */
@@ -17,7 +22,8 @@ import { z } from 'zod'
 import { decodeWav } from '../../core/audio.js'
 import { parseCsvTable } from '../../core/csv.js'
 import { LANGS, type Lang } from '../../core/engines.js'
-import { AUDIO_DIR, PackManifestSchema, SLUG } from './manifest.js'
+import { AUDIO_DIR, PackManifestSchema, SLUG, sha256Hex } from './manifest.js'
+import { readSyntheticRecord, syntheticRecordFile, type SyntheticRecord } from './recordings.js'
 
 export const CARD_COLUMNS = [
   'id',
@@ -52,12 +58,12 @@ export const CardSchema = z.strictObject({
 })
 export type Card = z.infer<typeof CardSchema>
 
-/** A phrasebook entry. `audio` holds pack paths of the recordings, per language. */
+/** A phrasebook entry. `audio` holds pack paths of the recordings, one per language. */
 export const PhraseSchema = z.strictObject({
   id: z.string().regex(SLUG, 'lowercase letters, digits and dashes'),
   category: z.string().regex(SLUG, 'lowercase letters, digits and dashes'),
   text: bilingual(text),
-  audio: z.strictObject({ en: z.string().optional(), sw: z.string().optional() }),
+  audio: bilingual(z.string().min(1)),
   /** Who checked the wording. */
   vettedBy: text
 })
@@ -85,11 +91,23 @@ export class PackSourceError extends Error {
   }
 }
 
+/** Longest recording a phrase may have; anything longer is not a phrase. */
+export const MAX_RECORDING_S = 30
+/** A recording whose loudest sample is below this (-60 dBFS) holds no speech. */
+const SILENCE_PEAK = 1e-3
+
+export interface SourceRecording {
+  /** Absolute path of the WAV on disk. */
+  file: string
+  /** Set when the recording is a text-to-speech placeholder. */
+  synthetic?: SyntheticRecord
+}
+
 export interface PackSource {
   info: PackInfo
   content: PackContent
-  /** Pack path → absolute path of the recording on disk. */
-  audio: Map<string, string>
+  /** Pack path → the recording on disk. */
+  audio: Map<string, SourceRecording>
 }
 
 /** Reads and validates a pack source directory; throws PackSourceError listing every problem. */
@@ -117,27 +135,37 @@ export async function readPackSource(dir: string): Promise<PackSource> {
     return card
   })
 
-  const audio = new Map<string, string>()
+  const audio = new Map<string, SourceRecording>()
   const phrases = await readRows(dir, 'phrases.csv', PHRASE_COLUMNS, problems, async (row, where) => {
-    const recordings: Phrase['audio'] = {}
+    const recordings: Partial<Phrase['audio']> = {}
+    let complete = true
     for (const lang of LANGS) {
       const ref = row[`audio_${lang}`]!
-      if (!ref) continue
-      const file = await checkRecording(dir, ref, `${where}: audio_${lang}`, problems)
-      if (file && SLUG.test(row.id!)) {
-        recordings[lang] = phraseAudioPath(row.id!, lang)
-        audio.set(recordings[lang], file)
+      const column = `${where}: audio_${lang}`
+      if (!ref) {
+        problems.push(`${column}: no recording; every phrase is played from a recording in both languages, never read by text-to-speech`)
+        complete = false
+        continue
       }
+      const recording = await checkRecording(dir, ref, column, problems)
+      if (recording) await checkSynthetic(recording, ref, lang, row[lang]!, column, problems)
+      if (!recording || !SLUG.test(row.id!)) {
+        complete = false
+        continue
+      }
+      recordings[lang] = phraseAudioPath(row.id!, lang)
+      audio.set(recordings[lang], recording)
     }
     const parsed = PhraseSchema.safeParse({
       id: row.id,
       category: row.category,
       text: { en: row.en, sw: row.sw },
-      audio: recordings,
+      // Recording problems are reported above; stand-ins keep them from being reported twice.
+      audio: complete ? recordings : { en: 'audio/-', sw: 'audio/-' },
       vettedBy: row.vetted_by
     })
     if (!parsed.success) return void problems.push(...issues(where, parsed.error, csvColumn))
-    return parsed.data
+    return complete ? parsed.data : undefined
   })
 
   if (cards.length === 0 && phrases.length === 0 && !problems.length) problems.push('no cards and no phrases')
@@ -198,8 +226,8 @@ async function readRows<T, C extends readonly string[]>(
   return items
 }
 
-/** Checks that a recording exists inside the pack directory and is a readable WAV; returns its absolute path. */
-async function checkRecording(dir: string, ref: string, where: string, problems: string[]): Promise<string | undefined> {
+/** Checks that a recording exists inside the pack directory and is a WAV with sound in it. */
+async function checkRecording(dir: string, ref: string, where: string, problems: string[]): Promise<SourceRecording | undefined> {
   const root = path.resolve(dir)
   const file = path.resolve(root, ref)
   if (path.isAbsolute(ref) || !file.startsWith(root + path.sep)) {
@@ -208,13 +236,46 @@ async function checkRecording(dir: string, ref: string, where: string, problems:
   if (path.extname(file).toLowerCase() !== '.wav') return void problems.push(`${where}: "${ref}" is not a .wav file`)
   const bytes = await fs.readFile(file).catch(() => undefined)
   if (!bytes) return void problems.push(`${where}: "${ref}" not found`)
+  let samples: Float32Array
+  let seconds: number
   try {
     const wav = decodeWav(bytes)
-    if (!wav.channels[0]?.length) return void problems.push(`${where}: "${ref}" has no audio`)
+    samples = wav.channels[0] ?? new Float32Array(0)
+    seconds = samples.length / wav.sampleRate
   } catch (err) {
     return void problems.push(`${where}: "${ref}" is not a readable WAV (${(err as Error).message})`)
   }
-  return file
+  if (!samples.length) return void problems.push(`${where}: "${ref}" has no audio`)
+  if (seconds > MAX_RECORDING_S) return void problems.push(`${where}: "${ref}" is ${seconds.toFixed(0)} s long; a phrase recording is at most ${MAX_RECORDING_S} s`)
+  let peak = 0
+  for (const v of samples) peak = Math.max(peak, Math.abs(v))
+  if (peak < SILENCE_PEAK) return void problems.push(`${where}: "${ref}" is silent`)
+  return { file }
+}
+
+/** Attaches a recording's synthetic record, after checking that it still describes this WAV and this text. */
+async function checkSynthetic(
+  recording: SourceRecording,
+  ref: string,
+  lang: Lang,
+  phraseText: string,
+  where: string,
+  problems: string[]
+): Promise<void> {
+  const record = await readSyntheticRecord(recording.file)
+  if (!record) return
+  const recordName = `"${path.basename(syntheticRecordFile(ref))}"`
+  if ('problem' in record) return void problems.push(`${where}: ${recordName} ${record.problem}`)
+  if (record.sha256 !== sha256Hex(await fs.readFile(recording.file))) {
+    return void problems.push(
+      `${where}: "${ref}" changed after it was generated; if it is now a human recording, delete ${recordName}, otherwise generate it again`
+    )
+  }
+  if (record.lang !== lang) return void problems.push(`${where}: ${recordName} was generated in ${record.lang}, not ${lang}`)
+  if (record.text.normalize('NFC').trim() !== phraseText) {
+    return void problems.push(`${where}: "${ref}" was generated from "${record.text}", not the phrase's current text; generate it again`)
+  }
+  recording.synthetic = record
 }
 
 function splitList(cell: string): string[] {

@@ -37,6 +37,10 @@ npm run ofa -- doctor --verify --load
 | `npm run ofa -- pack verify PACK` | Checks a pack against the app's built-in keys and prints what is in it (`--json`; `--trust PUB.pem` adds a key for this check only) |
 | `npm run ofa -- pack install PACK` / `pack list` | Verifies and installs a pack into `var/packs/` (`OFA_PACKS_DIR`), refusing any version older than one installed before |
 | `npm run eval:packs` | F5 eval: build and load times, every-byte tamper sweeps, vector recompute, cross-language card alignment → `eval/outputs/` |
+| `npm run ofa -- phrase list` / `phrase search --lang sw "…"` | Phrases of the installed pack (`--category C`, `--json`; `--pack ID` when more than one is installed); keyword search that forgives word fragments, small typos and some word forms |
+| `npm run ofa -- phrase play --lang sw ID` | Plays a phrase's recording exactly as it is in the pack, never text-to-speech (`--out FILE.wav`, `--no-play`) |
+| `npm run make-phrase-recordings [-- DIR]` | Dev only: placeholder recordings for phrases that have none, made with Chatterbox's built-in voice, heard back by Whisper (a badly heard take is rendered again with another seed), and marked synthetic (`--force`: make them all again) |
+| `npm run eval:phrasebook` | F6 eval: open and time-to-audio, search hit rate per query kind, what Whisper hears in each recording → `eval/outputs/` |
 | `npm run electron:smoke` | Runs the Electron main process, which loads a model and exits |
 | `npm run package` | Packages the arm64 app with Electron Forge + the QVAC plugin |
 
@@ -56,6 +60,15 @@ Guidance cards and phrases reach a device as a signed `.ofapack`, built from a
 directory of CSVs (see [`content/sample/`](content/sample/) and
 `src/features/packs/content.ts` for the columns). The app accepts only packs
 signed by a key in `src/features/packs/trusted-keys.ts`.
+
+Every phrase needs a recording in each language; the phrasebook plays it as
+it is and never falls back to text-to-speech. Until a native speaker records
+a phrase, `npm run make-phrase-recordings` makes a placeholder with
+Chatterbox and writes `<file>.wav.synthetic.json` next to it. The pack tags
+those recordings `synthetic` and the app says so. To replace one, put the
+native recording in its place and delete its `.synthetic.json`. The build
+refuses a synthetic record whose WAV or phrase text has changed since it was
+made.
 
 The development key is `keys/ofa-dev-2026.key.pem`, git-ignored and on the dev
 machine only; it is not for release. Set `OFA_PACK_KEY_PASSPHRASE` before

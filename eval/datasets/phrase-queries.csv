@@ -1,0 +1,121 @@
+query,lang,expected,kind
+fever,en,sym-fever,keyword
+cough,en,sym-cough,keyword
+diarrhoea,en,sym-diarrhoea,keyword
+bleeding,en,sym-bleeding,keyword
+pregnant,en,hist-pregnant,keyword
+allergic,en,hist-allergy,keyword
+vaccinations,en,hist-vaccines,keyword
+breathe,en,sym-breathing,keyword
+hurt,en,sym-pain,keyword
+how old,en,hist-age,keyword
+how many days sick,en,sym-days,keyword
+vomited,en,sym-vomit,keyword
+examine,en,consent-examine,keyword
+private,en,consent-private,keyword
+stop,en,consent-stop,keyword
+speak slowly,en,greet-slowly,keyword
+say again,en,greet-repeat,keyword
+thank you,en,greet-thanks,keyword
+wait here,en,inst-wait,keyword
+sit down,en,inst-sit,keyword
+clinician,en,inst-referral,keyword
+feel worse,en,inst-come-back,keyword
+clean water,en,inst-drink,keyword
+card,en,inst-card,keyword
+health worker,en,greet-hello,keyword
+device,en,greet-device,keyword
+taking medicine,en,hist-medicine,keyword
+child eating,en,hist-child-eating,keyword
+any questions,en,inst-questions,keyword
+questions about your health,en,consent-questions,keyword
+vacc,en,hist-vaccines,partial
+pregn,en,hist-pregnant,partial
+breath,en,sym-breathing,partial
+vomit,en,sym-vomit,partial
+allerg,en,hist-allergy,partial
+diarr,en,sym-diarrhoea,partial
+bleed,en,sym-bleeding,partial
+exam,en,consent-examine,partial
+feaver,en,sym-fever,typo
+cought,en,sym-cough,typo
+diarrhea,en,sym-diarrhoea,typo
+diarhea,en,sym-diarrhoea,typo
+pregnent,en,hist-pregnant,typo
+vacinations,en,hist-vaccines,typo
+alergic,en,hist-allergy,typo
+bleading,en,sym-bleeding,typo
+breth,en,sym-breathing,typo
+medecine,en,hist-medicine,typo
+clinican,en,inst-referral,typo
+pregnancy,en,hist-pregnant,form
+allergy,en,hist-allergy,form
+vaccine,en,hist-vaccines,form
+breathing,en,sym-breathing,form
+vomiting,en,sym-vomit,form
+pain,en,sym-pain,synonym
+temperature,en,sym-fever,synonym
+throwing up,en,sym-vomit,synonym
+age,en,hist-age,synonym
+medication,en,hist-medicine,synonym
+homa,sw,sym-fever,keyword
+kikohozi,sw,sym-cough,keyword
+unaharisha,sw,sym-diarrhoea,keyword
+damu,sw,sym-bleeding,keyword
+mimba,sw,hist-pregnant,keyword
+mzio,sw,hist-allergy,keyword
+chanjo,sw,hist-vaccines,keyword
+umri,sw,hist-age,keyword
+siku ngapi,sw,sym-days,keyword
+umetapika,sw,sym-vomit,keyword
+kukupima,sw,consent-examine,keyword
+siri,sw,consent-private,keyword
+niache,sw,consent-stop,keyword
+polepole,sw,greet-slowly,keyword
+rudia,sw,greet-repeat,keyword
+asante,sw,greet-thanks,keyword
+subiri,sw,inst-wait,keyword
+keti,sw,inst-sit,keyword
+maji safi,sw,inst-drink,keyword
+kadi,sw,inst-card,keyword
+kliniki,sw,greet-hello,keyword
+kifaa,sw,greet-device,keyword
+unatumia dawa,sw,hist-medicine,keyword
+swali,sw,inst-questions,keyword
+maswali,sw,consent-questions,keyword
+anakula,sw,hist-child-eating,keyword
+mbaya zaidi,sw,inst-come-back,keyword
+unapumua,sw,sym-breathing,keyword
+unaumwa wapi,sw,sym-pain,keyword
+kumwona mhudumu,sw,inst-referral,keyword
+harisha,sw,sym-diarrhoea,partial
+tapika,sw,sym-vomit,partial
+pumua,sw,sym-breathing,partial
+umwa,sw,sym-pain,partial
+mgonjwa,sw,sym-days,partial
+kohozi,sw,sym-cough,partial
+kula,sw,hist-child-eating,partial
+pima,sw,consent-examine,partial
+kikohzi,sw,sym-cough,typo
+kikohosi,sw,sym-cough,typo
+unaarisha,sw,sym-diarrhoea,typo
+homma,sw,sym-fever,typo
+tafathali subiri,sw,inst-wait,typo
+mizio,sw,hist-allergy,typo
+umetapka,sw,sym-vomit,typo
+chango,sw,hist-vaccines,typo
+mimbaa,sw,hist-pregnant,typo
+homa ya child,sw,sym-fever,mixed
+fever,sw,sym-fever,mixed
+cough,sw,sym-cough,mixed
+homa,en,sym-fever,mixed
+damu,en,sym-bleeding,mixed
+mimba,en,hist-pregnant,mixed
+mtoto vaccine,sw,hist-vaccines,mixed
+mgonjwa days,sw,sym-days,mixed
+kutapika,sw,sym-vomit,form
+kuhara,sw,sym-diarrhoea,form
+kupumua,sw,sym-breathing,form
+mjamzito,sw,hist-pregnant,synonym
+maumivu,sw,sym-pain,synonym
+joto,sw,sym-fever,synonym

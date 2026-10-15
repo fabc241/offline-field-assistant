@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Una umri gani?",
+  "sha256": "b5c2af0ada5d9e821f5df1d492ddc675186185ccf31550fe7e12ec7826abf1b0",
+  "created": "2026-10-15T15:49:46.734Z",
+  "seed": 1,
+  "heard": "una unbegani",
+  "cer": 30.8
+}

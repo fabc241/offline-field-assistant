@@ -1,0 +1,9 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Umekuwa mgonjwa kwa siku ngapi?",
+  "sha256": "c474654b6b7c75df8d80a2f8f025eb7860313804267a76127c306e3d2e266b5f",
+  "created": "2026-10-15T15:49:06.148Z",
+  "heard": "Umekua mgonja basiku ngapi?",
+  "cer": 16.7
+}

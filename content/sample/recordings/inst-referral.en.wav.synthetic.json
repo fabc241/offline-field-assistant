@@ -1,0 +1,9 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "en",
+  "text": "You need to see a clinician today.",
+  "sha256": "c36ba3c8f47f80ad2e31ea19651ff773d8ea42f80f1efd2f45ab8886dd43cb2b",
+  "created": "2026-10-15T15:50:36.927Z",
+  "heard": "you need to see a clinician today.",
+  "cer": 0
+}

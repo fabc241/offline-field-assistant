@@ -1,0 +1,194 @@
+{
+  "source": "content/sample",
+  "pack": {
+    "id": "sample-intake",
+    "version": "0.2.0",
+    "phrases": 30,
+    "recordings": 60,
+    "bytes": 4892739
+  },
+  "open": {
+    "medianMs": 2.8,
+    "p90Ms": 3.6
+  },
+  "timeToAudio": {
+    "medianMs": 0.108,
+    "p90Ms": 0.192,
+    "maxMs": 1.024
+  },
+  "search": {
+    "medianMs": 0.102,
+    "p90Ms": 0.265,
+    "other language 0.8 (default)": {
+      "target": {
+        "queries": 104,
+        "top1": 103,
+        "top3": 103
+      },
+      "byKind": {
+        "keyword": {
+          "queries": 60,
+          "top1": 60,
+          "top3": 60
+        },
+        "partial": {
+          "queries": 16,
+          "top1": 16,
+          "top3": 16
+        },
+        "typo": {
+          "queries": 20,
+          "top1": 19,
+          "top3": 19
+        },
+        "form": {
+          "queries": 8,
+          "top1": 7,
+          "top3": 7
+        },
+        "synonym": {
+          "queries": 8,
+          "top1": 0,
+          "top3": 0
+        },
+        "mixed": {
+          "queries": 8,
+          "top1": 8,
+          "top3": 8
+        }
+      },
+      "byLang": {
+        "en": {
+          "queries": 52,
+          "top1": 51,
+          "top3": 51
+        },
+        "sw": {
+          "queries": 52,
+          "top1": 52,
+          "top3": 52
+        }
+      },
+      "misses": [
+        "typo en \"diarhea\" → sym-diarrhoea",
+        "synonym en \"pain\" → sym-pain",
+        "synonym en \"temperature\" → sym-fever",
+        "synonym en \"throwing up\" → sym-vomit",
+        "synonym en \"age\" → hist-age",
+        "synonym en \"medication\" → hist-medicine",
+        "form sw \"kuhara\" → sym-diarrhoea",
+        "synonym sw \"mjamzito\" → hist-pregnant",
+        "synonym sw \"maumivu\" → sym-pain",
+        "synonym sw \"joto\" → sym-fever"
+      ]
+    },
+    "own language only": {
+      "target": {
+        "queries": 104,
+        "top1": 97,
+        "top3": 98
+      },
+      "byKind": {
+        "keyword": {
+          "queries": 60,
+          "top1": 60,
+          "top3": 60
+        },
+        "partial": {
+          "queries": 16,
+          "top1": 16,
+          "top3": 16
+        },
+        "typo": {
+          "queries": 20,
+          "top1": 19,
+          "top3": 19
+        },
+        "form": {
+          "queries": 8,
+          "top1": 7,
+          "top3": 7
+        },
+        "synonym": {
+          "queries": 8,
+          "top1": 0,
+          "top3": 0
+        },
+        "mixed": {
+          "queries": 8,
+          "top1": 2,
+          "top3": 3
+        }
+      },
+      "byLang": {
+        "en": {
+          "queries": 52,
+          "top1": 48,
+          "top3": 48
+        },
+        "sw": {
+          "queries": 52,
+          "top1": 49,
+          "top3": 50
+        }
+      },
+      "misses": [
+        "typo en \"diarhea\" → sym-diarrhoea",
+        "synonym en \"pain\" → sym-pain",
+        "synonym en \"temperature\" → sym-fever",
+        "synonym en \"throwing up\" → sym-vomit",
+        "synonym en \"age\" → hist-age",
+        "synonym en \"medication\" → hist-medicine",
+        "mixed sw \"fever\" → sym-fever",
+        "mixed sw \"cough\" → sym-cough",
+        "mixed en \"homa\" → sym-fever",
+        "mixed en \"damu\" → sym-bleeding",
+        "mixed en \"mimba\" → hist-pregnant",
+        "form sw \"kuhara\" → sym-diarrhoea",
+        "synonym sw \"mjamzito\" → hist-pregnant",
+        "synonym sw \"maumivu\" → sym-pain",
+        "synonym sw \"joto\" → sym-fever"
+      ]
+    }
+  },
+  "recordings": {
+    "en": {
+      "recordings": 30,
+      "synthetic": 30,
+      "wer": 0.6,
+      "cer": 0.1,
+      "heardExactly": 29,
+      "flagged": [],
+      "durationS": {
+        "min": 1,
+        "max": 2.7
+      },
+      "worst": [
+        "sym-diarrhoea CER 4.8: \"Do you have diarrhoea?\" → \"Do you have diarrhea?\"",
+        "greet-hello CER 0: \"Hello. I am a health worker from the clinic.\" → \"Hello, I am a health worker from the clinic.\"",
+        "greet-device CER 0: \"This device helps us understand each other.\" → \"This device helps us understand each other.\"",
+        "greet-slowly CER 0: \"Please speak slowly.\" → \"Please speak slowly.\"",
+        "greet-repeat CER 0: \"Please say that again.\" → \"Please say that again.\""
+      ]
+    },
+    "sw": {
+      "recordings": 30,
+      "synthetic": 30,
+      "wer": 54.5,
+      "cer": 10.5,
+      "heardExactly": 4,
+      "flagged": [],
+      "durationS": {
+        "min": 1,
+        "max": 3.4
+      },
+      "worst": [
+        "hist-age CER 30.8: \"Una umri gani?\" → \"una unbegani\"",
+        "greet-repeat CER 20: \"Tafadhali rudia tena.\" → \"Tafadhaliruri ya tena\"",
+        "consent-stop CER 18.4: \"Unaweza kuniambia niache wakati wowote.\" → \"Unawezo kuniambia niyati wakati wa wote.\"",
+        "sym-days CER 16.7: \"Umekuwa mgonjwa kwa siku ngapi?\" → \"Umekua mgonja basiku ngapi?\"",
+        "sym-bleeding CER 16.7: \"Unatoka damu?\" → \"una toka damo\""
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Una mimba?",
+  "sha256": "9c9029bcfe0896e8b0ab99bf44eb39986ece8fa7ebb04a59d72ab370328b5e18",
+  "created": "2026-10-15T15:49:52.976Z",
+  "seed": 1,
+  "heard": "Una minba?",
+  "cer": 11.1
+}

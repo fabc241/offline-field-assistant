@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Mtoto amepata chanjo zote?",
+  "sha256": "59d9be760835a9f3e22969c8b9dd78b1f6083bd0b58598db62125f3080942fc4",
+  "created": "2026-10-15T15:50:17.764Z",
+  "seed": 2,
+  "heard": "mtoto amepata chanjo zote",
+  "cer": 0
+}

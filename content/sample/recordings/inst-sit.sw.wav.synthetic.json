@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Tafadhali keti.",
+  "sha256": "1f874747e2fbb9fde3b769260d2c75131481989fd610bc9c6065f4ce8b23c845",
+  "created": "2026-10-15T15:50:34.544Z",
+  "seed": 1,
+  "heard": "Tafadali ketsi.",
+  "cer": 14.3
+}

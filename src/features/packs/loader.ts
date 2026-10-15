@@ -65,7 +65,7 @@ export interface LoadedPack {
   manifest: PackManifest
   signedBy: { keyId: string; label: string }
   content: PackContent
-  /** Pack path (e.g. "audio/greet-001.sw.wav") → WAV bytes. */
+  /** Pack path (e.g. "audio/greet-001.sw.wav") → WAV bytes. Every phrase has one per language. */
   audio: Map<string, Uint8Array>
   /** Card id → vector per language; undefined when stale. */
   vectors: CardVectors | undefined
@@ -223,7 +223,6 @@ function readContent(manifest: PackManifest, files: Map<string, Uint8Array>) {
   for (const phrase of content.phrases) {
     for (const lang of LANGS) {
       const ref = phrase.audio[lang]
-      if (!ref) continue
       const data = (ref.startsWith(`${AUDIO_DIR}/`) && files.get(ref)) || invalid(`Phrase ${phrase.id} refers to ${ref}, which is not in the pack`)
       audio.set(ref, data)
     }
@@ -232,6 +231,8 @@ function readContent(manifest: PackManifest, files: Map<string, Uint8Array>) {
   if (orphans.length) invalid(`No phrase uses ${orphans.join(', ')}`)
   const others = [...files.keys()].filter((f) => !f.startsWith(`${AUDIO_DIR}/`) && f !== CONTENT_FILE && f !== EMBEDDINGS_FILE)
   if (others.length) invalid(`Unknown files in the pack: ${others.join(', ')}`)
+  const misTagged = manifest.files.filter((f) => f.synthetic && !audio.has(f.path)).map((f) => f.path)
+  if (misTagged.length) invalid(`Only recordings can be synthetic, not ${misTagged.join(', ')}`)
 
   const embeddings = EmbeddingsFileSchema.safeParse(json(EMBEDDINGS_FILE))
   if (!embeddings.success) invalid(`${EMBEDDINGS_FILE} is not a valid vector file`)

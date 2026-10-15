@@ -9,9 +9,12 @@ Build, sign and install it with:
 
 ```bash
 npm run ofa -- pack build content/sample
-npm run ofa -- pack sign --key keys/ofa-dev-2026.key.pem var/pack-builds/sample-intake-0.1.0.ofapack
-npm run ofa -- pack install var/pack-builds/sample-intake-0.1.0.ofapack
+npm run ofa -- pack sign --key keys/ofa-dev-2026.key.pem var/pack-builds/sample-intake-0.2.0.ofapack
+npm run ofa -- pack install var/pack-builds/sample-intake-0.2.0.ofapack
 ```
 
-Phrase recordings (`audio_en`, `audio_sw`) are empty for now; F6 adds placeholder
-recordings.
+Every recording in `recordings/` is a **synthetic placeholder**. Each was made
+with Chatterbox's built-in voice (`npm run make-phrase-recordings`) and has a
+`.synthetic.json` record next to it, so the pack tags it `synthetic`. Replace
+each one with a native speaker's recording of the vetted phrase, then delete
+its record.

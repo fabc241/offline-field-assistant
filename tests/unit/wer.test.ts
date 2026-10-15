@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { corpusRates, editDistance, errorCounts, normalizeForWer } from '../../eval/wer.js'
+import { corpusRates, editDistance, errorCounts, normalizeForWer } from '../../src/core/wer.js'
 
 describe('normalizeForWer', () => {
   it('ignores case, punctuation and quote style, keeps apostrophes inside words', () => {

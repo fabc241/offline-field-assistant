@@ -1,0 +1,9 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "en",
+  "text": "Do you have a cough?",
+  "sha256": "32c8badbbc5adc5e28e7f3d9457a875ca72c6c7cc3d0c689d40da399756e6bea",
+  "created": "2026-10-15T15:49:12.578Z",
+  "heard": "Do you have a cough?",
+  "cer": 0
+}

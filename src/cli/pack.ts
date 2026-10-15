@@ -68,7 +68,11 @@ const subcommands: Record<string, Sub> = {
       await fs.mkdir(path.dirname(path.resolve(out)), { recursive: true })
       await fs.writeFile(out, built.bytes)
       const { cards, phrases } = built.source.content
-      console.log(`Built ${id} ${version}: ${cards.length} cards, ${phrases.length} phrases, ${built.source.audio.size} recordings`)
+      const synthetic = [...built.source.audio.values()].filter((r) => r.synthetic).length
+      console.log(
+        `Built ${id} ${version}: ${cards.length} cards, ${phrases.length} phrases, ${built.source.audio.size} recordings` +
+          (synthetic ? ` (${synthetic} synthetic placeholders)` : '')
+      )
       console.log(`  ${out}  (${kb(built.bytes.length)}, unsigned)`)
       console.log(`  card vectors: ${spec.name}, ${(built.embedMs / 1000).toFixed(1)} s`)
       if (built.manifest.notice) console.log(`  ⚠ ${built.manifest.notice}`)
@@ -171,6 +175,7 @@ function summary(pack: LoadedPack) {
     cards: content.cards.length,
     phrases: content.phrases.length,
     recordings: pack.audio.size,
+    syntheticRecordings: manifest.files.filter((f) => f.synthetic).length,
     embeddings: pack.embeddings,
     embeddingModel: manifest.embedding.model,
     files: manifest.files.length,
@@ -184,6 +189,7 @@ function printPack(verb: string, pack: LoadedPack) {
   console.log(`  signed by     ${s.signedBy.label} (${s.signedBy.keyId})`)
   console.log(`  created       ${s.created}`)
   console.log(`  content       ${s.cards} cards, ${s.phrases} phrases, ${s.recordings} recordings (${kb(s.bytes)})`)
+  if (s.syntheticRecordings) console.log(`  ⚠ ${s.syntheticRecordings} recordings are synthetic placeholders (text-to-speech), not native speakers`)
   console.log(`  card vectors  ${s.embeddings}${s.embeddings === 'stale' ? ' (made with an older recipe; install the embedding model to recompute)' : ''}`)
   if (s.notice) console.log(`  ⚠ ${s.notice}`)
 }

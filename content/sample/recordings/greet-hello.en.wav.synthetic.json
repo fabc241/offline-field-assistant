@@ -1,0 +1,9 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "en",
+  "text": "Hello. I am a health worker from the clinic.",
+  "sha256": "59e03816a903722c2edfb72acfab1b50004925b157d50af64b9aad5ebaefccaf",
+  "created": "2026-10-15T15:48:06.056Z",
+  "heard": "Hello, I am a health worker from the clinic.",
+  "cer": 0
+}

@@ -42,12 +42,12 @@ export async function buildPack(dir: string, opts: BuildOptions): Promise<BuiltP
   const vectors = await embedCards(source.content.cards, opts.embedder)
   const embedMs = performance.now() - t0
 
-  const files: ArchiveEntry[] = [
+  const files: (ArchiveEntry & { synthetic?: true })[] = [
     { name: CONTENT_FILE, data: Buffer.from(canonicalJson(source.content)) },
     { name: EMBEDDINGS_FILE, data: Buffer.from(canonicalJson(encodeVectors(vectors))) }
   ]
-  for (const [name, file] of [...source.audio].sort(([a], [b]) => (a < b ? -1 : 1))) {
-    files.push({ name, data: await fs.readFile(file) })
+  for (const [name, { file, synthetic }] of [...source.audio].sort(([a], [b]) => (a < b ? -1 : 1))) {
+    files.push({ name, data: await fs.readFile(file), ...(synthetic ? { synthetic: true as const } : {}) })
   }
 
   const manifest: PackManifest = {
@@ -62,9 +62,12 @@ export async function buildPack(dir: string, opts: BuildOptions): Promise<BuiltP
       // A pack with no cards has no vectors; any positive number keeps the schema simple.
       dims: vectorDims(vectors) || 1
     },
-    files: files.map(({ name, data }) => ({ path: name, size: data.length, sha256: sha256Hex(data) }))
+    files: files.map(({ name, data, synthetic }) => ({ path: name, size: data.length, sha256: sha256Hex(data), synthetic }))
   }
-  const bytes = writeArchive([{ name: MANIFEST_FILE, data: Buffer.from(canonicalJson(manifest)) }, ...files])
+  const bytes = writeArchive([
+    { name: MANIFEST_FILE, data: Buffer.from(canonicalJson(manifest)) },
+    ...files.map(({ name, data }) => ({ name, data }))
+  ])
   return { bytes, manifest, source, embedMs }
 }
 

@@ -20,7 +20,9 @@ export const sha256Hex = (data: Uint8Array) => createHash('sha256').update(data)
 export const PackFileSchema = z.strictObject({
   path: z.string().min(1),
   size: z.number().int().nonnegative(),
-  sha256: z.string().regex(/^[0-9a-f]{64}$/)
+  sha256: z.string().regex(/^[0-9a-f]{64}$/),
+  /** A recording made with text-to-speech as a placeholder, to be replaced by a native speaker's. */
+  synthetic: z.literal(true).optional()
 })
 export type PackFile = z.infer<typeof PackFileSchema>
 

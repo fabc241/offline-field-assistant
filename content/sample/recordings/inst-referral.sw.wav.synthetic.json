@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Unahitaji kumwona mhudumu wa afya leo.",
+  "sha256": "644274ca16a522e433e72947c5bcec202062063c4ce91dd221dfa0033c405e85",
+  "created": "2026-10-15T15:50:42.631Z",
+  "seed": 1,
+  "heard": "Una hitaji kumona mkodumu wa akea leo?",
+  "cer": 16.2
+}

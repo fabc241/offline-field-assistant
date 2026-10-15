@@ -88,6 +88,8 @@ export interface TtsOptions {
   speed?: number
   /** A consented recording to speak with (absolute path, checked by features/voice/voices.ts). */
   referenceAudio?: string
+  /** RNG seed of the waveform stages; unset is the engine's 42. Another seed is another take of the same text. */
+  seed?: number
 }
 
 /**
@@ -104,7 +106,8 @@ export const ttsSpec = (language: Lang, opts: TtsOptions = {}): ModelSpec => ({
     useGPU: true,
     ...(opts.chunkTokens ? { streamChunkTokens: opts.chunkTokens, streamFirstChunkTokens: Math.min(20, opts.chunkTokens) } : {}),
     ...(opts.speed && opts.speed !== 1 ? { ttsSpeed: opts.speed } : {}),
-    ...(opts.referenceAudio ? { referenceAudioSrc: opts.referenceAudio } : {})
+    ...(opts.referenceAudio ? { referenceAudioSrc: opts.referenceAudio } : {}),
+    ...(opts.seed !== undefined ? { seed: opts.seed } : {})
   },
   companions: { s3genModelSrc: MODEL_CATALOG.ttsS3gen }
 })

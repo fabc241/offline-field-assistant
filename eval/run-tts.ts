@@ -34,7 +34,7 @@ import { toSpokenForm } from '../src/features/voice/spoken.js'
 import { EVAL_AUDIO_DIR, writeSet, type Clip } from './audio-sets.js'
 import { parseCsv, toCsv } from '../src/core/csv.js'
 import { quantile, round } from './stats.js'
-import { corpusRates, errorCounts, type ErrorCounts } from './wer.js'
+import { corpusRates, errorCounts, type ErrorCounts } from '../src/core/wer.js'
 
 interface Variant {
   tts: TtsOptions

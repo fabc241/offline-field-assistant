@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Naweza kukuuliza maswali kuhusu afya yako?",
+  "sha256": "e3773f8d040a43ce63a263a092c43d6f19cf05dbbfe3684b98fbf2cec132e5fd",
+  "created": "2026-10-15T15:48:38.112Z",
+  "seed": 1,
+  "heard": "Naweza kukuliza maswali kusuafia yako?",
+  "cer": 12.2
+}

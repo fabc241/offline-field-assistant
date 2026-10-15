@@ -8,6 +8,7 @@
  *   ofa speak --lang en|sw [--play] [--out FILE.wav] [--chunk-tokens N] [--raw] [--json] "text"
  *   ofa converse --side clinician|patient [--play] [--out-dir DIR] [--json] turn.wav
  *   ofa pack keygen|build|sign|verify|install|list …
+ *   ofa phrase list|search|play …
  */
 import { parseArgs } from 'node:util'
 import { loadConfig } from '../core/config.js'
@@ -15,6 +16,7 @@ import { shutdown } from '../core/qvac.js'
 import { converseCommand } from './converse.js'
 import { doctor } from './doctor.js'
 import { packCommand } from './pack.js'
+import { phraseCommand } from './phrase.js'
 import { speakCommand } from './speak.js'
 import { sttCommand } from './stt.js'
 import { translateCommand } from './translate.js'
@@ -33,7 +35,8 @@ const commands: Record<string, Command> = {
   stt: (args) => sttCommand(loadConfig(), args),
   speak: (args) => speakCommand(loadConfig(), args),
   converse: (args) => converseCommand(loadConfig(), args),
-  pack: (args) => packCommand(loadConfig(), args)
+  pack: (args) => packCommand(loadConfig(), args),
+  phrase: (args) => phraseCommand(loadConfig(), args)
 }
 
 const [name, ...rest] = process.argv.slice(2)

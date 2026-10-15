@@ -1,0 +1,9 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Habari. Mimi ni mhudumu wa afya kutoka kliniki.",
+  "sha256": "0bfa0c29f1dd067cf34afd07455984b27399d4616425997d5a2be0e210881975",
+  "created": "2026-10-15T15:48:10.461Z",
+  "heard": "Habari, mimi ni mkudumu wa afya kutoka kliniki.",
+  "cer": 2.2
+}

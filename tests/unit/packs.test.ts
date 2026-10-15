@@ -9,10 +9,11 @@ import { parseCsvTable } from '../../src/core/csv.js'
 import type { EmbedTask, Embedder } from '../../src/core/engines.js'
 import { ArchiveError, readArchive, writeArchive } from '../../src/features/packs/archive.js'
 import { buildPack, signPack } from '../../src/features/packs/build.js'
-import { PackSourceError, readPackSource } from '../../src/features/packs/content.js'
+import { PackContentSchema, PackSourceError, readPackSource } from '../../src/features/packs/content.js'
 import { cardEmbeddingText } from '../../src/features/packs/embeddings.js'
 import { PackError, PackLoader, parseArchive, type PackProblem } from '../../src/features/packs/loader.js'
 import { canonicalJson, compareVersions, sha256Hex, type PackManifest } from '../../src/features/packs/manifest.js'
+import { syntheticRecordFile, type SyntheticRecord } from '../../src/features/packs/recordings.js'
 import { generateSigningKey, loadPrivateKey, signManifest, trustedKey } from '../../src/features/packs/signing.js'
 import { PackStore } from '../../src/features/packs/store.js'
 import { TRUSTED_PACK_KEYS } from '../../src/features/packs/trusted-keys.js'
@@ -40,7 +41,7 @@ interface SourceFiles {
   files?: Record<string, Uint8Array>
 }
 
-const tiny = () => encodeWav(Float32Array.from({ length: 160 }, (_, i) => Math.sin(i / 4) * 0.5), 16_000)
+const tiny = (seed = 0) => encodeWav(Float32Array.from({ length: 160 }, (_, i) => Math.sin(i / 4 + seed) * 0.5), 16_000)
 
 let tmp: string
 let n = 0
@@ -55,11 +56,16 @@ async function writeSource(src: SourceFiles = {}): Promise<string> {
   ]
   const phrases = src.phrases ?? [
     'greet,greeting,Hello.,Habari.,recordings/hello-en.wav,recordings/hello-sw.wav,PLACEHOLDER',
-    'wait,instructions,Please wait here.,Tafadhali subiri hapa.,,,PLACEHOLDER'
+    'wait,instructions,Please wait here.,Tafadhali subiri hapa.,recordings/wait-en.wav,recordings/wait-sw.wav,PLACEHOLDER'
   ]
   await fs.writeFile(path.join(dir, 'cards.csv'), [CARDS_HEADER, ...cards].join('\n') + '\n')
   await fs.writeFile(path.join(dir, 'phrases.csv'), [PHRASES_HEADER, ...phrases].join('\n') + '\n')
-  const files = src.files ?? { 'recordings/hello-en.wav': tiny(), 'recordings/hello-sw.wav': tiny() }
+  const files = src.files ?? {
+    'recordings/hello-en.wav': tiny(1),
+    'recordings/hello-sw.wav': tiny(2),
+    'recordings/wait-en.wav': tiny(3),
+    'recordings/wait-sw.wav': tiny(4)
+  }
   for (const [name, data] of Object.entries(files)) await fs.writeFile(path.join(dir, name), data)
   return dir
 }
@@ -144,14 +150,17 @@ describe('pack source', () => {
     expect(info.id).toBe('sample-intake')
     expect(content.cards).toHaveLength(10)
     expect(content.phrases).toHaveLength(30)
-    expect(audio.size).toBe(0)
+    // Both languages recorded for every phrase; all placeholders so far.
+    expect(audio.size).toBe(60)
+    expect([...audio.values()].every((r) => r.synthetic?.engine === 'TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0')).toBe(true)
     expect(info.notice).toMatch(/NOT CLINICALLY VETTED/)
     for (const c of content.cards) expect(c.source).toMatch(/PLACEHOLDER – NOT CLINICALLY VETTED/)
     for (const p of content.phrases) expect(p.vettedBy).toMatch(/PLACEHOLDER – NOT CLINICALLY VETTED/)
   })
 
   it('turns CSV rows into bilingual cards and phrases', async () => {
-    const { content, audio } = await readPackSource(await writeSource())
+    const dir = await writeSource()
+    const { content, audio } = await readPackSource(dir)
     expect(content.cards[0]).toEqual({
       id: 'fever',
       title: { en: 'Fever', sw: 'Homa' },
@@ -162,8 +171,9 @@ describe('pack source', () => {
       version: 1
     })
     expect(content.phrases[0]!.audio).toEqual({ en: 'audio/greet.en.wav', sw: 'audio/greet.sw.wav' })
-    expect(content.phrases[1]!.audio).toEqual({})
-    expect([...audio.keys()].sort()).toEqual(['audio/greet.en.wav', 'audio/greet.sw.wav'])
+    expect(content.phrases[1]!.audio).toEqual({ en: 'audio/wait.en.wav', sw: 'audio/wait.sw.wav' })
+    expect([...audio.keys()].sort()).toEqual(['audio/greet.en.wav', 'audio/greet.sw.wav', 'audio/wait.en.wav', 'audio/wait.sw.wav'])
+    expect(audio.get('audio/greet.en.wav')).toEqual({ file: path.join(dir, 'recordings/hello-en.wav') })
   })
 
   it('reports every problem at once, by file, row and column', async () => {
@@ -176,12 +186,19 @@ describe('pack source', () => {
         'extra,Extra,Ziada,a,b,c,d,e,f,1,too-many'
       ],
       phrases: [
-        'p1,greeting,Hi.,Habari.,recordings/missing.wav,,src',
-        'p2,greeting,Hi.,Habari.,../outside.wav,,src',
-        'p3,greeting,Hi.,Habari.,recordings/not-audio.wav,,src',
-        'p4,greeting,Hi.,Habari.,,,'
+        'p1,greeting,Hi.,Habari.,recordings/missing.wav,recordings/ok.wav,src',
+        'p2,greeting,Hi.,Habari.,../outside.wav,recordings/ok.wav,src',
+        'p3,greeting,Hi.,Habari.,recordings/not-audio.wav,recordings/silent.wav,src',
+        'p4,greeting,Hi.,Habari.,,recordings/long.wav,',
+        'p5,greeting,Hi.,Habari.,recordings/empty.wav,recordings/ok.wav,src'
       ],
-      files: { 'recordings/not-audio.wav': Buffer.from('hello') }
+      files: {
+        'recordings/ok.wav': tiny(),
+        'recordings/not-audio.wav': Buffer.from('hello'),
+        'recordings/silent.wav': encodeWav(new Float32Array(1600), 16_000),
+        'recordings/long.wav': encodeWav(new Float32Array(31 * 8000).fill(0.1), 8000),
+        'recordings/empty.wav': encodeWav(new Float32Array(0), 16_000)
+      }
     })
     const err = await readPackSource(dir).catch((e: unknown) => e)
     expect(err).toBeInstanceOf(PackSourceError)
@@ -197,7 +214,23 @@ describe('pack source', () => {
     expect(problems).toMatch(/phrases\.csv row 1 \(p1\): audio_en: "recordings\/missing\.wav" not found/)
     expect(problems).toMatch(/phrases\.csv row 2 \(p2\): audio_en: "\.\.\/outside\.wav" must be a relative path inside/)
     expect(problems).toMatch(/phrases\.csv row 3 \(p3\): audio_en: "recordings\/not-audio\.wav" is not a readable WAV/)
+    expect(problems).toMatch(/phrases\.csv row 3 \(p3\): audio_sw: "recordings\/silent\.wav" is silent/)
+    expect(problems).toMatch(/phrases\.csv row 4 \(p4\): audio_en: no recording; every phrase is played from a recording in both languages/)
+    expect(problems).toMatch(/phrases\.csv row 4 \(p4\): audio_sw: "recordings\/long\.wav" is 31 s long; a phrase recording is at most 30 s/)
     expect(problems).toMatch(/phrases\.csv row 4 \(p4\): vetted_by must not be empty/)
+    expect(problems).toMatch(/phrases\.csv row 5 \(p5\): audio_en: "recordings\/empty\.wav" has no audio/)
+    // A recording problem is reported once, not again by the schema.
+    expect(problems).not.toMatch(/audio_\w+ (Invalid|expected|must not)/)
+  })
+
+  it('refuses a phrase without a recording in each language, in the source and in a pack', async () => {
+    const dir = await writeSource({ phrases: ['greet,greeting,Hello.,Habari.,recordings/hello-en.wav,,PLACEHOLDER'] })
+    const err = (await readPackSource(dir).catch((e: unknown) => e)) as PackSourceError
+    expect(err.problems).toEqual([
+      'phrases.csv row 1 (greet): audio_sw: no recording; every phrase is played from a recording in both languages, never read by text-to-speech'
+    ])
+    const phrase = { id: 'greet', category: 'greeting', text: { en: 'Hello.', sw: 'Habari.' }, vettedBy: 'x' }
+    expect(PackContentSchema.safeParse({ cards: [], phrases: [{ ...phrase, audio: { en: 'audio/greet.en.wav' } }] }).success).toBe(false)
   })
 
   it('names missing and unknown columns', async () => {
@@ -216,6 +249,58 @@ describe('pack source', () => {
   })
 })
 
+describe('synthetic recordings', () => {
+  const record = (wav: Uint8Array, over: Partial<SyntheticRecord> = {}): SyntheticRecord => ({
+    engine: 'TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0',
+    lang: 'sw',
+    text: 'Habari.',
+    sha256: sha256Hex(wav),
+    created: '2026-10-15T08:00:00.000Z',
+    ...over
+  })
+  const withRecord = async (rec: SyntheticRecord | string) => {
+    const dir = await writeSource()
+    await fs.writeFile(syntheticRecordFile(path.join(dir, 'recordings/hello-sw.wav')), typeof rec === 'string' ? rec : JSON.stringify(rec))
+    return dir
+  }
+  const problemsOf = async (dir: string) => ((await readPackSource(dir).catch((e: unknown) => e)) as PackSourceError).problems
+
+  it('are tagged in the source and in the signed manifest; human recordings are not', async () => {
+    const dir = await withRecord(record(tiny(2)))
+    const { audio } = await readPackSource(dir)
+    expect(audio.get('audio/greet.sw.wav')!.synthetic).toEqual(record(tiny(2)))
+    expect(audio.get('audio/greet.en.wav')!.synthetic).toBeUndefined()
+
+    const built = await buildPack(dir, { embedder: new HashEmbedder(), embeddingModel: MODEL })
+    const loaded = await loader.verifyAndLoad(signPack(built.bytes, devPrivate).bytes)
+    expect(loaded.manifest.files.filter((f) => f.synthetic).map((f) => f.path)).toEqual(['audio/greet.sw.wav'])
+    // Absent rather than false, so packs without placeholders keep the F5 manifest bytes.
+    expect(Object.keys(loaded.manifest.files.find((f) => f.path === 'audio/greet.en.wav')!).sort()).toEqual(['path', 'sha256', 'size'])
+  })
+
+  it('must still describe the WAV and the phrase text they were made from', async () => {
+    const where = 'phrases.csv row 1 (greet): audio_sw'
+    expect(await problemsOf(await withRecord(record(tiny(9))))).toEqual([
+      `${where}: "recordings/hello-sw.wav" changed after it was generated; if it is now a human recording, delete "hello-sw.wav.synthetic.json", otherwise generate it again`
+    ])
+    expect(await problemsOf(await withRecord(record(tiny(2), { text: 'Jambo.' })))).toEqual([
+      `${where}: "recordings/hello-sw.wav" was generated from "Jambo.", not the phrase's current text; generate it again`
+    ])
+    expect(await problemsOf(await withRecord(record(tiny(2), { lang: 'en' })))).toEqual([
+      `${where}: "hello-sw.wav.synthetic.json" was generated in en, not sw`
+    ])
+    expect(await problemsOf(await withRecord('{'))).toEqual([`${where}: "hello-sw.wav.synthetic.json" is not valid JSON`])
+    expect((await problemsOf(await withRecord(JSON.stringify({ engine: 'x' }))))[0]).toMatch(/hello-sw\.wav\.synthetic\.json" lang/)
+  })
+
+  it('can only tag recordings, even in a signed manifest', async () => {
+    const pack = withManifest(await signedPack(), (m) => {
+      m.files.find((f) => f.path === 'content.json')!.synthetic = true
+    })
+    expect(await problemOf(loader.verifyAndLoad(pack))).toBe('invalid-content')
+  })
+})
+
 describe('build, sign and load', () => {
   it('round-trips the content, recordings and card vectors', async () => {
     const embedder = new HashEmbedder()
@@ -226,7 +311,7 @@ describe('build, sign and load', () => {
     expect(loaded.manifest.embedding).toMatchObject({ model: MODEL.name, sha256: MODEL.sha256, dims: 8 })
     expect(loaded.signedBy.keyId).toBe(devKey.keyId)
     expect(loaded.content.cards.map((c) => c.id)).toEqual(['fever', 'burns'])
-    expect(Buffer.from(loaded.audio.get('audio/greet.sw.wav')!)).toEqual(Buffer.from(tiny()))
+    expect(Buffer.from(loaded.audio.get('audio/greet.sw.wav')!)).toEqual(Buffer.from(tiny(2)))
     expect(loaded.embeddings).toBe('packed')
 
     // Vectors survive the trip bit for bit, and were embedded as documents.

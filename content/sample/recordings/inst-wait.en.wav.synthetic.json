@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "en",
+  "text": "Please wait here.",
+  "sha256": "7c69645c365370d92e849b092c516452d898d7a83830444c244b20de65dabfea",
+  "created": "2026-10-15T15:50:22.972Z",
+  "seed": 1,
+  "heard": "Please wait here.",
+  "cer": 0
+}

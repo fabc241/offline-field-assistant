@@ -468,3 +468,98 @@ match, downgrade through the loader and through the store, and unsafe paths.
 - The development signing key is unencrypted and git-ignored. Release
   signing needs a vendor key (encrypted with `OFA_PACK_KEY_PASSPHRASE`, or
   kept off the build machine) and a new entry in `trusted-keys.ts` (F10).
+
+## F6 — Phrasebook (done 2026-10-15)
+
+`Phrasebook` (`src/features/phrasebook/`) reads phrases from a verified pack:
+`list(category)`, `get(id)`, `search(text, lang)`, `audioPath(id, lang)` and
+`recording(id, lang)`. The last returns the WAV bytes exactly as they were
+signed into the pack. Nothing in the phrasebook can synthesize speech: it
+imports no speaker, and a unit test pins its imports. A phrase without a
+recording in both languages fails the pack build, the loader and the
+phrasebook. There is no runtime fallback. `ofa phrase list|search|play` needs
+no model.
+
+Placeholder recordings: `npm run make-phrase-recordings` renders each phrase
+that has no recording with Chatterbox's built-in voice. It writes
+`<file>.wav.synthetic.json` (engine, language, text, sha256 of the WAV, seed,
+what Whisper heard), and the build tags the file `synthetic: true` in the
+signed manifest. The build refuses a record whose WAV or phrase text has
+changed since it was made, so the tag cannot drift. A WAV without a record is
+taken as a human recording and is never overwritten. Recordings are also
+checked for silence (peak below −60 dBFS) and length (at most 30 s).
+
+| Check | Result |
+|---|---|
+| Unit tests (`npm test`) | 230/230 pass (21 new) |
+| Real-model tests (`npm run test:models`) | 29/29 pass (2 new) |
+| Network audit: F6 eval, F5 eval and `test:models` | no sockets opened |
+
+### Results (M4, sample pack 0.2.0: 30 phrases, 60 synthetic recordings)
+
+| Measure | Result |
+|---|---|
+| Pack size | 4.9 MB (recordings 24 kHz 16-bit mono, 1.0–3.4 s each) |
+| Open: verify the signed pack, load and index the phrasebook | median 2.8 ms, p90 3.6 ms |
+| Time to audio: phrase id → decoded samples | median 0.11 ms, max 1.0 ms (read-aloud's first audio, F3: 1.66 s en, 1.93 s sw) |
+| Search, top 3 on keyword, partial, typo and mixed queries (target ≥ 90 %) | **103/104 (99 %)**; top 1 103/104; median 0.10 ms per query |
+| … by language | en 51/52, sw 52/52 |
+| Word forms (vomiting, kupumua …) | 7/8 |
+| Synonyms (pain → "Where does it hurt?") | 0/8, as expected for keyword search |
+| Recordings heard back by Whisper, en | WER 0.6 / CER 0.1, 29/30 word for word (the miss: "diarrhoea" → "diarrhea") |
+| Recordings heard back by Whisper, sw | WER 54.5 / CER 10.5 (F3 read-aloud: 61.4 / 15.3) |
+
+Queries: `eval/datasets/phrase-queries.csv`, 120 in all. I wrote them
+alongside the search code, so the hit rate is optimistic: real users' queries
+must re-measure it. Per query: `eval/outputs/phrasebook-search.csv`. Per
+recording: `eval/outputs/phrasebook-recordings.csv`.
+
+A/B, matching the other language's text at weight 0.8 vs not at all: top 3
+103/104 vs 98/104. The difference is all in mixed queries ("homa" typed on
+the English side, "homa ya child"): 8/8 vs 3/8. Nothing else changed, so 0.8
+is the default.
+
+Word forms went from 3/8 to 7/8 once a query word could also match without
+English -ing/-ed or the Swahili infinitive ku- (at 0.9 weight). The one form
+still missed, "kuhara", is a different word from "-harisha".
+
+The F5 eval was re-run on the larger pack. The tamper sweeps now flip every
+byte outside the recordings, plus each recording's 64-byte header and every
+499th byte after it (`--audio-stride`). Results: 0/137,069 accepted, and
+0/129,111 with the CRCs repaired. Verify and load: 2.6 ms median (0.9 ms
+without recordings).
+
+### Findings
+- **Seeded synthesis also repeats its mistakes.** As first rendered (engine
+  seed 42 for every phrase), "Please wait here." came out twice in one 1.4 s
+  take: two bursts of speech with silence between them. Read-aloud's
+  duration flags did not fire (100 ms per letter is within bounds); Whisper
+  heard "Please wait here. Should we wait here?". Re-rendering gives the same
+  take, but Chatterbox takes a `seed` (`TtsOptions.seed`). The generator now
+  has Whisper hear each take. A take above CER 10 (en) or 20 (sw) is rendered
+  again with seeds 1, 2 and 3, and the best one is kept. 12 of 60 recordings
+  needed more than one take (11 sw, 1 en); hist-age (sw) used all four and
+  kept CER 30.8.
+- **The before/after gain partly measures Whisper choosing what Whisper
+  understands.** Before retakes: en WER 3.1 / CER 2.7, sw 69.6 / 18.0. After:
+  en 0.6 / 0.1, sw 54.5 / 10.5. Using the same Whisper both to choose the take
+  and to score it inflates the gain. The English doubled take was a real
+  defect; the Swahili gains are less certain.
+- **A low CER can still hide the key word.** The kept "Una homa?" is heard as
+  "Una Roma?": CER 12.5, within the threshold, but *homa* (fever) is the
+  point of the phrase. Character error rate does not weight words. These
+  recordings are placeholders. Each needs replacing with a native speaker's
+  recording of the vetted phrase. The worst five by CER are listed in
+  `eval/outputs/phrasebook-summary.json`, and every record keeps what Whisper
+  heard.
+- **Synthetic is a manifest tag, not a file name.** It is signed with
+  everything else, `ofa pack verify` counts it, and `ofa phrase play` prints
+  "synthetic placeholder (text-to-speech), not a native speaker". The UI must
+  show the same.
+- **Keyword search does not know synonyms** (0/8): "pain", "temperature" and
+  "joto" find nothing. With 30 phrases, browsing by category covers that. The
+  F7 guide brings embedding search, and the phrasebook could reuse it if
+  phrase counts grow.
+- The packs are now about 50× larger (4.9 MB vs 100 KB) and that is fine.
+  Verifying hashes every recording at each open (2.8 ms), and nothing is
+  decompressed.

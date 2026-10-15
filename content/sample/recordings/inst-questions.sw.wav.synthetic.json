@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Una swali lolote?",
+  "sha256": "b8175f1bb66dd6ae696150f343fe7804a07c1552382c5a466f2f8e84359c72b0",
+  "created": "2026-10-15T15:51:06.275Z",
+  "seed": 1,
+  "heard": "Unaswali lalote",
+  "cer": 12.5
+}

@@ -2,13 +2,15 @@
  * F5 eval: builds, signs and loads a content pack with the real embedding
  * model, and measures what a device would see.
  *
- *   npm run eval:packs [-- --dir content/sample --flip-sample N]
+ *   npm run eval:packs [-- --dir content/sample --flip-sample N --audio-stride N]
  *
  * - Build: source validation, card vectors (EmbeddingGemma), archive; pack size.
  * - Load: verify and load time of the signed pack (median of 50).
  * - Tamper sweep: flip the lowest bit of every byte of the signed pack in turn
  *   (or of N random bytes with --flip-sample) and count how many the loader
- *   accepts. The target is zero. The archive's CRCs catch these first, so a
+ *   accepts. The target is zero. Recordings are megabytes of sample data
+ *   behind one sha256 each, so inside them only the first 64 bytes (the WAV
+ *   header) and every Nth byte after are flipped (--audio-stride, default 499). The archive's CRCs catch these first, so a
  *   second sweep flips every byte of every file and rewrites the archive with
  *   correct CRCs, as a deliberate attacker would: only the signature and the
  *   manifest's sha256 stand in the way.
@@ -37,7 +39,11 @@ import { generateSigningKey, loadPrivateKey, trustedKey } from '../src/features/
 import { cosine } from '../src/features/translate/checks.js'
 import { quantile, round } from './stats.js'
 
-const { values } = parseArgs({ options: { dir: { type: 'string' }, 'flip-sample': { type: 'string' } } })
+const { values } = parseArgs({ options: { dir: { type: 'string' }, 'flip-sample': { type: 'string' }, 'audio-stride': { type: 'string' } } })
+const audioStride = Number(values['audio-stride'] ?? 499)
+/** Byte offsets to flip in `data`: all of it, or for a recording its header and every audioStride-th byte. */
+const offsetsIn = (name: string, length: number) =>
+  Array.from({ length }, (_, i) => i).filter((i) => !name.startsWith('audio/') || i < 64 || i % audioStride === 0)
 const sourceDir = path.resolve(values.dir ?? path.join(PROJECT_ROOT, 'content/sample'))
 const outDir = path.join(PROJECT_ROOT, 'eval/outputs')
 await fs.mkdir(outDir, { recursive: true })
@@ -73,11 +79,22 @@ for (let i = 0; i < 50; i++) {
   loadMs.push(performance.now() - t)
 }
 
-// Tamper sweep.
+// Tamper sweep. Stored entries sit in the archive in order: a 30-byte local header, the name, the data.
 const flipSample = values['flip-sample'] ? Number(values['flip-sample']) : undefined
+const audioSpans: [start: number, end: number][] = []
+let at = 0
+for (const [name, data] of parseArchive(signed)) {
+  const start = at + 30 + Buffer.byteLength(name)
+  if (name.startsWith('audio/')) audioSpans.push([start, start + data.length])
+  at = start + data.length
+}
+const inAudio = (i: number) => audioSpans.find(([s, e]) => i >= s && i < e)
 const positions = flipSample
   ? Array.from({ length: flipSample }, (_, i) => Math.floor(((i * 2654435761) % 2 ** 32) / 2 ** 32 * signed.length))
-  : Array.from({ length: signed.length }, (_, i) => i)
+  : Array.from({ length: signed.length }, (_, i) => i).filter((i) => {
+      const span = inAudio(i)
+      return !span || i - span[0] < 64 || (i - span[0]) % audioStride === 0
+    })
 const sweepLoader = new PackLoader({ trustedKeys })
 const byProblem: Partial<Record<PackProblem, number>> = {}
 const accepted: number[] = []
@@ -107,7 +124,7 @@ const tRepaired = performance.now()
 for (const [e, entry] of entries.entries()) {
   const filePositions = flipSample
     ? positions.map((p) => p % Math.max(1, entry.data.length)).slice(0, entry.data.length)
-    : Array.from({ length: entry.data.length }, (_, i) => i)
+    : offsetsIn(entry.name, entry.data.length)
   repaired.byFile[entry.name] = filePositions.length
   for (const i of filePositions) {
     const data = Buffer.from(entry.data)
@@ -170,13 +187,15 @@ const summary = {
   load: { medianMs: round(quantile(loadMs, 0.5), 2), p90Ms: round(quantile(loadMs, 0.9), 2) },
   tamperSweep: {
     flipped: positions.length,
+    of: signed.length,
     exhaustive: !flipSample,
+    audioStride,
     accepted: accepted.length,
     acceptedAt: accepted.slice(0, 20),
     byProblem,
     seconds: round(sweepMs / 1000, 1)
   },
-  tamperSweepCrcRepaired: { ...repaired, accepted: repaired.accepted.length, acceptedAt: repaired.accepted.slice(0, 20), seconds: round(repairedMs / 1000, 1) },
+  tamperSweepCrcRepaired: { ...repaired, audioStride, accepted: repaired.accepted.length, acceptedAt: repaired.accepted.slice(0, 20), seconds: round(repairedMs / 1000, 1) },
   recompute: { ms: Math.round(recomputeMs), status: recomputed.embeddings, minCosineToPacked: round(minCos, 6), maxAbsDiff: maxAbs },
   vectorNorm: { min: round(Math.min(...norms), 4), max: round(Math.max(...norms), 4) },
   crossLanguage: {

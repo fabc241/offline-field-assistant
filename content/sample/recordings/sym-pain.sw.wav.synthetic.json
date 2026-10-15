@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Unaumwa wapi?",
+  "sha256": "3aa4fa0d3fb7ff6ff1943f33fff6349531368931f842b90dde65ce409d2fe3de",
+  "created": "2026-10-15T15:49:01.432Z",
+  "seed": 1,
+  "heard": "Una umwa wapi?",
+  "cer": 8.3
+}

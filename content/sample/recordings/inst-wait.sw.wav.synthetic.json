@@ -1,0 +1,10 @@
+{
+  "engine": "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0",
+  "lang": "sw",
+  "text": "Tafadhali subiri hapa.",
+  "sha256": "f02eda9db106ece740f352760209723303af9180e4e8366154e30833a29a06d0",
+  "created": "2026-10-15T15:50:27.805Z",
+  "seed": 1,
+  "heard": "Fafadhalis ubiri hapa.",
+  "cer": 14.3
+}

@@ -61,6 +61,19 @@ export class AfplayQueue {
   }
 }
 
+/** Plays WAV bytes as they are. */
+export async function playWav(wav: Uint8Array): Promise<void> {
+  if (process.platform !== 'darwin') throw new Error('Playing needs macOS (afplay); use --out and another player')
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'ofa-play-'))
+  try {
+    const file = path.join(dir, 'phrase.wav')
+    await fs.writeFile(file, wav)
+    await afplay(file)
+  } finally {
+    await fs.rm(dir, { recursive: true, force: true })
+  }
+}
+
 function afplay(file: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const proc = spawn('afplay', [file], { stdio: 'ignore' })
