@@ -1,0 +1,61 @@
+id,lang,kind,expected,query,heard,wer,rank,typedRank,offered
+q001,en,keyword,dehydration-child,dehydration child,dehydration child.,0,1,1,dehydration-child | diarrhoea-adult
+q002,sw,keyword,dehydration-child,upungufu wa maji mtoto,"Upungufu wa madib doto,",50,0,1,
+q003,en,question,dehydration-child,what are the signs of dehydration in a child?,What are the signs of dehydration in a child?,0,1,1,dehydration-child | cough-child | diarrhoea-adult
+q004,sw,question,dehydration-child,mtoto amepungukiwa na maji nifanye nini?,Mtoto wa mefungukiwa na magi ni fange nini?,83.3,0,1,
+q005,en,synonym,dehydration-child,"kid drying out, very drowsy",Kid drawing out. Very drozy.,40,0,1,
+q006,sw,synonym,dehydration-child,mtoto amekauka mwili na amechoka sana,Toto amekauka mwili na amechuka sana.,33.3,0,0,
+q007,en,keyword,fever-child,child fever,A child fever?,50,1,1,fever-child | cough-child | dehydration-child
+q008,sw,keyword,fever-child,homa mtoto,Omam tuipo.,100,0,1,
+q009,en,question,fever-child,what should I do when a child has a fever?,What should I do when a child has a fever?,0,1,1,fever-child | cough-child | dehydration-child
+q010,sw,question,fever-child,mtoto ana homa nifanye nini?,Mpeuto anahoma ni fanginini?,100,0,1,
+q011,en,synonym,fever-child,the kid is burning up,The kid is burning up.,0,0,0,
+q012,sw,synonym,fever-child,mtoto mwili una joto kali,Mtoto mwili unajoto kali.,40,2,2,newborn-danger | fever-child | pregnancy-danger
+q013,en,keyword,malaria-adult,malaria adult,Malaria adult.,0,1,1,malaria-adult | diarrhoea-adult | fever-child
+q014,sw,keyword,malaria-adult,malaria mtu mzima,malaria mtumzima.,66.7,1,1,malaria-adult
+q015,en,question,malaria-adult,how do I test an adult for malaria?,How do I test an adult for malaria?,0,1,1,malaria-adult | fever-child
+q016,sw,question,malaria-adult,mtu mzima ana dalili za malaria nifanye nini?,Mtu nzima na dalili za malaria ni fanya nini?,50,1,1,malaria-adult
+q017,en,synonym,malaria-adult,grown man with chills and dark pee,Grow man with shells and dark peep.,42.9,0,0,
+q018,sw,synonym,malaria-adult,baba ana homa kali na baridi,Baba ana homa kali na baridi.,0,0,0,
+q019,en,keyword,cough-child,child cough,Child called?,50,0,1,
+q020,sw,keyword,cough-child,kikohozi mtoto,Ki kuhosim toto,150,0,1,
+q021,en,question,cough-child,how do I count a child's breathing rate?,How do I count a child's breathing rate?,0,1,1,cough-child
+q022,sw,question,cough-child,"mtoto anakohoa na anapumua kwa shida, nifanye nini?",Ntoto anakohoa na anakumua kwa shida ni fanya nini?,50,0,1,
+q023,en,synonym,cough-child,toddler gasping for air,Toddler gasping for air.,0,1,1,cough-child
+q024,sw,synonym,cough-child,mtoto anahema sana,Dutra na himasana,100,0,0,
+q025,en,keyword,pregnancy-danger,pregnancy bleeding,Cregnancy Bleeding.,50,1,1,pregnancy-danger
+q026,sw,keyword,pregnancy-danger,ujauzito damu,kujo zito damm,150,0,1,
+q027,en,question,pregnancy-danger,what are the danger signs in pregnancy?,What are the danger signs in pregnancy?,0,1,1,pregnancy-danger
+q028,sw,question,pregnancy-danger,mama mjamzito anatoka damu nifanye nini?,Mama mjamzito anatoka damo ni fanya nini?,50,0,0,
+q029,en,synonym,pregnancy-danger,expectant mother says the baby stopped kicking,Expect a mother says the baby stopped kicking.,28.6,0,0,
+q030,sw,synonym,pregnancy-danger,mama mwenye mimba ana kizunguzungu na kuona ukungu,Mama mwenye mimba ana kizungu zungu na kuona ukungu,25,0,0,
+q031,en,keyword,newborn-danger,newborn danger signs,Newborn danger signs.,0,1,1,newborn-danger
+q032,sw,keyword,newborn-danger,mtoto mchanga hatari,Ndutom changa hachari,100,0,1,
+q033,en,question,newborn-danger,what are the danger signs in a newborn?,What are the danger signs in a newborn?,0,1,1,newborn-danger
+q034,sw,question,newborn-danger,"mtoto mchanga hanyonyi vizuri, nifanye nini?",Mdotoa mchangka haño ni vizuuli ni fa nganini?,133.3,0,1,
+q035,en,synonym,newborn-danger,two day old infant is cold and won't suckle,Two-day-old infant is cold and won't suckle.,0,1,1,newborn-danger
+q036,sw,synonym,newborn-danger,kichanga kina baridi mwilini,"Kichangakina bari di muilini,",100,0,0,
+q037,en,keyword,malnutrition-child,malnutrition child,Malnutrition Child.,0,1,1,malnutrition-child
+q038,sw,keyword,malnutrition-child,utapiamlo mtoto,Uta piyamu alam toato.,200,0,1,
+q039,en,question,malnutrition-child,how do I check a child for malnutrition?,How do I check a child for malnutrition?,0,1,1,malnutrition-child
+q040,sw,question,malnutrition-child,mtoto amekonda sana nifanye nini?,"Ntoto hame konda sana ni fanyanini,",100,0,1,
+q041,en,synonym,malnutrition-child,underweight toddler not growing,Underweight toddler not growing.,0,0,0,
+q042,sw,synonym,malnutrition-child,"mtoto hana lishe bora, mwili umedhoofika","Mtoto ha naliche bora, mwiliu me dhufika.",83.3,0,0,
+q043,en,keyword,wound-care,wound care,Wound care.,0,1,1,wound-care | burns
+q044,sw,keyword,wound-care,kidonda,Kido anda?,200,0,1,
+q045,en,question,wound-care,how do I clean a wound?,How do I clean a wound?,0,1,1,wound-care | burns
+q046,sw,question,wound-care,nitasafishaje kidonda?,Mita safisha nje kidonda,150,0,1,
+q047,en,synonym,wound-care,deep cut on the leg from a machete,deep cut on the leg from a machete.,0,0,0,
+q048,sw,synonym,wound-care,amejikata mguu kwa panga,Amejikata mkukuwa panga.,50,0,0,
+q049,en,keyword,burns,burns,earns fat.,200,0,1,
+q050,sw,keyword,burns,kuungua moto,Kungwa mochum,100,0,1,
+q051,en,question,burns,what do I do for a burn?,What do I do for a burn?,0,1,1,burns
+q052,sw,question,burns,mtoto ameungua moto nifanye nini?,Mdoto wa meungua moto ni fanyenini?,100,0,1,
+q053,en,synonym,burns,scalded by boiling water,"Scalded by boiling water,",0,0,0,
+q054,sw,synonym,burns,amechomwa na maji ya moto,Amechomua na Madiamoto,80,0,1,
+q055,en,keyword,diarrhoea-adult,adult diarrhoea,"diarrhea,",100,1,1,diarrhoea-adult | dehydration-child
+q056,sw,keyword,diarrhoea-adult,kuharisha mtu mzima,Uhairi sham tumzima.,100,0,1,
+q057,en,question,diarrhoea-adult,what should I give an adult with diarrhoea?,What should I give an adult with diarrhea?,12.5,1,1,diarrhoea-adult | dehydration-child
+q058,sw,question,diarrhoea-adult,"mtu mzima anaharisha siku tatu, nifanye nini?","Mtu nzima anaharisha siku 3, unifanya nini?",42.9,1,1,diarrhoea-adult
+q059,en,synonym,diarrhoea-adult,man with the runs for three days,man with the runs for three days.,0,0,0,
+q060,sw,synonym,diarrhoea-adult,baba anaenda haja mara nyingi,Baba anaida haja maranyingi.,60,0,0,

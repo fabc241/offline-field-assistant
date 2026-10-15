@@ -7,6 +7,7 @@ import { PackError, PackLoader } from '../features/packs/loader.js'
 import { PackStore } from '../features/packs/store.js'
 import { TRUSTED_PACK_KEYS } from '../features/packs/trusted-keys.js'
 import { Phrasebook, type PhraseEntry } from '../features/phrasebook/phrasebook.js'
+import { loadInstalledPack } from './installed-pack.js'
 import { playWav } from './player.js'
 
 const USAGE = `Usage:
@@ -38,13 +39,7 @@ export async function phraseCommand(config: AppConfig, args: string[]): Promise<
 /** Loads (and verifies) the installed pack; no model is needed. */
 async function openPhrasebook(config: AppConfig, packId: string | undefined): Promise<Phrasebook> {
   const store = new PackStore(config.packsDir, new PackLoader({ trustedKeys: TRUSTED_PACK_KEYS }))
-  if (!packId) {
-    const installed = await store.list()
-    if (!installed.length) throw new Error(`No packs installed in ${config.packsDir}; install one with ofa pack install`)
-    if (installed.length > 1) throw new Error(`${installed.length} packs are installed (${installed.map((p) => p.id).join(', ')}); choose one with --pack`)
-    packId = installed[0]!.id
-  }
-  return new Phrasebook(await store.load(packId))
+  return new Phrasebook(await loadInstalledPack(store, packId))
 }
 
 const subcommands: Record<string, Sub> = {

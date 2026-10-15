@@ -563,3 +563,139 @@ without recordings).
 - The packs are now about 50× larger (4.9 MB vs 100 KB) and that is fine.
   Verifying hashes every recording at each open (2.8 ms), and nothing is
   decompressed.
+
+## F7 — Ask the guide (measured 2026-10-15; top-3 target not met)
+
+`Guide` (`src/features/guide/`) answers a typed or spoken question with
+cards from a verified pack, in the language asked. The guide generates
+nothing. A `GuideResult` is either `match`, with 1–3 cards, or `no-match`,
+with "No match in the guide — see a clinician." in the asked language. It is
+never empty. Each card has `dangerSigns` before `steps`, both non-empty
+tuples, in that key order in the JSON as well. A unit test pins `guide.ts`'s
+imports: no translator, speaker or model runtime.
+
+Search has two halves, and both score every card:
+- **Keywords** (`keyword-index.ts`): BM25 over each card's text in both
+  languages plus its tags, with the title counted twice, so a query that mixes
+  languages still finds its card. Query words match the way the phrasebook's
+  do (word starts, parts of words, typos from 5 letters, -ing/-ed/ku-). Two
+  more forms are added: English plurals and Swahili verbs without their
+  subject and tense ("anatapika" → "tapika", found in "kutapika"). English and
+  Swahili function words are dropped. **Coverage** is the share of the query's
+  words a card matches, each weighted by rarity (as in the phrasebook).
+- **Meaning**: the query embedded with EmbeddingGemma (`query` prompt) and
+  compared by cosine with the pack's card vectors, taking the closer of the
+  two languages. Confidence is the **lift** over the median card for that
+  query, not the raw cosine. Swahili queries sit closer to every card than
+  English ones (off-topic Swahili around 0.5, off-topic English around 0.35),
+  so a raw cosine threshold would mean different things in the two languages.
+
+A card is offered when coverage ≥ 0.45 or lift ≥ 0.17. Offered cards rank by
+coverage + 2 × lift, with BM25 breaking ties. Without an embedding model,
+with stale pack vectors, or when the embedder throws, search runs on keywords
+alone and the result says why (`mode`, `degraded`). `searchByVoice` runs F2
+speech to text in the given language, then `search()`, and returns what was
+heard alongside the result; nothing heard means no match. `ofa guide` needs
+no model for `--card` or `--keyword-only`.
+
+**Thresholds and fusion were chosen on a separate tuning set**,
+`eval/datasets/guide-dev.csv` (40 in-scope and 14 out-of-scope questions),
+before the eval queries were run. Each threshold sits midway in the gap on
+the tuning set: out-of-scope maxima were coverage 0.39 ("ng'ombe wangu ni
+mgonjwa" → burns, via *mgonjwa*) and lift 0.158 ("dog bite" → burns); the
+lowest in-scope values above them were 0.5 and 0.18. Nothing was changed after
+the eval queries were run.
+
+| Check | Result |
+|---|---|
+| Unit tests (`npm test`) | 250/250 pass (20 new) |
+| Real-model tests (`npm run test:models`) | 32/32 pass (3 new) |
+| Network audit: F7 eval, `test:models`, `ofa guide --voice` | no sockets opened |
+
+### Results (M4, sample pack 0.2.0: 10 cards)
+
+Queries: `eval/datasets/guide-queries.csv`, 100 in scope (10 per card, 50
+en and 50 sw, 20 of each kind) and 20 out of scope. I wrote them, as with
+F6, so real users' questions must re-measure this. A hit is the expected card
+among the at most 3 the guide offers. With 10 cards, picking 3 at random
+would hit 30 %.
+
+| Measure | Result |
+|---|---|
+| **Top 3, all 100 (target ≥ 90 %)** | **80/100: not met**; top 1 79/100 |
+| … keyword, question, typo, mixed (the kinds the plan names, plus questions) | 75/80 (94 %) |
+| … synonym (words the card does not use: "burning up", "scalded", "the runs") | 5/20 |
+| … by language | en 41/50, sw 39/50 |
+| Out-of-scope questions answered "no match — see a clinician" | **20/20** |
+| A wrong card offered in place of the right one | 0: all 20 misses were "no match"; 1 hit was at rank 2 |
+| Tuning set, same settings | 37/40 top 3 (all top 1), 14/14 out of scope |
+| Open: verify the signed pack, index the cards | median 2.9 ms |
+| Search, hybrid | median 7.7 ms (embedding the query 7.2 ms); keyword only 0.007 ms |
+| Spoken question to answer (Whisper + search) | median 1.05 s |
+
+Top 3 by kind, default settings: keyword 20/20, question 19/20, typo 17/20,
+mixed 19/20, synonym 5/20.
+
+**A/B on the same 100 (top 3 / top 1; out of scope answered "no match"):**
+
+| Variant | Top 3 | Top 1 | en | sw | Out of scope |
+|---|---|---|---|---|---|
+| Hybrid, score fusion (default) | **80** | **79** | 41 | 39 | 20/20 |
+| Hybrid, reciprocal-rank fusion (the plan's) | 80 | 78 | 41 | 39 | 20/20 |
+| Keyword only | 71 | 70 | 33 | 38 | 20/20 |
+| Meaning only | 39 | 39 | 34 | **5** | 20/20 |
+
+**Spoken questions** (keyword, question and synonym kinds: 60 questions
+read by Chatterbox's built-in voice, heard by Whisper large-v3-turbo):
+
+| | Spoken | Same, typed | Whisper heard |
+|---|---|---|---|
+| en | 20/30 | 23/30 | WER 9.4 / CER 4.1 |
+| sw | **4/30** | 21/30 | WER 73.1 / CER 17.8 |
+
+Per query: `eval/outputs/guide-search.csv` (each variant) and
+`guide-voice.csv` (what was heard). Summary and the threshold sweep:
+`eval/outputs/guide-summary.json`.
+
+### Findings
+- **The 90 % target is missed on synonyms, not on matching.** On the kinds
+  keyword search covers, top 3 is 75/80. Synonyms reach 5/20: the meaning
+  half rarely lifts a card by 0.17 when no keyword matches. Every miss fails
+  safe: the guide says "see a clinician" and shows no wrong card.
+- **Lowering the lift threshold buys synonyms at the cost of out-of-scope
+  safety.** The eval sweep gives 86/100 at lift 0.12 with 20/20 out of scope
+  still refused. But the tuning set had "dog bite" at lift 0.158, which 0.12
+  would answer with the burns card. The sweep ran on the eval queries, so it
+  cannot be used to pick a value. Picking one needs a fresh query set, ideally
+  real field questions.
+- **Meaning search does not work for Swahili on its own** (5/50 against 34/50
+  English). EmbeddingGemma puts every Swahili text about as close to every card,
+  so a Swahili lift rarely clears 0.17. Swahili relies on keywords (38/50
+  alone). That is why confidence is a lift and not a raw cosine, and why the
+  word forms matter.
+- **Reciprocal-rank fusion lets a weak meaning signal outrank a full keyword
+  match.** On the tuning set it got 37/40 top 1 against 40/40 for coverage +
+  2 × lift. In "mtoto ana homa na kutapika", fever-child has coverage 0.88, but
+  meaning ranks malnutrition first (lift 0.09). Malnutrition also matches the
+  common word *mtoto*, so being in both lists wins under RRF. On the eval set
+  the two are within one query (top 1 79 vs 78). Both stay in code (`fusion`).
+- **Typo misses are short words.** "chld", "adlt" and "mzma" are 4 letters,
+  below the phrasebook's 5-letter typo floor (kept so that "kula"/"kila" do not
+  match). An unmatched word counts most against coverage, so one such word
+  sinks the query. Allowing one typo at 4 letters is a candidate, and it needs
+  new queries to measure.
+- **Some missing words are content gaps, not search gaps.** The cards say
+  *ujauzito* (pregnancy) but never *mjamzito* (pregnant woman), the word
+  people use. So "mama mjamzito anatoka damu" misses in both query sets. The
+  card authors can fix this in `tags` with no code change.
+- **Spoken Swahili questions mostly fail, but the synthetic speech is the
+  cause.** Whisper heard "homa mtoto" as "Omam tuipo" and "kikohozi mtoto" as
+  "Ki kuhosim toto" (WER 73, against FLEURS human Swahili CER 8.4 in F2). These
+  are Chatterbox placeholders, so 4/30 is a floor for synthetic speech and not
+  a field number. Very short English queries also suffer: "burns" was heard
+  as "earns fat", "child cough" as "Child called?". The UI must show what was
+  heard (`transcript`) before the cards.
+- With 10 cards the index is in memory and a search takes about 8 ms, almost
+  all of it the query embedding. Keyword scoring is linear in the vocabulary
+  (expansions are cached per query word) and stays well under a millisecond
+  at the plan's ~50 cards.

@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --dir tests/unit",
     "test:models": "vitest run --dir tests/models --no-file-parallelism",
-    "eval": "npm run eval:translate && npm run eval:stt && npm run eval:tts && npm run eval:converse && npm run eval:packs && npm run eval:phrasebook",
+    "eval": "npm run eval:translate && npm run eval:stt && npm run eval:tts && npm run eval:converse && npm run eval:packs && npm run eval:phrasebook && npm run eval:guide",
     "eval:translate": "tsx eval/run-translate.ts",
     "electron:smoke": "electron .",
     "package": "electron-forge package --arch=arm64",
@@ -29,7 +29,8 @@
     "eval:converse": "tsx eval/run-converse.ts",
     "eval:packs": "tsx eval/run-packs.ts",
     "make-phrase-recordings": "tsx scripts/make-phrase-recordings.ts",
-    "eval:phrasebook": "tsx eval/run-phrasebook.ts"
+    "eval:phrasebook": "tsx eval/run-phrasebook.ts",
+    "eval:guide": "tsx eval/run-guide.ts"
   },
   "dependencies": {
     "@qvac/sdk": "0.21.0",

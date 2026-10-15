@@ -1,0 +1,121 @@
+query,lang,expected,kind
+dehydration child,en,dehydration-child,keyword
+upungufu wa maji mtoto,sw,dehydration-child,keyword
+what are the signs of dehydration in a child?,en,dehydration-child,question
+mtoto amepungukiwa na maji nifanye nini?,sw,dehydration-child,question
+dehidration in a chlid,en,dehydration-child,typo
+mtoto macho yamezma,sw,dehydration-child,typo
+child with sunken eyes na hawezi kunywa,en,dehydration-child,mixed
+mtoto ana dehydration,sw,dehydration-child,mixed
+"kid drying out, very drowsy",en,dehydration-child,synonym
+mtoto amekauka mwili na amechoka sana,sw,dehydration-child,synonym
+child fever,en,fever-child,keyword
+homa mtoto,sw,fever-child,keyword
+what should I do when a child has a fever?,en,fever-child,question
+mtoto ana homa nifanye nini?,sw,fever-child,question
+feaver in a chld,en,fever-child,typo
+mtoto ana homma na shingo imekakama,sw,fever-child,typo
+child with homa and stiff neck,en,fever-child,mixed
+mtoto ana fever na anatapika,sw,fever-child,mixed
+the kid is burning up,en,fever-child,synonym
+mtoto mwili una joto kali,sw,fever-child,synonym
+malaria adult,en,malaria-adult,keyword
+malaria mtu mzima,sw,malaria-adult,keyword
+how do I test an adult for malaria?,en,malaria-adult,question
+mtu mzima ana dalili za malaria nifanye nini?,sw,malaria-adult,question
+malria in an adlt,en,malaria-adult,typo
+maleria kwa mtu mzma,sw,malaria-adult,typo
+adult with malaria na macho ya njano,en,malaria-adult,mixed
+mtu mzima ana malaria rapid test,sw,malaria-adult,mixed
+grown man with chills and dark pee,en,malaria-adult,synonym
+baba ana homa kali na baridi,sw,malaria-adult,synonym
+child cough,en,cough-child,keyword
+kikohozi mtoto,sw,cough-child,keyword
+how do I count a child's breathing rate?,en,cough-child,question
+"mtoto anakohoa na anapumua kwa shida, nifanye nini?",sw,cough-child,question
+chld coughing and breathng fast,en,cough-child,typo
+mtoto ana kikohozo,sw,cough-child,typo
+child with kikohozi,en,cough-child,mixed
+mtoto ana cough na kifua kinavutika,sw,cough-child,mixed
+toddler gasping for air,en,cough-child,synonym
+mtoto anahema sana,sw,cough-child,synonym
+pregnancy bleeding,en,pregnancy-danger,keyword
+ujauzito damu,sw,pregnancy-danger,keyword
+what are the danger signs in pregnancy?,en,pregnancy-danger,question
+mama mjamzito anatoka damu nifanye nini?,sw,pregnancy-danger,question
+pregnent woman with severe headake,en,pregnancy-danger,typo
+dalili za hatari wakati wa ujauzto,sw,pregnancy-danger,typo
+pregnant woman ana degedege,en,pregnancy-danger,mixed
+mjamzito ana severe headache,sw,pregnancy-danger,mixed
+expectant mother says the baby stopped kicking,en,pregnancy-danger,synonym
+mama mwenye mimba ana kizunguzungu na kuona ukungu,sw,pregnancy-danger,synonym
+newborn danger signs,en,newborn-danger,keyword
+mtoto mchanga hatari,sw,newborn-danger,keyword
+what are the danger signs in a newborn?,en,newborn-danger,question
+"mtoto mchanga hanyonyi vizuri, nifanye nini?",sw,newborn-danger,question
+new born not feeeding well,en,newborn-danger,typo
+mtoto mchnga ana nyayo za njano,sw,newborn-danger,typo
+newborn baby hanyonyi,en,newborn-danger,mixed
+mtoto mchanga ana yellow palms,sw,newborn-danger,mixed
+two day old infant is cold and won't suckle,en,newborn-danger,synonym
+kichanga kina baridi mwilini,sw,newborn-danger,synonym
+malnutrition child,en,malnutrition-child,keyword
+utapiamlo mtoto,sw,malnutrition-child,keyword
+how do I check a child for malnutrition?,en,malnutrition-child,question
+mtoto amekonda sana nifanye nini?,sw,malnutrition-child,question
+malnutriton in a child,en,malnutrition-child,typo
+mtoto ana utapiamro,sw,malnutrition-child,typo
+"very thin child, amekonda sana",en,malnutrition-child,mixed
+mtoto ana swelling ya miguu,sw,malnutrition-child,mixed
+underweight toddler not growing,en,malnutrition-child,synonym
+"mtoto hana lishe bora, mwili umedhoofika",sw,malnutrition-child,synonym
+wound care,en,wound-care,keyword
+kidonda,sw,wound-care,keyword
+how do I clean a wound?,en,wound-care,question
+nitasafishaje kidonda?,sw,wound-care,question
+infected wund with pus,en,wound-care,typo
+kidoda kina usaha,sw,wound-care,typo
+wound ina usaha,en,wound-care,mixed
+kidonda kina pus na harufu mbaya,sw,wound-care,mixed
+deep cut on the leg from a machete,en,wound-care,synonym
+amejikata mguu kwa panga,sw,wound-care,synonym
+burns,en,burns,keyword
+kuungua moto,sw,burns,keyword
+what do I do for a burn?,en,burns,question
+mtoto ameungua moto nifanye nini?,sw,burns,question
+"burnt hand, can I put tothpaste on it?",en,burns,typo
+ameunguwa na moto,sw,burns,typo
+"burn on the hand, ameungua",en,burns,mixed
+ameungua na hot water,sw,burns,mixed
+scalded by boiling water,en,burns,synonym
+amechomwa na maji ya moto,sw,burns,synonym
+adult diarrhoea,en,diarrhoea-adult,keyword
+kuharisha mtu mzima,sw,diarrhoea-adult,keyword
+what should I give an adult with diarrhoea?,en,diarrhoea-adult,question
+"mtu mzima anaharisha siku tatu, nifanye nini?",sw,diarrhoea-adult,question
+diarhea in an adult,en,diarrhoea-adult,typo
+kuharsha mtu mzima,sw,diarrhoea-adult,typo
+adult with diarrhoea na damu kwenye kinyesi,en,diarrhoea-adult,mixed
+mtu mzima ana diarrhoea,sw,diarrhoea-adult,mixed
+man with the runs for three days,en,diarrhoea-adult,synonym
+baba anaenda haja mara nyingi,sw,diarrhoea-adult,synonym
+how do I fix a bicycle,en,,out-of-scope
+price of maize at the market,en,,out-of-scope
+snake bite,en,,out-of-scope
+broken arm,en,,out-of-scope
+how to register a birth certificate,en,,out-of-scope
+toothache,en,,out-of-scope
+my phone battery is dead,en,,out-of-scope
+how to plant beans,en,,out-of-scope
+where is the nearest police station,en,,out-of-scope
+family planning pills,en,,out-of-scope
+bei ya mahindi sokoni,sw,,out-of-scope
+gari limeharibika,sw,,out-of-scope
+nimeumwa na nyoka,sw,,out-of-scope
+jino linauma,sw,,out-of-scope
+mkono umevunjika,sw,,out-of-scope
+jinsi ya kupanda maharagwe,sw,,out-of-scope
+simu yangu imezima,sw,,out-of-scope
+kituo cha polisi kiko wapi,sw,,out-of-scope
+nataka kusajili kuzaliwa kwa mtoto,sw,,out-of-scope
+vidonge vya uzazi wa mpango,sw,,out-of-scope

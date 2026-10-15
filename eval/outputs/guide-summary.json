@@ -1,0 +1,621 @@
+{
+  "source": "content/sample",
+  "pack": {
+    "id": "sample-intake",
+    "version": "0.2.0",
+    "cards": 10
+  },
+  "thresholds": {
+    "minCoverage": 0.45,
+    "minLift": 0.17
+  },
+  "randomTop3": 0.3,
+  "open": {
+    "medianMs": 2.9,
+    "p90Ms": 3.8
+  },
+  "searchTime": {
+    "hybrid": {
+      "medianMs": 7.7,
+      "p90Ms": 8.1
+    },
+    "embedQuery": {
+      "medianMs": 7.2,
+      "p90Ms": 7.7
+    },
+    "keywordOnly": {
+      "medianMs": 0.007,
+      "p90Ms": 0.012
+    }
+  },
+  "search": {
+    "hybrid, score fusion (default)": {
+      "all": {
+        "queries": 100,
+        "top1": 79,
+        "top3": 80,
+        "outOfScope": 20,
+        "noMatch": 20
+      },
+      "byLang": {
+        "en": {
+          "queries": 50,
+          "top1": 41,
+          "top3": 41,
+          "outOfScope": 10,
+          "noMatch": 10
+        },
+        "sw": {
+          "queries": 50,
+          "top1": 38,
+          "top3": 39,
+          "outOfScope": 10,
+          "noMatch": 10
+        }
+      },
+      "byKind": {
+        "keyword": {
+          "queries": 20,
+          "top1": 20,
+          "top3": 20
+        },
+        "question": {
+          "queries": 20,
+          "top1": 19,
+          "top3": 19
+        },
+        "typo": {
+          "queries": 20,
+          "top1": 17,
+          "top3": 17
+        },
+        "mixed": {
+          "queries": 20,
+          "top1": 19,
+          "top3": 19
+        },
+        "synonym": {
+          "queries": 20,
+          "top1": 4,
+          "top3": 5
+        }
+      },
+      "misses": [
+        "synonym sw \"mtoto amekauka mwili na amechoka sana\" → dehydration-child; offered nothing",
+        "typo en \"feaver in a chld\" → fever-child; offered nothing",
+        "synonym en \"the kid is burning up\" → fever-child; offered nothing",
+        "typo en \"malria in an adlt\" → malaria-adult; offered nothing",
+        "typo sw \"maleria kwa mtu mzma\" → malaria-adult; offered nothing",
+        "synonym en \"grown man with chills and dark pee\" → malaria-adult; offered nothing",
+        "synonym sw \"baba ana homa kali na baridi\" → malaria-adult; offered nothing",
+        "synonym sw \"mtoto anahema sana\" → cough-child; offered nothing",
+        "question sw \"mama mjamzito anatoka damu nifanye nini?\" → pregnancy-danger; offered nothing",
+        "synonym en \"expectant mother says the baby stopped kicking\" → pregnancy-danger; offered nothing",
+        "synonym sw \"mama mwenye mimba ana kizunguzungu na kuona ukungu\" → pregnancy-danger; offered nothing",
+        "synonym sw \"kichanga kina baridi mwilini\" → newborn-danger; offered nothing",
+        "synonym en \"underweight toddler not growing\" → malnutrition-child; offered nothing",
+        "synonym sw \"mtoto hana lishe bora, mwili umedhoofika\" → malnutrition-child; offered nothing",
+        "synonym en \"deep cut on the leg from a machete\" → wound-care; offered nothing",
+        "synonym sw \"amejikata mguu kwa panga\" → wound-care; offered nothing",
+        "mixed sw \"ameungua na hot water\" → burns; offered nothing",
+        "synonym en \"scalded by boiling water\" → burns; offered nothing",
+        "synonym en \"man with the runs for three days\" → diarrhoea-adult; offered nothing",
+        "synonym sw \"baba anaenda haja mara nyingi\" → diarrhoea-adult; offered nothing"
+      ],
+      "acceptedOutOfScope": []
+    },
+    "hybrid, reciprocal-rank fusion": {
+      "all": {
+        "queries": 100,
+        "top1": 78,
+        "top3": 80,
+        "outOfScope": 20,
+        "noMatch": 20
+      },
+      "byLang": {
+        "en": {
+          "queries": 50,
+          "top1": 40,
+          "top3": 41,
+          "outOfScope": 10,
+          "noMatch": 10
+        },
+        "sw": {
+          "queries": 50,
+          "top1": 38,
+          "top3": 39,
+          "outOfScope": 10,
+          "noMatch": 10
+        }
+      },
+      "byKind": {
+        "keyword": {
+          "queries": 20,
+          "top1": 20,
+          "top3": 20
+        },
+        "question": {
+          "queries": 20,
+          "top1": 19,
+          "top3": 19
+        },
+        "typo": {
+          "queries": 20,
+          "top1": 17,
+          "top3": 17
+        },
+        "mixed": {
+          "queries": 20,
+          "top1": 18,
+          "top3": 19
+        },
+        "synonym": {
+          "queries": 20,
+          "top1": 4,
+          "top3": 5
+        }
+      },
+      "misses": [
+        "synonym sw \"mtoto amekauka mwili na amechoka sana\" → dehydration-child; offered nothing",
+        "typo en \"feaver in a chld\" → fever-child; offered nothing",
+        "synonym en \"the kid is burning up\" → fever-child; offered nothing",
+        "typo en \"malria in an adlt\" → malaria-adult; offered nothing",
+        "typo sw \"maleria kwa mtu mzma\" → malaria-adult; offered nothing",
+        "synonym en \"grown man with chills and dark pee\" → malaria-adult; offered nothing",
+        "synonym sw \"baba ana homa kali na baridi\" → malaria-adult; offered nothing",
+        "synonym sw \"mtoto anahema sana\" → cough-child; offered nothing",
+        "question sw \"mama mjamzito anatoka damu nifanye nini?\" → pregnancy-danger; offered nothing",
+        "synonym en \"expectant mother says the baby stopped kicking\" → pregnancy-danger; offered nothing",
+        "synonym sw \"mama mwenye mimba ana kizunguzungu na kuona ukungu\" → pregnancy-danger; offered nothing",
+        "synonym sw \"kichanga kina baridi mwilini\" → newborn-danger; offered nothing",
+        "synonym en \"underweight toddler not growing\" → malnutrition-child; offered nothing",
+        "synonym sw \"mtoto hana lishe bora, mwili umedhoofika\" → malnutrition-child; offered nothing",
+        "synonym en \"deep cut on the leg from a machete\" → wound-care; offered nothing",
+        "synonym sw \"amejikata mguu kwa panga\" → wound-care; offered nothing",
+        "mixed sw \"ameungua na hot water\" → burns; offered nothing",
+        "synonym en \"scalded by boiling water\" → burns; offered nothing",
+        "synonym en \"man with the runs for three days\" → diarrhoea-adult; offered nothing",
+        "synonym sw \"baba anaenda haja mara nyingi\" → diarrhoea-adult; offered nothing"
+      ],
+      "acceptedOutOfScope": []
+    },
+    "keyword only": {
+      "all": {
+        "queries": 100,
+        "top1": 70,
+        "top3": 71,
+        "outOfScope": 20,
+        "noMatch": 20
+      },
+      "byLang": {
+        "en": {
+          "queries": 50,
+          "top1": 33,
+          "top3": 33,
+          "outOfScope": 10,
+          "noMatch": 10
+        },
+        "sw": {
+          "queries": 50,
+          "top1": 37,
+          "top3": 38,
+          "outOfScope": 10,
+          "noMatch": 10
+        }
+      },
+      "byKind": {
+        "keyword": {
+          "queries": 20,
+          "top1": 20,
+          "top3": 20
+        },
+        "question": {
+          "queries": 20,
+          "top1": 18,
+          "top3": 18
+        },
+        "typo": {
+          "queries": 20,
+          "top1": 13,
+          "top3": 13
+        },
+        "mixed": {
+          "queries": 20,
+          "top1": 18,
+          "top3": 18
+        },
+        "synonym": {
+          "queries": 20,
+          "top1": 1,
+          "top3": 2
+        }
+      },
+      "misses": [
+        "question sw \"mtoto amepungukiwa na maji nifanye nini?\" → dehydration-child; offered nothing",
+        "synonym en \"kid drying out, very drowsy\" → dehydration-child; offered nothing",
+        "synonym sw \"mtoto amekauka mwili na amechoka sana\" → dehydration-child; offered nothing",
+        "typo en \"feaver in a chld\" → fever-child; offered nothing",
+        "synonym en \"the kid is burning up\" → fever-child; offered nothing",
+        "typo en \"malria in an adlt\" → malaria-adult; offered nothing",
+        "typo sw \"maleria kwa mtu mzma\" → malaria-adult; offered nothing",
+        "synonym en \"grown man with chills and dark pee\" → malaria-adult; offered nothing",
+        "synonym sw \"baba ana homa kali na baridi\" → malaria-adult; offered nothing",
+        "typo en \"chld coughing and breathng fast\" → cough-child; offered nothing",
+        "synonym en \"toddler gasping for air\" → cough-child; offered nothing",
+        "synonym sw \"mtoto anahema sana\" → cough-child; offered nothing",
+        "question sw \"mama mjamzito anatoka damu nifanye nini?\" → pregnancy-danger; offered nothing",
+        "typo en \"pregnent woman with severe headake\" → pregnancy-danger; offered nothing",
+        "mixed en \"pregnant woman ana degedege\" → pregnancy-danger; offered nothing",
+        "synonym en \"expectant mother says the baby stopped kicking\" → pregnancy-danger; offered nothing",
+        "synonym sw \"mama mwenye mimba ana kizunguzungu na kuona ukungu\" → pregnancy-danger; offered nothing",
+        "synonym en \"two day old infant is cold and won't suckle\" → newborn-danger; offered nothing",
+        "synonym sw \"kichanga kina baridi mwilini\" → newborn-danger; offered nothing",
+        "synonym en \"underweight toddler not growing\" → malnutrition-child; offered nothing",
+        "synonym sw \"mtoto hana lishe bora, mwili umedhoofika\" → malnutrition-child; offered nothing",
+        "synonym en \"deep cut on the leg from a machete\" → wound-care; offered nothing",
+        "synonym sw \"amejikata mguu kwa panga\" → wound-care; offered nothing",
+        "typo en \"burnt hand, can I put tothpaste on it?\" → burns; offered nothing",
+        "mixed sw \"ameungua na hot water\" → burns; offered nothing",
+        "synonym en \"scalded by boiling water\" → burns; offered nothing",
+        "typo en \"diarhea in an adult\" → diarrhoea-adult; offered nothing",
+        "synonym en \"man with the runs for three days\" → diarrhoea-adult; offered nothing",
+        "synonym sw \"baba anaenda haja mara nyingi\" → diarrhoea-adult; offered nothing"
+      ],
+      "acceptedOutOfScope": []
+    },
+    "meaning only": {
+      "all": {
+        "queries": 100,
+        "top1": 39,
+        "top3": 39,
+        "outOfScope": 20,
+        "noMatch": 20
+      },
+      "byLang": {
+        "en": {
+          "queries": 50,
+          "top1": 34,
+          "top3": 34,
+          "outOfScope": 10,
+          "noMatch": 10
+        },
+        "sw": {
+          "queries": 50,
+          "top1": 5,
+          "top3": 5,
+          "outOfScope": 10,
+          "noMatch": 10
+        }
+      },
+      "byKind": {
+        "keyword": {
+          "queries": 20,
+          "top1": 12,
+          "top3": 12
+        },
+        "question": {
+          "queries": 20,
+          "top1": 12,
+          "top3": 12
+        },
+        "typo": {
+          "queries": 20,
+          "top1": 8,
+          "top3": 8
+        },
+        "mixed": {
+          "queries": 20,
+          "top1": 4,
+          "top3": 4
+        },
+        "synonym": {
+          "queries": 20,
+          "top1": 3,
+          "top3": 3
+        }
+      },
+      "misses": [
+        "typo sw \"mtoto macho yamezma\" → dehydration-child; offered nothing",
+        "mixed en \"child with sunken eyes na hawezi kunywa\" → dehydration-child; offered nothing",
+        "mixed sw \"mtoto ana dehydration\" → dehydration-child; offered nothing",
+        "synonym sw \"mtoto amekauka mwili na amechoka sana\" → dehydration-child; offered nothing",
+        "keyword sw \"homa mtoto\" → fever-child; offered nothing",
+        "question sw \"mtoto ana homa nifanye nini?\" → fever-child; offered nothing",
+        "typo en \"feaver in a chld\" → fever-child; offered nothing",
+        "typo sw \"mtoto ana homma na shingo imekakama\" → fever-child; offered nothing",
+        "mixed en \"child with homa and stiff neck\" → fever-child; offered nothing",
+        "mixed sw \"mtoto ana fever na anatapika\" → fever-child; offered nothing",
+        "synonym en \"the kid is burning up\" → fever-child; offered nothing",
+        "synonym sw \"mtoto mwili una joto kali\" → fever-child; offered nothing",
+        "typo en \"malria in an adlt\" → malaria-adult; offered nothing",
+        "typo sw \"maleria kwa mtu mzma\" → malaria-adult; offered nothing",
+        "synonym en \"grown man with chills and dark pee\" → malaria-adult; offered nothing",
+        "synonym sw \"baba ana homa kali na baridi\" → malaria-adult; offered nothing",
+        "keyword sw \"kikohozi mtoto\" → cough-child; offered nothing",
+        "question sw \"mtoto anakohoa na anapumua kwa shida, nifanye nini?\" → cough-child; offered nothing",
+        "typo sw \"mtoto ana kikohozo\" → cough-child; offered nothing",
+        "mixed en \"child with kikohozi\" → cough-child; offered nothing",
+        "mixed sw \"mtoto ana cough na kifua kinavutika\" → cough-child; offered nothing",
+        "synonym sw \"mtoto anahema sana\" → cough-child; offered nothing",
+        "keyword sw \"ujauzito damu\" → pregnancy-danger; offered nothing",
+        "question sw \"mama mjamzito anatoka damu nifanye nini?\" → pregnancy-danger; offered nothing",
+        "typo sw \"dalili za hatari wakati wa ujauzto\" → pregnancy-danger; offered nothing",
+        "mixed sw \"mjamzito ana severe headache\" → pregnancy-danger; offered nothing",
+        "synonym en \"expectant mother says the baby stopped kicking\" → pregnancy-danger; offered nothing",
+        "synonym sw \"mama mwenye mimba ana kizunguzungu na kuona ukungu\" → pregnancy-danger; offered nothing",
+        "keyword sw \"mtoto mchanga hatari\" → newborn-danger; offered nothing",
+        "question sw \"mtoto mchanga hanyonyi vizuri, nifanye nini?\" → newborn-danger; offered nothing",
+        "typo sw \"mtoto mchnga ana nyayo za njano\" → newborn-danger; offered nothing",
+        "mixed en \"newborn baby hanyonyi\" → newborn-danger; offered nothing",
+        "mixed sw \"mtoto mchanga ana yellow palms\" → newborn-danger; offered nothing",
+        "synonym sw \"kichanga kina baridi mwilini\" → newborn-danger; offered nothing",
+        "keyword sw \"utapiamlo mtoto\" → malnutrition-child; offered nothing",
+        "question sw \"mtoto amekonda sana nifanye nini?\" → malnutrition-child; offered nothing",
+        "typo sw \"mtoto ana utapiamro\" → malnutrition-child; offered nothing",
+        "mixed en \"very thin child, amekonda sana\" → malnutrition-child; offered nothing",
+        "mixed sw \"mtoto ana swelling ya miguu\" → malnutrition-child; offered nothing",
+        "synonym en \"underweight toddler not growing\" → malnutrition-child; offered nothing",
+        "synonym sw \"mtoto hana lishe bora, mwili umedhoofika\" → malnutrition-child; offered nothing",
+        "keyword sw \"kidonda\" → wound-care; offered nothing",
+        "question sw \"nitasafishaje kidonda?\" → wound-care; offered nothing",
+        "typo sw \"kidoda kina usaha\" → wound-care; offered nothing",
+        "mixed en \"wound ina usaha\" → wound-care; offered nothing",
+        "mixed sw \"kidonda kina pus na harufu mbaya\" → wound-care; offered nothing",
+        "synonym en \"deep cut on the leg from a machete\" → wound-care; offered nothing",
+        "synonym sw \"amejikata mguu kwa panga\" → wound-care; offered nothing",
+        "keyword sw \"kuungua moto\" → burns; offered nothing",
+        "question sw \"mtoto ameungua moto nifanye nini?\" → burns; offered nothing",
+        "typo sw \"ameunguwa na moto\" → burns; offered nothing",
+        "mixed en \"burn on the hand, ameungua\" → burns; offered nothing",
+        "mixed sw \"ameungua na hot water\" → burns; offered nothing",
+        "synonym en \"scalded by boiling water\" → burns; offered nothing",
+        "synonym sw \"amechomwa na maji ya moto\" → burns; offered nothing",
+        "keyword sw \"kuharisha mtu mzima\" → diarrhoea-adult; offered nothing",
+        "question sw \"mtu mzima anaharisha siku tatu, nifanye nini?\" → diarrhoea-adult; offered nothing",
+        "typo sw \"kuharsha mtu mzima\" → diarrhoea-adult; offered nothing",
+        "mixed sw \"mtu mzima ana diarrhoea\" → diarrhoea-adult; offered nothing",
+        "synonym en \"man with the runs for three days\" → diarrhoea-adult; offered nothing",
+        "synonym sw \"baba anaenda haja mara nyingi\" → diarrhoea-adult; offered nothing"
+      ],
+      "acceptedOutOfScope": []
+    }
+  },
+  "dev": {
+    "all": {
+      "queries": 40,
+      "top1": 37,
+      "top3": 37,
+      "outOfScope": 14,
+      "noMatch": 14
+    },
+    "byLang": {
+      "en": {
+        "queries": 20,
+        "top1": 20,
+        "top3": 20,
+        "outOfScope": 7,
+        "noMatch": 7
+      },
+      "sw": {
+        "queries": 20,
+        "top1": 17,
+        "top3": 17,
+        "outOfScope": 7,
+        "noMatch": 7
+      }
+    },
+    "byKind": {
+      "question": {
+        "queries": 5,
+        "top1": 4,
+        "top3": 4
+      },
+      "keyword": {
+        "queries": 29,
+        "top1": 28,
+        "top3": 28
+      },
+      "synonym": {
+        "queries": 4,
+        "top1": 3,
+        "top3": 3
+      },
+      "mixed": {
+        "queries": 1,
+        "top1": 1,
+        "top3": 1
+      },
+      "typo": {
+        "queries": 1,
+        "top1": 1,
+        "top3": 1
+      }
+    },
+    "misses": [
+      "keyword sw \"mama mjamzito anatoka damu\" → pregnancy-danger; offered nothing",
+      "synonym sw \"mtoto mchanga ana manjano\" → newborn-danger; offered nothing",
+      "question sw \"damu haikomi kwenye kidonda\" → wound-care; offered nothing"
+    ],
+    "acceptedOutOfScope": []
+  },
+  "thresholdSweep": [
+    {
+      "minCoverage": 0.35,
+      "minLift": 0.12,
+      "queries": 100,
+      "top1": 85,
+      "top3": 86,
+      "outOfScope": 20,
+      "noMatch": 19
+    },
+    {
+      "minCoverage": 0.35,
+      "minLift": 0.17,
+      "queries": 100,
+      "top1": 80,
+      "top3": 81,
+      "outOfScope": 20,
+      "noMatch": 19
+    },
+    {
+      "minCoverage": 0.35,
+      "minLift": 0.22,
+      "queries": 100,
+      "top1": 76,
+      "top3": 77,
+      "outOfScope": 20,
+      "noMatch": 19
+    },
+    {
+      "minCoverage": 0.45,
+      "minLift": 0.12,
+      "queries": 100,
+      "top1": 85,
+      "top3": 86,
+      "outOfScope": 20,
+      "noMatch": 20
+    },
+    {
+      "minCoverage": 0.45,
+      "minLift": 0.17,
+      "queries": 100,
+      "top1": 79,
+      "top3": 80,
+      "outOfScope": 20,
+      "noMatch": 20
+    },
+    {
+      "minCoverage": 0.45,
+      "minLift": 0.22,
+      "queries": 100,
+      "top1": 74,
+      "top3": 75,
+      "outOfScope": 20,
+      "noMatch": 20
+    },
+    {
+      "minCoverage": 0.55,
+      "minLift": 0.12,
+      "queries": 100,
+      "top1": 84,
+      "top3": 84,
+      "outOfScope": 20,
+      "noMatch": 20
+    },
+    {
+      "minCoverage": 0.55,
+      "minLift": 0.17,
+      "queries": 100,
+      "top1": 77,
+      "top3": 77,
+      "outOfScope": 20,
+      "noMatch": 20
+    },
+    {
+      "minCoverage": 0.55,
+      "minLift": 0.22,
+      "queries": 100,
+      "top1": 71,
+      "top3": 71,
+      "outOfScope": 20,
+      "noMatch": 20
+    }
+  ],
+  "voice": {
+    "queries": 60,
+    "heard": {
+      "en": {
+        "wer": 9.4,
+        "cer": 4.1
+      },
+      "sw": {
+        "wer": 73.1,
+        "cer": 17.8
+      }
+    },
+    "spoken": {
+      "all": {
+        "queries": 60,
+        "top1": 23,
+        "top3": 24
+      },
+      "byLang": {
+        "en": {
+          "queries": 30,
+          "top1": 20,
+          "top3": 20
+        },
+        "sw": {
+          "queries": 30,
+          "top1": 3,
+          "top3": 4
+        }
+      },
+      "byKind": {
+        "keyword": {
+          "queries": 20,
+          "top1": 9,
+          "top3": 9
+        },
+        "question": {
+          "queries": 20,
+          "top1": 12,
+          "top3": 12
+        },
+        "synonym": {
+          "queries": 20,
+          "top1": 2,
+          "top3": 3
+        }
+      },
+      "misses": [
+        "keyword sw \"upungufu wa maji mtoto\" → dehydration-child; offered nothing",
+        "question sw \"mtoto amepungukiwa na maji nifanye nini?\" → dehydration-child; offered nothing",
+        "synonym en \"kid drying out, very drowsy\" → dehydration-child; offered nothing",
+        "synonym sw \"mtoto amekauka mwili na amechoka sana\" → dehydration-child; offered nothing",
+        "keyword sw \"homa mtoto\" → fever-child; offered nothing",
+        "question sw \"mtoto ana homa nifanye nini?\" → fever-child; offered nothing",
+        "synonym en \"the kid is burning up\" → fever-child; offered nothing",
+        "synonym en \"grown man with chills and dark pee\" → malaria-adult; offered nothing",
+        "synonym sw \"baba ana homa kali na baridi\" → malaria-adult; offered nothing",
+        "keyword en \"child cough\" → cough-child; offered nothing",
+        "keyword sw \"kikohozi mtoto\" → cough-child; offered nothing",
+        "question sw \"mtoto anakohoa na anapumua kwa shida, nifanye nini?\" → cough-child; offered nothing",
+        "synonym sw \"mtoto anahema sana\" → cough-child; offered nothing",
+        "keyword sw \"ujauzito damu\" → pregnancy-danger; offered nothing",
+        "question sw \"mama mjamzito anatoka damu nifanye nini?\" → pregnancy-danger; offered nothing",
+        "synonym en \"expectant mother says the baby stopped kicking\" → pregnancy-danger; offered nothing",
+        "synonym sw \"mama mwenye mimba ana kizunguzungu na kuona ukungu\" → pregnancy-danger; offered nothing",
+        "keyword sw \"mtoto mchanga hatari\" → newborn-danger; offered nothing",
+        "question sw \"mtoto mchanga hanyonyi vizuri, nifanye nini?\" → newborn-danger; offered nothing",
+        "synonym sw \"kichanga kina baridi mwilini\" → newborn-danger; offered nothing",
+        "keyword sw \"utapiamlo mtoto\" → malnutrition-child; offered nothing",
+        "question sw \"mtoto amekonda sana nifanye nini?\" → malnutrition-child; offered nothing",
+        "synonym en \"underweight toddler not growing\" → malnutrition-child; offered nothing",
+        "synonym sw \"mtoto hana lishe bora, mwili umedhoofika\" → malnutrition-child; offered nothing",
+        "keyword sw \"kidonda\" → wound-care; offered nothing",
+        "question sw \"nitasafishaje kidonda?\" → wound-care; offered nothing",
+        "synonym en \"deep cut on the leg from a machete\" → wound-care; offered nothing",
+        "synonym sw \"amejikata mguu kwa panga\" → wound-care; offered nothing",
+        "keyword en \"burns\" → burns; offered nothing",
+        "keyword sw \"kuungua moto\" → burns; offered nothing",
+        "question sw \"mtoto ameungua moto nifanye nini?\" → burns; offered nothing",
+        "synonym en \"scalded by boiling water\" → burns; offered nothing",
+        "synonym sw \"amechomwa na maji ya moto\" → burns; offered nothing",
+        "keyword sw \"kuharisha mtu mzima\" → diarrhoea-adult; offered nothing",
+        "synonym en \"man with the runs for three days\" → diarrhoea-adult; offered nothing",
+        "synonym sw \"baba anaenda haja mara nyingi\" → diarrhoea-adult; offered nothing"
+      ],
+      "acceptedOutOfScope": []
+    },
+    "typed": {
+      "queries": 60,
+      "top1": 43,
+      "top3": 44
+    },
+    "answerMs": {
+      "median": 1045,
+      "p90": 1092
+    }
+  }
+}

@@ -1,0 +1,481 @@
+variant,query,lang,kind,expected,rank,offered,keyword,lift
+"hybrid, score fusion (default)",dehydration child,en,keyword,dehydration-child,1,dehydration-child | diarrhoea-adult,1,0.241
+"hybrid, score fusion (default)",upungufu wa maji mtoto,sw,keyword,dehydration-child,1,dehydration-child,1,0.194
+"hybrid, score fusion (default)",what are the signs of dehydration in a child?,en,question,dehydration-child,1,dehydration-child | cough-child | diarrhoea-adult,0.98,0.211
+"hybrid, score fusion (default)",mtoto amepungukiwa na maji nifanye nini?,sw,question,dehydration-child,1,dehydration-child,0.26,0.18
+"hybrid, score fusion (default)",dehidration in a chlid,en,typo,dehydration-child,1,dehydration-child,0.6,0.175
+"hybrid, score fusion (default)",mtoto macho yamezma,sw,typo,dehydration-child,1,dehydration-child,0.77,0.005
+"hybrid, score fusion (default)",child with sunken eyes na hawezi kunywa,en,mixed,dehydration-child,1,dehydration-child | fever-child,1,0.02
+"hybrid, score fusion (default)",mtoto ana dehydration,sw,mixed,dehydration-child,1,dehydration-child | diarrhoea-adult,1,0.122
+"hybrid, score fusion (default)","kid drying out, very drowsy",en,synonym,dehydration-child,1,dehydration-child,0,0.218
+"hybrid, score fusion (default)",mtoto amekauka mwili na amechoka sana,sw,synonym,dehydration-child,0,,,
+"hybrid, score fusion (default)",child fever,en,keyword,fever-child,1,fever-child | cough-child | dehydration-child,1,0.239
+"hybrid, score fusion (default)",homa mtoto,sw,keyword,fever-child,1,fever-child | newborn-danger | wound-care,1,0.083
+"hybrid, score fusion (default)",what should I do when a child has a fever?,en,question,fever-child,1,fever-child | cough-child | dehydration-child,1,0.225
+"hybrid, score fusion (default)",mtoto ana homa nifanye nini?,sw,question,fever-child,1,fever-child | newborn-danger | wound-care,1,0.06
+"hybrid, score fusion (default)",feaver in a chld,en,typo,fever-child,0,,,
+"hybrid, score fusion (default)",mtoto ana homma na shingo imekakama,sw,typo,fever-child,1,fever-child,0.88,0.086
+"hybrid, score fusion (default)",child with homa and stiff neck,en,mixed,fever-child,1,fever-child,1,0.092
+"hybrid, score fusion (default)",mtoto ana fever na anatapika,sw,mixed,fever-child,1,fever-child | diarrhoea-adult | malnutrition-child,1,0.1
+"hybrid, score fusion (default)",the kid is burning up,en,synonym,fever-child,0,,,
+"hybrid, score fusion (default)",mtoto mwili una joto kali,sw,synonym,fever-child,2,newborn-danger | fever-child | cough-child,0.53,0.127
+"hybrid, score fusion (default)",malaria adult,en,keyword,malaria-adult,1,malaria-adult | diarrhoea-adult | fever-child,1,0.316
+"hybrid, score fusion (default)",malaria mtu mzima,sw,keyword,malaria-adult,1,malaria-adult | diarrhoea-adult,1,0.242
+"hybrid, score fusion (default)",how do I test an adult for malaria?,en,question,malaria-adult,1,malaria-adult | fever-child,1,0.382
+"hybrid, score fusion (default)",mtu mzima ana dalili za malaria nifanye nini?,sw,question,malaria-adult,1,malaria-adult | diarrhoea-adult,1,0.263
+"hybrid, score fusion (default)",malria in an adlt,en,typo,malaria-adult,0,,,
+"hybrid, score fusion (default)",maleria kwa mtu mzma,sw,typo,malaria-adult,0,,,
+"hybrid, score fusion (default)",adult with malaria na macho ya njano,en,mixed,malaria-adult,1,malaria-adult,1,0.215
+"hybrid, score fusion (default)",mtu mzima ana malaria rapid test,sw,mixed,malaria-adult,1,malaria-adult,1,0.19
+"hybrid, score fusion (default)",grown man with chills and dark pee,en,synonym,malaria-adult,0,,,
+"hybrid, score fusion (default)",baba ana homa kali na baridi,sw,synonym,malaria-adult,0,,,
+"hybrid, score fusion (default)",child cough,en,keyword,cough-child,1,cough-child,1,0.255
+"hybrid, score fusion (default)",kikohozi mtoto,sw,keyword,cough-child,1,cough-child,1,0.078
+"hybrid, score fusion (default)",how do I count a child's breathing rate?,en,question,cough-child,1,cough-child,0.54,0.225
+"hybrid, score fusion (default)","mtoto anakohoa na anapumua kwa shida, nifanye nini?",sw,question,cough-child,1,cough-child,0.78,0.097
+"hybrid, score fusion (default)",chld coughing and breathng fast,en,typo,cough-child,1,cough-child,0.29,0.219
+"hybrid, score fusion (default)",mtoto ana kikohozo,sw,typo,cough-child,1,cough-child,0.66,0.06
+"hybrid, score fusion (default)",child with kikohozi,en,mixed,cough-child,1,cough-child,1,0.066
+"hybrid, score fusion (default)",mtoto ana cough na kifua kinavutika,sw,mixed,cough-child,1,cough-child,1,0.083
+"hybrid, score fusion (default)",toddler gasping for air,en,synonym,cough-child,1,cough-child,0,0.243
+"hybrid, score fusion (default)",mtoto anahema sana,sw,synonym,cough-child,0,,,
+"hybrid, score fusion (default)",pregnancy bleeding,en,keyword,pregnancy-danger,1,pregnancy-danger,1,0.27
+"hybrid, score fusion (default)",ujauzito damu,sw,keyword,pregnancy-danger,1,pregnancy-danger,1,0.073
+"hybrid, score fusion (default)",what are the danger signs in pregnancy?,en,question,pregnancy-danger,1,pregnancy-danger,1,0.297
+"hybrid, score fusion (default)",mama mjamzito anatoka damu nifanye nini?,sw,question,pregnancy-danger,0,,,
+"hybrid, score fusion (default)",pregnent woman with severe headake,en,typo,pregnancy-danger,1,pregnancy-danger,0.18,0.241
+"hybrid, score fusion (default)",dalili za hatari wakati wa ujauzto,sw,typo,pregnancy-danger,1,pregnancy-danger | cough-child,0.84,0.163
+"hybrid, score fusion (default)",pregnant woman ana degedege,en,mixed,pregnancy-danger,1,pregnancy-danger,0.41,0.191
+"hybrid, score fusion (default)",mjamzito ana severe headache,sw,mixed,pregnancy-danger,1,pregnancy-danger,0.56,0.039
+"hybrid, score fusion (default)",expectant mother says the baby stopped kicking,en,synonym,pregnancy-danger,0,,,
+"hybrid, score fusion (default)",mama mwenye mimba ana kizunguzungu na kuona ukungu,sw,synonym,pregnancy-danger,0,,,
+"hybrid, score fusion (default)",newborn danger signs,en,keyword,newborn-danger,1,newborn-danger,1,0.266
+"hybrid, score fusion (default)",mtoto mchanga hatari,sw,keyword,newborn-danger,1,newborn-danger | pregnancy-danger | cough-child,1,0.125
+"hybrid, score fusion (default)",what are the danger signs in a newborn?,en,question,newborn-danger,1,newborn-danger,1,0.26
+"hybrid, score fusion (default)","mtoto mchanga hanyonyi vizuri, nifanye nini?",sw,question,newborn-danger,1,newborn-danger,1,0.068
+"hybrid, score fusion (default)",new born not feeeding well,en,typo,newborn-danger,1,newborn-danger,0.86,0.203
+"hybrid, score fusion (default)",mtoto mchnga ana nyayo za njano,sw,typo,newborn-danger,1,newborn-danger,0.84,0.032
+"hybrid, score fusion (default)",newborn baby hanyonyi,en,mixed,newborn-danger,1,newborn-danger,1,0.107
+"hybrid, score fusion (default)",mtoto mchanga ana yellow palms,sw,mixed,newborn-danger,1,newborn-danger | malaria-adult,1,0.022
+"hybrid, score fusion (default)",two day old infant is cold and won't suckle,en,synonym,newborn-danger,1,newborn-danger,0.29,0.193
+"hybrid, score fusion (default)",kichanga kina baridi mwilini,sw,synonym,newborn-danger,0,,,
+"hybrid, score fusion (default)",malnutrition child,en,keyword,malnutrition-child,1,malnutrition-child,1,0.178
+"hybrid, score fusion (default)",utapiamlo mtoto,sw,keyword,malnutrition-child,1,malnutrition-child,1,0.12
+"hybrid, score fusion (default)",how do I check a child for malnutrition?,en,question,malnutrition-child,1,malnutrition-child,0.48,0.184
+"hybrid, score fusion (default)",mtoto amekonda sana nifanye nini?,sw,question,malnutrition-child,1,malnutrition-child | dehydration-child,1,0.094
+"hybrid, score fusion (default)",malnutriton in a child,en,typo,malnutrition-child,1,malnutrition-child,0.72,0.174
+"hybrid, score fusion (default)",mtoto ana utapiamro,sw,typo,malnutrition-child,1,malnutrition-child,0.66,0.098
+"hybrid, score fusion (default)","very thin child, amekonda sana",en,mixed,malnutrition-child,1,malnutrition-child | dehydration-child,1,0.1
+"hybrid, score fusion (default)",mtoto ana swelling ya miguu,sw,mixed,malnutrition-child,1,malnutrition-child,1,0.033
+"hybrid, score fusion (default)",underweight toddler not growing,en,synonym,malnutrition-child,0,,,
+"hybrid, score fusion (default)","mtoto hana lishe bora, mwili umedhoofika",sw,synonym,malnutrition-child,0,,,
+"hybrid, score fusion (default)",wound care,en,keyword,wound-care,1,wound-care | burns,1,0.313
+"hybrid, score fusion (default)",kidonda,sw,keyword,wound-care,1,wound-care,1,0.148
+"hybrid, score fusion (default)",how do I clean a wound?,en,question,wound-care,1,wound-care | burns,1,0.329
+"hybrid, score fusion (default)",nitasafishaje kidonda?,sw,question,wound-care,1,wound-care,0.77,0.127
+"hybrid, score fusion (default)",infected wund with pus,en,typo,wound-care,1,wound-care,0.51,0.266
+"hybrid, score fusion (default)",kidoda kina usaha,sw,typo,wound-care,1,wound-care,0.53,0.137
+"hybrid, score fusion (default)",wound ina usaha,en,mixed,wound-care,1,wound-care,0.67,0.106
+"hybrid, score fusion (default)",kidonda kina pus na harufu mbaya,sw,mixed,wound-care,1,wound-care,0.79,0.087
+"hybrid, score fusion (default)",deep cut on the leg from a machete,en,synonym,wound-care,0,,,
+"hybrid, score fusion (default)",amejikata mguu kwa panga,sw,synonym,wound-care,0,,,
+"hybrid, score fusion (default)",burns,en,keyword,burns,1,burns,1,0.253
+"hybrid, score fusion (default)",kuungua moto,sw,keyword,burns,1,burns,1,0.044
+"hybrid, score fusion (default)",what do I do for a burn?,en,question,burns,1,burns,1,0.26
+"hybrid, score fusion (default)",mtoto ameungua moto nifanye nini?,sw,question,burns,1,burns,0.88,-0.069
+"hybrid, score fusion (default)","burnt hand, can I put tothpaste on it?",en,typo,burns,1,burns,0.44,0.29
+"hybrid, score fusion (default)",ameunguwa na moto,sw,typo,burns,1,burns,0.8,0.023
+"hybrid, score fusion (default)","burn on the hand, ameungua",en,mixed,burns,1,burns,0.91,0.158
+"hybrid, score fusion (default)",ameungua na hot water,sw,mixed,burns,0,,,
+"hybrid, score fusion (default)",scalded by boiling water,en,synonym,burns,0,,,
+"hybrid, score fusion (default)",amechomwa na maji ya moto,sw,synonym,burns,1,burns,0.46,0.062
+"hybrid, score fusion (default)",adult diarrhoea,en,keyword,diarrhoea-adult,1,diarrhoea-adult | malaria-adult | dehydration-child,1,0.383
+"hybrid, score fusion (default)",kuharisha mtu mzima,sw,keyword,diarrhoea-adult,1,diarrhoea-adult | malaria-adult,1,0.05
+"hybrid, score fusion (default)",what should I give an adult with diarrhoea?,en,question,diarrhoea-adult,1,diarrhoea-adult | dehydration-child,1,0.351
+"hybrid, score fusion (default)","mtu mzima anaharisha siku tatu, nifanye nini?",sw,question,diarrhoea-adult,1,diarrhoea-adult,0.59,0.112
+"hybrid, score fusion (default)",diarhea in an adult,en,typo,diarrhoea-adult,1,diarrhoea-adult,0.32,0.365
+"hybrid, score fusion (default)",kuharsha mtu mzima,sw,typo,diarrhoea-adult,1,diarrhoea-adult | malaria-adult,0.83,0.061
+"hybrid, score fusion (default)",adult with diarrhoea na damu kwenye kinyesi,en,mixed,diarrhoea-adult,1,diarrhoea-adult,1,0.218
+"hybrid, score fusion (default)",mtu mzima ana diarrhoea,sw,mixed,diarrhoea-adult,1,diarrhoea-adult | malaria-adult,1,0.102
+"hybrid, score fusion (default)",man with the runs for three days,en,synonym,diarrhoea-adult,0,,,
+"hybrid, score fusion (default)",baba anaenda haja mara nyingi,sw,synonym,diarrhoea-adult,0,,,
+"hybrid, score fusion (default)",how do I fix a bicycle,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",price of maize at the market,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",snake bite,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",broken arm,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",how to register a birth certificate,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",toothache,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",my phone battery is dead,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",how to plant beans,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",where is the nearest police station,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",family planning pills,en,out-of-scope,,0,,,
+"hybrid, score fusion (default)",bei ya mahindi sokoni,sw,out-of-scope,,0,,,
+"hybrid, score fusion (default)",gari limeharibika,sw,out-of-scope,,0,,,
+"hybrid, score fusion (default)",nimeumwa na nyoka,sw,out-of-scope,,0,,,
+"hybrid, score fusion (default)",jino linauma,sw,out-of-scope,,0,,,
+"hybrid, score fusion (default)",mkono umevunjika,sw,out-of-scope,,0,,,
+"hybrid, score fusion (default)",jinsi ya kupanda maharagwe,sw,out-of-scope,,0,,,
+"hybrid, score fusion (default)",simu yangu imezima,sw,out-of-scope,,0,,,
+"hybrid, score fusion (default)",kituo cha polisi kiko wapi,sw,out-of-scope,,0,,,
+"hybrid, score fusion (default)",nataka kusajili kuzaliwa kwa mtoto,sw,out-of-scope,,0,,,
+"hybrid, score fusion (default)",vidonge vya uzazi wa mpango,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",dehydration child,en,keyword,dehydration-child,1,dehydration-child | diarrhoea-adult,1,0.241
+"hybrid, reciprocal-rank fusion",upungufu wa maji mtoto,sw,keyword,dehydration-child,1,dehydration-child,1,0.194
+"hybrid, reciprocal-rank fusion",what are the signs of dehydration in a child?,en,question,dehydration-child,1,dehydration-child | cough-child | diarrhoea-adult,0.98,0.211
+"hybrid, reciprocal-rank fusion",mtoto amepungukiwa na maji nifanye nini?,sw,question,dehydration-child,1,dehydration-child,0.26,0.18
+"hybrid, reciprocal-rank fusion",dehidration in a chlid,en,typo,dehydration-child,1,dehydration-child,0.6,0.175
+"hybrid, reciprocal-rank fusion",mtoto macho yamezma,sw,typo,dehydration-child,1,dehydration-child,0.77,0.005
+"hybrid, reciprocal-rank fusion",child with sunken eyes na hawezi kunywa,en,mixed,dehydration-child,2,fever-child | dehydration-child,0.5,0.035
+"hybrid, reciprocal-rank fusion",mtoto ana dehydration,sw,mixed,dehydration-child,1,dehydration-child | diarrhoea-adult,1,0.122
+"hybrid, reciprocal-rank fusion","kid drying out, very drowsy",en,synonym,dehydration-child,1,dehydration-child,0,0.218
+"hybrid, reciprocal-rank fusion",mtoto amekauka mwili na amechoka sana,sw,synonym,dehydration-child,0,,,
+"hybrid, reciprocal-rank fusion",child fever,en,keyword,fever-child,1,fever-child | cough-child | malnutrition-child,1,0.239
+"hybrid, reciprocal-rank fusion",homa mtoto,sw,keyword,fever-child,1,fever-child | newborn-danger | wound-care,1,0.083
+"hybrid, reciprocal-rank fusion",what should I do when a child has a fever?,en,question,fever-child,1,fever-child | cough-child | dehydration-child,1,0.225
+"hybrid, reciprocal-rank fusion",mtoto ana homa nifanye nini?,sw,question,fever-child,1,fever-child | newborn-danger | wound-care,1,0.06
+"hybrid, reciprocal-rank fusion",feaver in a chld,en,typo,fever-child,0,,,
+"hybrid, reciprocal-rank fusion",mtoto ana homma na shingo imekakama,sw,typo,fever-child,1,fever-child,0.88,0.086
+"hybrid, reciprocal-rank fusion",child with homa and stiff neck,en,mixed,fever-child,1,fever-child,1,0.092
+"hybrid, reciprocal-rank fusion",mtoto ana fever na anatapika,sw,mixed,fever-child,1,fever-child | diarrhoea-adult | malnutrition-child,1,0.1
+"hybrid, reciprocal-rank fusion",the kid is burning up,en,synonym,fever-child,0,,,
+"hybrid, reciprocal-rank fusion",mtoto mwili una joto kali,sw,synonym,fever-child,2,newborn-danger | fever-child | cough-child,0.53,0.127
+"hybrid, reciprocal-rank fusion",malaria adult,en,keyword,malaria-adult,1,malaria-adult | fever-child | diarrhoea-adult,1,0.316
+"hybrid, reciprocal-rank fusion",malaria mtu mzima,sw,keyword,malaria-adult,1,malaria-adult | diarrhoea-adult,1,0.242
+"hybrid, reciprocal-rank fusion",how do I test an adult for malaria?,en,question,malaria-adult,1,malaria-adult | fever-child,1,0.382
+"hybrid, reciprocal-rank fusion",mtu mzima ana dalili za malaria nifanye nini?,sw,question,malaria-adult,1,malaria-adult | diarrhoea-adult,1,0.263
+"hybrid, reciprocal-rank fusion",malria in an adlt,en,typo,malaria-adult,0,,,
+"hybrid, reciprocal-rank fusion",maleria kwa mtu mzma,sw,typo,malaria-adult,0,,,
+"hybrid, reciprocal-rank fusion",adult with malaria na macho ya njano,en,mixed,malaria-adult,1,malaria-adult,1,0.215
+"hybrid, reciprocal-rank fusion",mtu mzima ana malaria rapid test,sw,mixed,malaria-adult,1,malaria-adult,1,0.19
+"hybrid, reciprocal-rank fusion",grown man with chills and dark pee,en,synonym,malaria-adult,0,,,
+"hybrid, reciprocal-rank fusion",baba ana homa kali na baridi,sw,synonym,malaria-adult,0,,,
+"hybrid, reciprocal-rank fusion",child cough,en,keyword,cough-child,1,cough-child,1,0.255
+"hybrid, reciprocal-rank fusion",kikohozi mtoto,sw,keyword,cough-child,1,cough-child,1,0.078
+"hybrid, reciprocal-rank fusion",how do I count a child's breathing rate?,en,question,cough-child,1,cough-child,0.54,0.225
+"hybrid, reciprocal-rank fusion","mtoto anakohoa na anapumua kwa shida, nifanye nini?",sw,question,cough-child,1,cough-child,0.78,0.097
+"hybrid, reciprocal-rank fusion",chld coughing and breathng fast,en,typo,cough-child,1,cough-child,0.29,0.219
+"hybrid, reciprocal-rank fusion",mtoto ana kikohozo,sw,typo,cough-child,1,cough-child,0.66,0.06
+"hybrid, reciprocal-rank fusion",child with kikohozi,en,mixed,cough-child,1,cough-child,1,0.066
+"hybrid, reciprocal-rank fusion",mtoto ana cough na kifua kinavutika,sw,mixed,cough-child,1,cough-child,1,0.083
+"hybrid, reciprocal-rank fusion",toddler gasping for air,en,synonym,cough-child,1,cough-child,0,0.243
+"hybrid, reciprocal-rank fusion",mtoto anahema sana,sw,synonym,cough-child,0,,,
+"hybrid, reciprocal-rank fusion",pregnancy bleeding,en,keyword,pregnancy-danger,1,pregnancy-danger,1,0.27
+"hybrid, reciprocal-rank fusion",ujauzito damu,sw,keyword,pregnancy-danger,1,pregnancy-danger,1,0.073
+"hybrid, reciprocal-rank fusion",what are the danger signs in pregnancy?,en,question,pregnancy-danger,1,pregnancy-danger,1,0.297
+"hybrid, reciprocal-rank fusion",mama mjamzito anatoka damu nifanye nini?,sw,question,pregnancy-danger,0,,,
+"hybrid, reciprocal-rank fusion",pregnent woman with severe headake,en,typo,pregnancy-danger,1,pregnancy-danger,0.18,0.241
+"hybrid, reciprocal-rank fusion",dalili za hatari wakati wa ujauzto,sw,typo,pregnancy-danger,1,pregnancy-danger | cough-child,0.84,0.163
+"hybrid, reciprocal-rank fusion",pregnant woman ana degedege,en,mixed,pregnancy-danger,1,pregnancy-danger,0.41,0.191
+"hybrid, reciprocal-rank fusion",mjamzito ana severe headache,sw,mixed,pregnancy-danger,1,pregnancy-danger,0.56,0.039
+"hybrid, reciprocal-rank fusion",expectant mother says the baby stopped kicking,en,synonym,pregnancy-danger,0,,,
+"hybrid, reciprocal-rank fusion",mama mwenye mimba ana kizunguzungu na kuona ukungu,sw,synonym,pregnancy-danger,0,,,
+"hybrid, reciprocal-rank fusion",newborn danger signs,en,keyword,newborn-danger,1,newborn-danger,1,0.266
+"hybrid, reciprocal-rank fusion",mtoto mchanga hatari,sw,keyword,newborn-danger,1,newborn-danger | pregnancy-danger | cough-child,1,0.125
+"hybrid, reciprocal-rank fusion",what are the danger signs in a newborn?,en,question,newborn-danger,1,newborn-danger,1,0.26
+"hybrid, reciprocal-rank fusion","mtoto mchanga hanyonyi vizuri, nifanye nini?",sw,question,newborn-danger,1,newborn-danger,1,0.068
+"hybrid, reciprocal-rank fusion",new born not feeeding well,en,typo,newborn-danger,1,newborn-danger,0.86,0.203
+"hybrid, reciprocal-rank fusion",mtoto mchnga ana nyayo za njano,sw,typo,newborn-danger,1,newborn-danger,0.84,0.032
+"hybrid, reciprocal-rank fusion",newborn baby hanyonyi,en,mixed,newborn-danger,1,newborn-danger,1,0.107
+"hybrid, reciprocal-rank fusion",mtoto mchanga ana yellow palms,sw,mixed,newborn-danger,1,newborn-danger | malaria-adult,1,0.022
+"hybrid, reciprocal-rank fusion",two day old infant is cold and won't suckle,en,synonym,newborn-danger,1,newborn-danger,0.29,0.193
+"hybrid, reciprocal-rank fusion",kichanga kina baridi mwilini,sw,synonym,newborn-danger,0,,,
+"hybrid, reciprocal-rank fusion",malnutrition child,en,keyword,malnutrition-child,1,malnutrition-child,1,0.178
+"hybrid, reciprocal-rank fusion",utapiamlo mtoto,sw,keyword,malnutrition-child,1,malnutrition-child,1,0.12
+"hybrid, reciprocal-rank fusion",how do I check a child for malnutrition?,en,question,malnutrition-child,1,malnutrition-child,0.48,0.184
+"hybrid, reciprocal-rank fusion",mtoto amekonda sana nifanye nini?,sw,question,malnutrition-child,1,malnutrition-child | dehydration-child,1,0.094
+"hybrid, reciprocal-rank fusion",malnutriton in a child,en,typo,malnutrition-child,1,malnutrition-child,0.72,0.174
+"hybrid, reciprocal-rank fusion",mtoto ana utapiamro,sw,typo,malnutrition-child,1,malnutrition-child,0.66,0.098
+"hybrid, reciprocal-rank fusion","very thin child, amekonda sana",en,mixed,malnutrition-child,1,malnutrition-child | dehydration-child,1,0.1
+"hybrid, reciprocal-rank fusion",mtoto ana swelling ya miguu,sw,mixed,malnutrition-child,1,malnutrition-child,1,0.033
+"hybrid, reciprocal-rank fusion",underweight toddler not growing,en,synonym,malnutrition-child,0,,,
+"hybrid, reciprocal-rank fusion","mtoto hana lishe bora, mwili umedhoofika",sw,synonym,malnutrition-child,0,,,
+"hybrid, reciprocal-rank fusion",wound care,en,keyword,wound-care,1,wound-care | burns,1,0.313
+"hybrid, reciprocal-rank fusion",kidonda,sw,keyword,wound-care,1,wound-care,1,0.148
+"hybrid, reciprocal-rank fusion",how do I clean a wound?,en,question,wound-care,1,wound-care | burns,1,0.329
+"hybrid, reciprocal-rank fusion",nitasafishaje kidonda?,sw,question,wound-care,1,wound-care,0.77,0.127
+"hybrid, reciprocal-rank fusion",infected wund with pus,en,typo,wound-care,1,wound-care,0.51,0.266
+"hybrid, reciprocal-rank fusion",kidoda kina usaha,sw,typo,wound-care,1,wound-care,0.53,0.137
+"hybrid, reciprocal-rank fusion",wound ina usaha,en,mixed,wound-care,1,wound-care,0.67,0.106
+"hybrid, reciprocal-rank fusion",kidonda kina pus na harufu mbaya,sw,mixed,wound-care,1,wound-care,0.79,0.087
+"hybrid, reciprocal-rank fusion",deep cut on the leg from a machete,en,synonym,wound-care,0,,,
+"hybrid, reciprocal-rank fusion",amejikata mguu kwa panga,sw,synonym,wound-care,0,,,
+"hybrid, reciprocal-rank fusion",burns,en,keyword,burns,1,burns,1,0.253
+"hybrid, reciprocal-rank fusion",kuungua moto,sw,keyword,burns,1,burns,1,0.044
+"hybrid, reciprocal-rank fusion",what do I do for a burn?,en,question,burns,1,burns,1,0.26
+"hybrid, reciprocal-rank fusion",mtoto ameungua moto nifanye nini?,sw,question,burns,1,burns,0.88,-0.069
+"hybrid, reciprocal-rank fusion","burnt hand, can I put tothpaste on it?",en,typo,burns,1,burns,0.44,0.29
+"hybrid, reciprocal-rank fusion",ameunguwa na moto,sw,typo,burns,1,burns,0.8,0.023
+"hybrid, reciprocal-rank fusion","burn on the hand, ameungua",en,mixed,burns,1,burns,0.91,0.158
+"hybrid, reciprocal-rank fusion",ameungua na hot water,sw,mixed,burns,0,,,
+"hybrid, reciprocal-rank fusion",scalded by boiling water,en,synonym,burns,0,,,
+"hybrid, reciprocal-rank fusion",amechomwa na maji ya moto,sw,synonym,burns,1,burns,0.46,0.062
+"hybrid, reciprocal-rank fusion",adult diarrhoea,en,keyword,diarrhoea-adult,1,diarrhoea-adult | malaria-adult | dehydration-child,1,0.383
+"hybrid, reciprocal-rank fusion",kuharisha mtu mzima,sw,keyword,diarrhoea-adult,1,diarrhoea-adult | malaria-adult,1,0.05
+"hybrid, reciprocal-rank fusion",what should I give an adult with diarrhoea?,en,question,diarrhoea-adult,1,diarrhoea-adult | dehydration-child,1,0.351
+"hybrid, reciprocal-rank fusion","mtu mzima anaharisha siku tatu, nifanye nini?",sw,question,diarrhoea-adult,1,diarrhoea-adult,0.59,0.112
+"hybrid, reciprocal-rank fusion",diarhea in an adult,en,typo,diarrhoea-adult,1,diarrhoea-adult,0.32,0.365
+"hybrid, reciprocal-rank fusion",kuharsha mtu mzima,sw,typo,diarrhoea-adult,1,diarrhoea-adult | malaria-adult,0.83,0.061
+"hybrid, reciprocal-rank fusion",adult with diarrhoea na damu kwenye kinyesi,en,mixed,diarrhoea-adult,1,diarrhoea-adult,1,0.218
+"hybrid, reciprocal-rank fusion",mtu mzima ana diarrhoea,sw,mixed,diarrhoea-adult,1,diarrhoea-adult | malaria-adult,1,0.102
+"hybrid, reciprocal-rank fusion",man with the runs for three days,en,synonym,diarrhoea-adult,0,,,
+"hybrid, reciprocal-rank fusion",baba anaenda haja mara nyingi,sw,synonym,diarrhoea-adult,0,,,
+"hybrid, reciprocal-rank fusion",how do I fix a bicycle,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",price of maize at the market,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",snake bite,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",broken arm,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",how to register a birth certificate,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",toothache,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",my phone battery is dead,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",how to plant beans,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",where is the nearest police station,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",family planning pills,en,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",bei ya mahindi sokoni,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",gari limeharibika,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",nimeumwa na nyoka,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",jino linauma,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",mkono umevunjika,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",jinsi ya kupanda maharagwe,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",simu yangu imezima,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",kituo cha polisi kiko wapi,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",nataka kusajili kuzaliwa kwa mtoto,sw,out-of-scope,,0,,,
+"hybrid, reciprocal-rank fusion",vidonge vya uzazi wa mpango,sw,out-of-scope,,0,,,
+keyword only,dehydration child,en,keyword,dehydration-child,1,dehydration-child | diarrhoea-adult,1,
+keyword only,upungufu wa maji mtoto,sw,keyword,dehydration-child,1,dehydration-child,1,
+keyword only,what are the signs of dehydration in a child?,en,question,dehydration-child,1,dehydration-child | cough-child | diarrhoea-adult,0.98,
+keyword only,mtoto amepungukiwa na maji nifanye nini?,sw,question,dehydration-child,0,,,
+keyword only,dehidration in a chlid,en,typo,dehydration-child,1,dehydration-child,0.6,
+keyword only,mtoto macho yamezma,sw,typo,dehydration-child,1,dehydration-child,0.77,
+keyword only,child with sunken eyes na hawezi kunywa,en,mixed,dehydration-child,1,dehydration-child | fever-child,1,
+keyword only,mtoto ana dehydration,sw,mixed,dehydration-child,1,dehydration-child | diarrhoea-adult,1,
+keyword only,"kid drying out, very drowsy",en,synonym,dehydration-child,0,,,
+keyword only,mtoto amekauka mwili na amechoka sana,sw,synonym,dehydration-child,0,,,
+keyword only,child fever,en,keyword,fever-child,1,fever-child | malnutrition-child | cough-child,1,
+keyword only,homa mtoto,sw,keyword,fever-child,1,fever-child | newborn-danger | wound-care,1,
+keyword only,what should I do when a child has a fever?,en,question,fever-child,1,fever-child | malnutrition-child | cough-child,1,
+keyword only,mtoto ana homa nifanye nini?,sw,question,fever-child,1,fever-child | newborn-danger | wound-care,1,
+keyword only,feaver in a chld,en,typo,fever-child,0,,,
+keyword only,mtoto ana homma na shingo imekakama,sw,typo,fever-child,1,fever-child,0.88,
+keyword only,child with homa and stiff neck,en,mixed,fever-child,1,fever-child,1,
+keyword only,mtoto ana fever na anatapika,sw,mixed,fever-child,1,fever-child | diarrhoea-adult | malnutrition-child,1,
+keyword only,the kid is burning up,en,synonym,fever-child,0,,,
+keyword only,mtoto mwili una joto kali,sw,synonym,fever-child,2,newborn-danger | fever-child | pregnancy-danger,0.53,
+keyword only,malaria adult,en,keyword,malaria-adult,1,malaria-adult | fever-child | diarrhoea-adult,1,
+keyword only,malaria mtu mzima,sw,keyword,malaria-adult,1,malaria-adult | diarrhoea-adult,1,
+keyword only,how do I test an adult for malaria?,en,question,malaria-adult,1,malaria-adult | fever-child,1,
+keyword only,mtu mzima ana dalili za malaria nifanye nini?,sw,question,malaria-adult,1,malaria-adult | diarrhoea-adult,1,
+keyword only,malria in an adlt,en,typo,malaria-adult,0,,,
+keyword only,maleria kwa mtu mzma,sw,typo,malaria-adult,0,,,
+keyword only,adult with malaria na macho ya njano,en,mixed,malaria-adult,1,malaria-adult,1,
+keyword only,mtu mzima ana malaria rapid test,sw,mixed,malaria-adult,1,malaria-adult,1,
+keyword only,grown man with chills and dark pee,en,synonym,malaria-adult,0,,,
+keyword only,baba ana homa kali na baridi,sw,synonym,malaria-adult,0,,,
+keyword only,child cough,en,keyword,cough-child,1,cough-child,1,
+keyword only,kikohozi mtoto,sw,keyword,cough-child,1,cough-child,1,
+keyword only,how do I count a child's breathing rate?,en,question,cough-child,1,cough-child,0.54,
+keyword only,"mtoto anakohoa na anapumua kwa shida, nifanye nini?",sw,question,cough-child,1,cough-child,0.78,
+keyword only,chld coughing and breathng fast,en,typo,cough-child,0,,,
+keyword only,mtoto ana kikohozo,sw,typo,cough-child,1,cough-child,0.66,
+keyword only,child with kikohozi,en,mixed,cough-child,1,cough-child,1,
+keyword only,mtoto ana cough na kifua kinavutika,sw,mixed,cough-child,1,cough-child,1,
+keyword only,toddler gasping for air,en,synonym,cough-child,0,,,
+keyword only,mtoto anahema sana,sw,synonym,cough-child,0,,,
+keyword only,pregnancy bleeding,en,keyword,pregnancy-danger,1,pregnancy-danger,1,
+keyword only,ujauzito damu,sw,keyword,pregnancy-danger,1,pregnancy-danger,1,
+keyword only,what are the danger signs in pregnancy?,en,question,pregnancy-danger,1,pregnancy-danger,1,
+keyword only,mama mjamzito anatoka damu nifanye nini?,sw,question,pregnancy-danger,0,,,
+keyword only,pregnent woman with severe headake,en,typo,pregnancy-danger,0,,,
+keyword only,dalili za hatari wakati wa ujauzto,sw,typo,pregnancy-danger,1,pregnancy-danger | cough-child,0.84,
+keyword only,pregnant woman ana degedege,en,mixed,pregnancy-danger,0,,,
+keyword only,mjamzito ana severe headache,sw,mixed,pregnancy-danger,1,pregnancy-danger,0.56,
+keyword only,expectant mother says the baby stopped kicking,en,synonym,pregnancy-danger,0,,,
+keyword only,mama mwenye mimba ana kizunguzungu na kuona ukungu,sw,synonym,pregnancy-danger,0,,,
+keyword only,newborn danger signs,en,keyword,newborn-danger,1,newborn-danger,1,
+keyword only,mtoto mchanga hatari,sw,keyword,newborn-danger,1,newborn-danger | pregnancy-danger | cough-child,1,
+keyword only,what are the danger signs in a newborn?,en,question,newborn-danger,1,newborn-danger,1,
+keyword only,"mtoto mchanga hanyonyi vizuri, nifanye nini?",sw,question,newborn-danger,1,newborn-danger,1,
+keyword only,new born not feeeding well,en,typo,newborn-danger,1,newborn-danger,0.86,
+keyword only,mtoto mchnga ana nyayo za njano,sw,typo,newborn-danger,1,newborn-danger,0.84,
+keyword only,newborn baby hanyonyi,en,mixed,newborn-danger,1,newborn-danger,1,
+keyword only,mtoto mchanga ana yellow palms,sw,mixed,newborn-danger,1,newborn-danger | malaria-adult,1,
+keyword only,two day old infant is cold and won't suckle,en,synonym,newborn-danger,0,,,
+keyword only,kichanga kina baridi mwilini,sw,synonym,newborn-danger,0,,,
+keyword only,malnutrition child,en,keyword,malnutrition-child,1,malnutrition-child,1,
+keyword only,utapiamlo mtoto,sw,keyword,malnutrition-child,1,malnutrition-child,1,
+keyword only,how do I check a child for malnutrition?,en,question,malnutrition-child,1,malnutrition-child,0.48,
+keyword only,mtoto amekonda sana nifanye nini?,sw,question,malnutrition-child,1,malnutrition-child | dehydration-child,1,
+keyword only,malnutriton in a child,en,typo,malnutrition-child,1,malnutrition-child,0.72,
+keyword only,mtoto ana utapiamro,sw,typo,malnutrition-child,1,malnutrition-child,0.66,
+keyword only,"very thin child, amekonda sana",en,mixed,malnutrition-child,1,malnutrition-child | dehydration-child,1,
+keyword only,mtoto ana swelling ya miguu,sw,mixed,malnutrition-child,1,malnutrition-child,1,
+keyword only,underweight toddler not growing,en,synonym,malnutrition-child,0,,,
+keyword only,"mtoto hana lishe bora, mwili umedhoofika",sw,synonym,malnutrition-child,0,,,
+keyword only,wound care,en,keyword,wound-care,1,wound-care,1,
+keyword only,kidonda,sw,keyword,wound-care,1,wound-care,1,
+keyword only,how do I clean a wound?,en,question,wound-care,1,wound-care,1,
+keyword only,nitasafishaje kidonda?,sw,question,wound-care,1,wound-care,0.77,
+keyword only,infected wund with pus,en,typo,wound-care,1,wound-care,0.51,
+keyword only,kidoda kina usaha,sw,typo,wound-care,1,wound-care,0.53,
+keyword only,wound ina usaha,en,mixed,wound-care,1,wound-care,0.67,
+keyword only,kidonda kina pus na harufu mbaya,sw,mixed,wound-care,1,wound-care,0.79,
+keyword only,deep cut on the leg from a machete,en,synonym,wound-care,0,,,
+keyword only,amejikata mguu kwa panga,sw,synonym,wound-care,0,,,
+keyword only,burns,en,keyword,burns,1,burns,1,
+keyword only,kuungua moto,sw,keyword,burns,1,burns,1,
+keyword only,what do I do for a burn?,en,question,burns,1,burns,1,
+keyword only,mtoto ameungua moto nifanye nini?,sw,question,burns,1,burns,0.88,
+keyword only,"burnt hand, can I put tothpaste on it?",en,typo,burns,0,,,
+keyword only,ameunguwa na moto,sw,typo,burns,1,burns,0.8,
+keyword only,"burn on the hand, ameungua",en,mixed,burns,1,burns,0.91,
+keyword only,ameungua na hot water,sw,mixed,burns,0,,,
+keyword only,scalded by boiling water,en,synonym,burns,0,,,
+keyword only,amechomwa na maji ya moto,sw,synonym,burns,1,burns,0.46,
+keyword only,adult diarrhoea,en,keyword,diarrhoea-adult,1,diarrhoea-adult | malaria-adult | dehydration-child,1,
+keyword only,kuharisha mtu mzima,sw,keyword,diarrhoea-adult,1,diarrhoea-adult | malaria-adult,1,
+keyword only,what should I give an adult with diarrhoea?,en,question,diarrhoea-adult,1,diarrhoea-adult | dehydration-child,1,
+keyword only,"mtu mzima anaharisha siku tatu, nifanye nini?",sw,question,diarrhoea-adult,1,diarrhoea-adult,0.59,
+keyword only,diarhea in an adult,en,typo,diarrhoea-adult,0,,,
+keyword only,kuharsha mtu mzima,sw,typo,diarrhoea-adult,1,diarrhoea-adult | malaria-adult,0.83,
+keyword only,adult with diarrhoea na damu kwenye kinyesi,en,mixed,diarrhoea-adult,1,diarrhoea-adult,1,
+keyword only,mtu mzima ana diarrhoea,sw,mixed,diarrhoea-adult,1,diarrhoea-adult | malaria-adult,1,
+keyword only,man with the runs for three days,en,synonym,diarrhoea-adult,0,,,
+keyword only,baba anaenda haja mara nyingi,sw,synonym,diarrhoea-adult,0,,,
+keyword only,how do I fix a bicycle,en,out-of-scope,,0,,,
+keyword only,price of maize at the market,en,out-of-scope,,0,,,
+keyword only,snake bite,en,out-of-scope,,0,,,
+keyword only,broken arm,en,out-of-scope,,0,,,
+keyword only,how to register a birth certificate,en,out-of-scope,,0,,,
+keyword only,toothache,en,out-of-scope,,0,,,
+keyword only,my phone battery is dead,en,out-of-scope,,0,,,
+keyword only,how to plant beans,en,out-of-scope,,0,,,
+keyword only,where is the nearest police station,en,out-of-scope,,0,,,
+keyword only,family planning pills,en,out-of-scope,,0,,,
+keyword only,bei ya mahindi sokoni,sw,out-of-scope,,0,,,
+keyword only,gari limeharibika,sw,out-of-scope,,0,,,
+keyword only,nimeumwa na nyoka,sw,out-of-scope,,0,,,
+keyword only,jino linauma,sw,out-of-scope,,0,,,
+keyword only,mkono umevunjika,sw,out-of-scope,,0,,,
+keyword only,jinsi ya kupanda maharagwe,sw,out-of-scope,,0,,,
+keyword only,simu yangu imezima,sw,out-of-scope,,0,,,
+keyword only,kituo cha polisi kiko wapi,sw,out-of-scope,,0,,,
+keyword only,nataka kusajili kuzaliwa kwa mtoto,sw,out-of-scope,,0,,,
+keyword only,vidonge vya uzazi wa mpango,sw,out-of-scope,,0,,,
+meaning only,dehydration child,en,keyword,dehydration-child,1,dehydration-child,0,0.241
+meaning only,upungufu wa maji mtoto,sw,keyword,dehydration-child,1,dehydration-child,0,0.194
+meaning only,what are the signs of dehydration in a child?,en,question,dehydration-child,1,dehydration-child,0,0.211
+meaning only,mtoto amepungukiwa na maji nifanye nini?,sw,question,dehydration-child,1,dehydration-child,0,0.18
+meaning only,dehidration in a chlid,en,typo,dehydration-child,1,dehydration-child,0,0.175
+meaning only,mtoto macho yamezma,sw,typo,dehydration-child,0,,,
+meaning only,child with sunken eyes na hawezi kunywa,en,mixed,dehydration-child,0,,,
+meaning only,mtoto ana dehydration,sw,mixed,dehydration-child,0,,,
+meaning only,"kid drying out, very drowsy",en,synonym,dehydration-child,1,dehydration-child,0,0.218
+meaning only,mtoto amekauka mwili na amechoka sana,sw,synonym,dehydration-child,0,,,
+meaning only,child fever,en,keyword,fever-child,1,fever-child,0,0.239
+meaning only,homa mtoto,sw,keyword,fever-child,0,,,
+meaning only,what should I do when a child has a fever?,en,question,fever-child,1,fever-child,0,0.225
+meaning only,mtoto ana homa nifanye nini?,sw,question,fever-child,0,,,
+meaning only,feaver in a chld,en,typo,fever-child,0,,,
+meaning only,mtoto ana homma na shingo imekakama,sw,typo,fever-child,0,,,
+meaning only,child with homa and stiff neck,en,mixed,fever-child,0,,,
+meaning only,mtoto ana fever na anatapika,sw,mixed,fever-child,0,,,
+meaning only,the kid is burning up,en,synonym,fever-child,0,,,
+meaning only,mtoto mwili una joto kali,sw,synonym,fever-child,0,,,
+meaning only,malaria adult,en,keyword,malaria-adult,1,malaria-adult,0,0.316
+meaning only,malaria mtu mzima,sw,keyword,malaria-adult,1,malaria-adult,0,0.242
+meaning only,how do I test an adult for malaria?,en,question,malaria-adult,1,malaria-adult,0,0.382
+meaning only,mtu mzima ana dalili za malaria nifanye nini?,sw,question,malaria-adult,1,malaria-adult,0,0.263
+meaning only,malria in an adlt,en,typo,malaria-adult,0,,,
+meaning only,maleria kwa mtu mzma,sw,typo,malaria-adult,0,,,
+meaning only,adult with malaria na macho ya njano,en,mixed,malaria-adult,1,malaria-adult,0,0.215
+meaning only,mtu mzima ana malaria rapid test,sw,mixed,malaria-adult,1,malaria-adult,0,0.19
+meaning only,grown man with chills and dark pee,en,synonym,malaria-adult,0,,,
+meaning only,baba ana homa kali na baridi,sw,synonym,malaria-adult,0,,,
+meaning only,child cough,en,keyword,cough-child,1,cough-child,0,0.255
+meaning only,kikohozi mtoto,sw,keyword,cough-child,0,,,
+meaning only,how do I count a child's breathing rate?,en,question,cough-child,1,cough-child,0,0.225
+meaning only,"mtoto anakohoa na anapumua kwa shida, nifanye nini?",sw,question,cough-child,0,,,
+meaning only,chld coughing and breathng fast,en,typo,cough-child,1,cough-child,0,0.219
+meaning only,mtoto ana kikohozo,sw,typo,cough-child,0,,,
+meaning only,child with kikohozi,en,mixed,cough-child,0,,,
+meaning only,mtoto ana cough na kifua kinavutika,sw,mixed,cough-child,0,,,
+meaning only,toddler gasping for air,en,synonym,cough-child,1,cough-child,0,0.243
+meaning only,mtoto anahema sana,sw,synonym,cough-child,0,,,
+meaning only,pregnancy bleeding,en,keyword,pregnancy-danger,1,pregnancy-danger,0,0.27
+meaning only,ujauzito damu,sw,keyword,pregnancy-danger,0,,,
+meaning only,what are the danger signs in pregnancy?,en,question,pregnancy-danger,1,pregnancy-danger,0,0.297
+meaning only,mama mjamzito anatoka damu nifanye nini?,sw,question,pregnancy-danger,0,,,
+meaning only,pregnent woman with severe headake,en,typo,pregnancy-danger,1,pregnancy-danger,0,0.241
+meaning only,dalili za hatari wakati wa ujauzto,sw,typo,pregnancy-danger,0,,,
+meaning only,pregnant woman ana degedege,en,mixed,pregnancy-danger,1,pregnancy-danger,0,0.191
+meaning only,mjamzito ana severe headache,sw,mixed,pregnancy-danger,0,,,
+meaning only,expectant mother says the baby stopped kicking,en,synonym,pregnancy-danger,0,,,
+meaning only,mama mwenye mimba ana kizunguzungu na kuona ukungu,sw,synonym,pregnancy-danger,0,,,
+meaning only,newborn danger signs,en,keyword,newborn-danger,1,newborn-danger,0,0.266
+meaning only,mtoto mchanga hatari,sw,keyword,newborn-danger,0,,,
+meaning only,what are the danger signs in a newborn?,en,question,newborn-danger,1,newborn-danger,0,0.26
+meaning only,"mtoto mchanga hanyonyi vizuri, nifanye nini?",sw,question,newborn-danger,0,,,
+meaning only,new born not feeeding well,en,typo,newborn-danger,1,newborn-danger,0,0.203
+meaning only,mtoto mchnga ana nyayo za njano,sw,typo,newborn-danger,0,,,
+meaning only,newborn baby hanyonyi,en,mixed,newborn-danger,0,,,
+meaning only,mtoto mchanga ana yellow palms,sw,mixed,newborn-danger,0,,,
+meaning only,two day old infant is cold and won't suckle,en,synonym,newborn-danger,1,newborn-danger,0,0.193
+meaning only,kichanga kina baridi mwilini,sw,synonym,newborn-danger,0,,,
+meaning only,malnutrition child,en,keyword,malnutrition-child,1,malnutrition-child,0,0.178
+meaning only,utapiamlo mtoto,sw,keyword,malnutrition-child,0,,,
+meaning only,how do I check a child for malnutrition?,en,question,malnutrition-child,1,malnutrition-child,0,0.184
+meaning only,mtoto amekonda sana nifanye nini?,sw,question,malnutrition-child,0,,,
+meaning only,malnutriton in a child,en,typo,malnutrition-child,1,malnutrition-child,0,0.174
+meaning only,mtoto ana utapiamro,sw,typo,malnutrition-child,0,,,
+meaning only,"very thin child, amekonda sana",en,mixed,malnutrition-child,0,,,
+meaning only,mtoto ana swelling ya miguu,sw,mixed,malnutrition-child,0,,,
+meaning only,underweight toddler not growing,en,synonym,malnutrition-child,0,,,
+meaning only,"mtoto hana lishe bora, mwili umedhoofika",sw,synonym,malnutrition-child,0,,,
+meaning only,wound care,en,keyword,wound-care,1,wound-care | burns,0,0.313
+meaning only,kidonda,sw,keyword,wound-care,0,,,
+meaning only,how do I clean a wound?,en,question,wound-care,1,wound-care | burns,0,0.329
+meaning only,nitasafishaje kidonda?,sw,question,wound-care,0,,,
+meaning only,infected wund with pus,en,typo,wound-care,1,wound-care,0,0.266
+meaning only,kidoda kina usaha,sw,typo,wound-care,0,,,
+meaning only,wound ina usaha,en,mixed,wound-care,0,,,
+meaning only,kidonda kina pus na harufu mbaya,sw,mixed,wound-care,0,,,
+meaning only,deep cut on the leg from a machete,en,synonym,wound-care,0,,,
+meaning only,amejikata mguu kwa panga,sw,synonym,wound-care,0,,,
+meaning only,burns,en,keyword,burns,1,burns,0,0.253
+meaning only,kuungua moto,sw,keyword,burns,0,,,
+meaning only,what do I do for a burn?,en,question,burns,1,burns,0,0.26
+meaning only,mtoto ameungua moto nifanye nini?,sw,question,burns,0,,,
+meaning only,"burnt hand, can I put tothpaste on it?",en,typo,burns,1,burns,0,0.29
+meaning only,ameunguwa na moto,sw,typo,burns,0,,,
+meaning only,"burn on the hand, ameungua",en,mixed,burns,0,,,
+meaning only,ameungua na hot water,sw,mixed,burns,0,,,
+meaning only,scalded by boiling water,en,synonym,burns,0,,,
+meaning only,amechomwa na maji ya moto,sw,synonym,burns,0,,,
+meaning only,adult diarrhoea,en,keyword,diarrhoea-adult,1,diarrhoea-adult,0,0.383
+meaning only,kuharisha mtu mzima,sw,keyword,diarrhoea-adult,0,,,
+meaning only,what should I give an adult with diarrhoea?,en,question,diarrhoea-adult,1,diarrhoea-adult,0,0.351
+meaning only,"mtu mzima anaharisha siku tatu, nifanye nini?",sw,question,diarrhoea-adult,0,,,
+meaning only,diarhea in an adult,en,typo,diarrhoea-adult,1,diarrhoea-adult,0,0.365
+meaning only,kuharsha mtu mzima,sw,typo,diarrhoea-adult,0,,,
+meaning only,adult with diarrhoea na damu kwenye kinyesi,en,mixed,diarrhoea-adult,1,diarrhoea-adult,0,0.218
+meaning only,mtu mzima ana diarrhoea,sw,mixed,diarrhoea-adult,0,,,
+meaning only,man with the runs for three days,en,synonym,diarrhoea-adult,0,,,
+meaning only,baba anaenda haja mara nyingi,sw,synonym,diarrhoea-adult,0,,,
+meaning only,how do I fix a bicycle,en,out-of-scope,,0,,,
+meaning only,price of maize at the market,en,out-of-scope,,0,,,
+meaning only,snake bite,en,out-of-scope,,0,,,
+meaning only,broken arm,en,out-of-scope,,0,,,
+meaning only,how to register a birth certificate,en,out-of-scope,,0,,,
+meaning only,toothache,en,out-of-scope,,0,,,
+meaning only,my phone battery is dead,en,out-of-scope,,0,,,
+meaning only,how to plant beans,en,out-of-scope,,0,,,
+meaning only,where is the nearest police station,en,out-of-scope,,0,,,
+meaning only,family planning pills,en,out-of-scope,,0,,,
+meaning only,bei ya mahindi sokoni,sw,out-of-scope,,0,,,
+meaning only,gari limeharibika,sw,out-of-scope,,0,,,
+meaning only,nimeumwa na nyoka,sw,out-of-scope,,0,,,
+meaning only,jino linauma,sw,out-of-scope,,0,,,
+meaning only,mkono umevunjika,sw,out-of-scope,,0,,,
+meaning only,jinsi ya kupanda maharagwe,sw,out-of-scope,,0,,,
+meaning only,simu yangu imezima,sw,out-of-scope,,0,,,
+meaning only,kituo cha polisi kiko wapi,sw,out-of-scope,,0,,,
+meaning only,nataka kusajili kuzaliwa kwa mtoto,sw,out-of-scope,,0,,,
+meaning only,vidonge vya uzazi wa mpango,sw,out-of-scope,,0,,,

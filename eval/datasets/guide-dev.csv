@@ -1,0 +1,55 @@
+query,lang,expected,kind
+what are the danger signs for dehydration in a child,en,dehydration-child,question
+child very sleepy after diarrhoea,en,dehydration-child,keyword
+ngozi ikifinywa inarudi polepole,sw,dehydration-child,keyword
+mtoto hawezi kunywa na macho yamezama,sw,dehydration-child,question
+my baby has a high temperature,en,fever-child,synonym
+child having convulsions,en,fever-child,keyword
+mtoto ana homa na kutapika,sw,fever-child,mixed
+mtoto ana degedege,sw,fever-child,keyword
+malaria test positive adult,en,malaria-adult,keyword
+adult with yellow eyes and dark urine,en,malaria-adult,keyword
+mtu mzima amechanganyikiwa na ana malaria,sw,malaria-adult,question
+kipimo cha haraka cha malaria,sw,malaria-adult,keyword
+child breathing fast and chest indrawing,en,cough-child,keyword
+blue lips in a child,en,cough-child,keyword
+mtoto anapumua kwa kelele,sw,cough-child,keyword
+mtoto ana midomo ya bluu,sw,cough-child,typo
+pregnant woman bleeding,en,pregnancy-danger,keyword
+baby moving less in the womb,en,pregnancy-danger,synonym
+mama mjamzito anatoka damu,sw,pregnancy-danger,keyword
+mjamzito ana maumivu makali ya kichwa,sw,pregnancy-danger,question
+newborn not breastfeeding,en,newborn-danger,keyword
+newborn with yellow soles,en,newborn-danger,keyword
+mtoto mchanga ana manjano,sw,newborn-danger,synonym
+mtoto mchanga anapumua haraka,sw,newborn-danger,keyword
+very thin child swollen feet,en,malnutrition-child,keyword
+arm tape in the red zone,en,malnutrition-child,keyword
+mtoto ana miguu imevimba,sw,malnutrition-child,keyword
+pima mzunguko wa mkono,sw,malnutrition-child,keyword
+how to clean a cut,en,wound-care,synonym
+wound with a bad smell,en,wound-care,keyword
+kidonda kina usaha,sw,wound-care,keyword
+damu haikomi kwenye kidonda,sw,wound-care,question
+burned hand with hot water,en,burns,keyword
+burn on the face from fire,en,burns,keyword
+ameungua usoni,sw,burns,keyword
+usipake dawa ya meno kwenye jeraha,sw,burns,keyword
+adult with loose stools for 4 days,en,diarrhoea-adult,keyword
+blood in the stool,en,diarrhoea-adult,keyword
+mtu mzima anaharisha,sw,diarrhoea-adult,keyword
+damu kwenye kinyesi cha mtu mzima,sw,diarrhoea-adult,keyword
+how do I change a tyre,en,,out-of-scope
+cost of fertiliser,en,,out-of-scope
+dog bite,en,,out-of-scope
+broken leg,en,,out-of-scope
+headache after drinking beer,en,,out-of-scope
+how to vote,en,,out-of-scope
+school fees,en,,out-of-scope
+bei ya mbolea,sw,,out-of-scope
+mguu umevunjika,sw,,out-of-scope
+nimeumwa na mbwa,sw,,out-of-scope
+shule inafunguliwa lini,sw,,out-of-scope
+mvua itanyesha kesho,sw,,out-of-scope
+nataka kununua simu,sw,,out-of-scope
+ng'ombe wangu ni mgonjwa,sw,,out-of-scope

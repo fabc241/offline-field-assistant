@@ -41,6 +41,9 @@ npm run ofa -- doctor --verify --load
 | `npm run ofa -- phrase play --lang sw ID` | Plays a phrase's recording exactly as it is in the pack, never text-to-speech (`--out FILE.wav`, `--no-play`) |
 | `npm run make-phrase-recordings [-- DIR]` | Dev only: placeholder recordings for phrases that have none, made with Chatterbox's built-in voice, heard back by Whisper (a badly heard take is rendered again with another seed), and marked synthetic (`--force`: make them all again) |
 | `npm run eval:phrasebook` | F6 eval: open and time-to-audio, search hit rate per query kind, what Whisper hears in each recording → `eval/outputs/` |
+| `npm run ofa -- guide "mtoto ana homa na kutapika"` | Ask the guide: the pack's cards that answer the question, danger signs first, or "no match — see a clinician"; never a generated answer (`--lang`, guessed if omitted; `--limit N`; `--keyword-only`; `--json`; `--pack ID`) |
+| `npm run ofa -- guide --voice clip.wav --lang sw` / `guide --card ID` | The same question spoken (speech to text, then search; prints what was heard) / one card in full |
+| `npm run eval:guide` | F7 eval: top-3 hit rate on 100 questions per kind and language, out-of-scope questions answered "no match", fusion A/B, spoken questions read by Chatterbox and heard by Whisper → `eval/outputs/` |
 | `npm run electron:smoke` | Runs the Electron main process, which loads a model and exits |
 | `npm run package` | Packages the arm64 app with Electron Forge + the QVAC plugin |
 
@@ -60,6 +63,11 @@ Guidance cards and phrases reach a device as a signed `.ofapack`, built from a
 directory of CSVs (see [`content/sample/`](content/sample/) and
 `src/features/packs/content.ts` for the columns). The app accepts only packs
 signed by a key in `src/features/packs/trusted-keys.ts`.
+
+The guide searches the cards by keyword in both languages and by meaning
+with the card vectors computed at build time. It offers a card only when one
+of the two is confident about it (thresholds in `src/features/guide/guide.ts`);
+anything else gets "no match — see a clinician".
 
 Every phrase needs a recording in each language; the phrasebook plays it as
 it is and never falls back to text-to-speech. Until a native speaker records
