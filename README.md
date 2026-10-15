@@ -43,6 +43,9 @@ npm run ofa -- doctor --verify --load
 | `npm run eval:phrasebook` | F6 eval: open and time-to-audio, search hit rate per query kind, what Whisper hears in each recording → `eval/outputs/` |
 | `npm run ofa -- guide "mtoto ana homa na kutapika"` | Ask the guide: the pack's cards that answer the question, danger signs first, or "no match — see a clinician"; never a generated answer (`--lang`, guessed if omitted; `--limit N`; `--keyword-only`; `--json`; `--pack ID`) |
 | `npm run ofa -- guide --voice clip.wav --lang sw` / `guide --card ID` | The same question spoken (speech to text, then search; prints what was heard) / one card in full |
+| `npm run ofa -- doc translate form.pdf --to sw --out result.json` | Translates a photo (PNG, JPEG, HEIC, …) or PDF segment by segment, each with the back-translation check; text PDFs give their text layer, scans and photos are straightened and OCR'd, and badly read lines are flagged `low-confidence` (`--no-check`, `--json`) |
+| `npm run ofa -- doc read form.jpg` | The text found, by segment, with OCR confidence (`--json`: pages, boxes) |
+| `npm run eval:documents` | F8 eval: renders placeholder forms and labels as PDFs, scans and phone photos (`var/eval-docs/`), then OCR character error rate, intact segments, numbers read, the low-confidence flag, time per page and translation drift → `eval/outputs/` |
 | `npm run eval:guide` | F7 eval: top-3 hit rate on 100 questions per kind and language, out-of-scope questions answered "no match", fusion A/B, spoken questions read by Chatterbox and heard by Whisper → `eval/outputs/` |
 | `npm run electron:smoke` | Runs the Electron main process, which loads a model and exits |
 | `npm run package` | Packages the arm64 app with Electron Forge + the QVAC plugin |
@@ -81,6 +84,25 @@ made.
 The development key is `keys/ofa-dev-2026.key.pem`, git-ignored and on the dev
 machine only; it is not for release. Set `OFA_PACK_KEY_PASSPHRASE` before
 `pack keygen` to encrypt a new key, and before `pack sign` to use it.
+
+## Documents
+
+`ofa doc translate` reads a PDF's text layer as it is. A page with almost no
+text (a scan), or any photo, is turned upright from its EXIF orientation,
+straightened (tilt up to 8°) and read by OCR (`OCR_LATIN` + `OCR_CRAFT` on
+Metal). Lines are regrouped into segments: a field, a heading, or a paragraph
+wrapped over several lines. Each segment is translated with the F1 check.
+Segments already in the target language, and bare numbers or dates, are kept
+as printed. Each segment keeps its page and box (points for a PDF, pixels of
+the upright photo) so a screen can place the translation over the original.
+OCR'd text read with low confidence is still translated but flagged
+`low-confidence` first; confidence misses some single-letter slips, so the
+original must stay visible beside the translation.
+
+HEIC photos are converted with macOS's `sips` (the prebuilt image library
+has no HEVC decoder). Elsewhere, HEIC is refused with a request for JPEG.
+`sharp` and `@napi-rs/canvas` are native modules: packaging (F10) must unpack
+them from the asar archive.
 
 ## Rules
 

@@ -10,12 +10,15 @@
 import { performance } from 'node:perf_hooks'
 import type { Embedder, Lang, Translator } from '../../core/engines.js'
 import { cosine, countNegations, looksUntranslated, mentionsClockTime } from './checks.js'
+import { hasRepetitionLoop } from '../speech/transcript.js'
 import { diffQuantities, extractQuantities, formatQuantity, type QuantityDiff } from './quantities.js'
 import { reassemble, segment, type Line } from './segment.js'
 
 /** Most severe first; this is also the display order. */
 export const FLAGS = [
   'empty-output',
+  // Not "repetition": that is the speech-to-text flag, and a conversation turn reports both.
+  'translation-loop',
   'untranslated',
   'numbers-changed',
   'negation-changed',
@@ -27,6 +30,7 @@ export type Flag = (typeof FLAGS)[number]
 /** What each flag asks the speakers to do. */
 export const FLAG_HELP: Record<Flag, string> = {
   'empty-output': 'The model returned nothing. Rephrase and try again.',
+  'translation-loop': 'The model got stuck repeating itself; the translation is broken. Rephrase and try again.',
   untranslated: 'The text came back untranslated. Rephrase and try again.',
   'numbers-changed': 'A number, dose or duration differs. Confirm it out loud.',
   'negation-changed': 'A "not" or "no" was lost or added. Confirm the instruction.',
@@ -195,6 +199,8 @@ export class TranslationService {
 
     const flags = new Set<Flag>()
     if (!translation) flags.add('empty-output')
+    // Seen on an all-caps drug-name heading: a 4-word line came back as 559 characters of "ugonjwa wa".
+    if (hasRepetitionLoop(translation) && !hasRepetitionLoop(source)) flags.add('translation-loop')
     if (looksUntranslated(source, translation)) flags.add('untranslated')
     if (!numbersOk) flags.add('numbers-changed')
     if (from === 'en' && countNegations(source) !== countNegations(back)) flags.add('negation-changed')

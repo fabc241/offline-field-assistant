@@ -10,11 +10,13 @@
  *   ofa pack keygen|build|sign|verify|install|list …
  *   ofa phrase list|search|play …
  *   ofa guide [--lang en|sw] "question" | --voice clip.wav --lang en|sw | --card ID
+ *   ofa doc translate FILE --to en|sw [--out result.json] [--no-check] [--json] | doc read FILE
  */
 import { parseArgs } from 'node:util'
 import { loadConfig } from '../core/config.js'
 import { shutdown } from '../core/qvac.js'
 import { converseCommand } from './converse.js'
+import { docCommand } from './doc.js'
 import { doctor } from './doctor.js'
 import { guideCommand } from './guide.js'
 import { packCommand } from './pack.js'
@@ -39,7 +41,8 @@ const commands: Record<string, Command> = {
   converse: (args) => converseCommand(loadConfig(), args),
   pack: (args) => packCommand(loadConfig(), args),
   phrase: (args) => phraseCommand(loadConfig(), args),
-  guide: (args) => guideCommand(loadConfig(), args)
+  guide: (args) => guideCommand(loadConfig(), args),
+  doc: (args) => docCommand(loadConfig(), args)
 }
 
 const [name, ...rest] = process.argv.slice(2)

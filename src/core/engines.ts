@@ -3,9 +3,9 @@
  * implementations. Unit tests pass fakes instead.
  */
 import { MODEL_SPECS, ttsSpec } from './catalog.js'
-import type { ModelSpec, QvacRuntime, TranscriptSegment } from './qvac.js'
+import type { ModelSpec, OcrBlock, QvacRuntime, TranscriptSegment } from './qvac.js'
 
-export type { TranscriptSegment } from './qvac.js'
+export type { OcrBlock, TranscriptSegment } from './qvac.js'
 
 export const LANGS = ['en', 'sw'] as const
 export type Lang = (typeof LANGS)[number]
@@ -48,6 +48,11 @@ export interface Speaker {
    * `onAudio` receives the audio as the engine produces it, in order.
    */
   speak(text: string, lang: Lang, onAudio: (chunk: SpeechAudio) => void): Promise<void>
+}
+
+export interface OcrEngine {
+  /** Lines of text found in a PNG, JPEG or BMP image, each with its box and confidence. */
+  recognize(image: Uint8Array): Promise<OcrBlock[]>
 }
 
 /** ISO 639-1 codes, as whisper.cpp expects. */
@@ -113,6 +118,19 @@ export function qvacSpeaker(runtime: QvacRuntime, spec: (lang: Lang) => ModelSpe
           onChunk: ({ samples, sampleRate }) => onAudio({ samples: Float32Array.from(samples, (s) => s / 32768), sampleRate })
         })
       )
+    }
+  }
+}
+
+/**
+ * Line by line (`paragraph: false`): the engine's paragraph mode merges
+ * neighbouring lines across languages and fields, and keeps only the lowest
+ * confidence. features/documents/layout.ts groups the lines instead.
+ */
+export function qvacOcr(runtime: QvacRuntime, spec: ModelSpec = MODEL_SPECS.ocr): OcrEngine {
+  return {
+    async recognize(image) {
+      return runtime.use(spec, (modelId) => runtime.sdk.ocr({ modelId, image, paragraph: false }))
     }
   }
 }

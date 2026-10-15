@@ -1,0 +1,134 @@
+doc,set,page,source,confidence,wordErrors,numberErrors,text
+d01-appointment-card,dev,1,ocr,1,0,0,NEXT APPOINTMENT
+d01-appointment-card,dev,1,ocr,0.992,0,0,Name: Zawadi Mohamed
+d01-appointment-card,dev,1,ocr,0.98,0,0,Clinic: Antenatal care
+d01-appointment-card,dev,1,ocr,0.991,0,1,Date: 29/10/2026 at 9.00 in the morning
+d01-appointment-card,dev,1,ocr,0.94,0,0,Bring your mother and child booklet and any medicine you are taking .
+d01-appointment-card,dev,1,ocr,0.978,0,0,SAMPLE NOT CLINICALLY VETTED
+d02-dose-chart-sw,dev,1,ocr,0.92,0,0,JEDWALI LA DAWA YA MALARIA
+d02-dose-chart-sw,dev,1,ocr,0.941,1,0,Kilo 5 hadi 14: kidonge mara mbili kwa siku kwa siku 3
+d02-dose-chart-sw,dev,1,ocr,0.974,0,0,Kilo 15 hadi 24: vidonge 2 mara mbili kwa siku kwa siku 3
+d02-dose-chart-sw,dev,1,ocr,0.937,0,0,Kilo 25 hadi 34: vidonge 3 mara mbili kwa siku kwa siku 3
+d02-dose-chart-sw,dev,1,ocr,0.975,1,0,Mtu mzimna: vidonge 4 mara mbili kwa siku kwa siku 3
+d02-dose-chart-sw,dev,1,ocr,0.972,0,0,"Meza dawa pamoja na chakula au maziwa Kama mgonjwa atatapika ndani ya saa moja, mpe dozi tena"
+d02-dose-chart-sw,dev,1,ocr,0.957,1,0,SAMPLE - NOT CLINICALLYVETTED
+d03-handout-bilingual,dev,1,text-layer,,0,0,Handwashing / Kunawa mikono
+d03-handout-bilingual,dev,1,text-layer,,0,0,"Wash your hands with soap and clean water before you cook, before you eat and after you use the toilet. Rub all parts of the hands for at least 20 seconds."
+d03-handout-bilingual,dev,1,text-layer,,0,0,"Nawa mikono kwa sabuni na maji safi kabla ya kupika, kabla ya kula na baada ya kutoka chooni. Sugua sehemu zote za mikono kwa angalau sekunde 20."
+d03-handout-bilingual,dev,1,text-layer,,0,0,When: before feeding a baby
+d03-handout-bilingual,dev,1,text-layer,,0,0,Lini: kabla ya kumlisha mtoto
+d03-handout-bilingual,dev,1,text-layer,,0,0,"Where: at home, at school and at the clinic"
+d03-handout-bilingual,dev,1,text-layer,,0,0,SAMPLE - NOT CLINICALLY VETTED
+d04-pharmacy-label-hard,dev,1,ocr,0.934,1,0,METFORMIN 500 mg TABLEIS
+d04-pharmacy-label-hard,dev,1,ocr,0.648,0,0,Take
+d04-pharmacy-label-hard,dev,1,ocr,0.257,5,1,abror tice da 4a1a rocd.
+d04-pharmacy-label-hard,dev,1,ocr,0,6,1,23 not Slod rhaote askino Z oii
+d04-pharmacy-label-hard,dev,1,ocr,0.408,1,1,Quantity: 38
+d04-pharmacy-label-hard,dev,1,ocr,0.772,1,0,Pefili:
+d04-pharmacy-label-hard,dev,1,ocr,0.237,2,1,sstAiztit Y7rven
+d05-registration-sw,dev,1,ocr,0.954,0,0,FOMU YA USAJILI
+d05-registration-sw,dev,1,ocr,0.972,1,0,Jina kamili: Hallma Mussa
+d05-registration-sw,dev,1,ocr,0.981,0,0,Jinsia: Mke
+d05-registration-sw,dev,1,ocr,0.999,0,0,Tarehe ya kuzaliwa: 05/07/1991
+d05-registration-sw,dev,1,ocr,0.94,0,0,Kijiji : Kibaoni
+d05-registration-sw,dev,1,ocr,0.989,0,0,Simu: 0754 210 987
+d05-registration-sw,dev,1,ocr,0.968,0,0,Sababu ya kuja: maumivu ya tumbo na kuharisha kwa siku mbili
+d05-registration-sw,dev,1,ocr,0.981,0,0,Je una mzio wa dawa yoyote? Hapana
+d05-registration-sw,dev,1,ocr,0.774,2,0,Sanple MOTCLINICALLY VETTED
+e01-intake-form,eval,1,text-layer,,0,0,PATIENT INTAKE FORM
+e01-intake-form,eval,1,text-layer,,0,0,Kilimani Health Centre - Outpatient Department
+e01-intake-form,eval,1,text-layer,,0,0,Name: Amina Juma
+e01-intake-form,eval,1,text-layer,,0,0,Sex: Female
+e01-intake-form,eval,1,text-layer,,0,0,Date of birth: 12/03/2019
+e01-intake-form,eval,1,text-layer,,0,0,Weight: 14.5 kg
+e01-intake-form,eval,1,text-layer,,0,0,Village: Mwembe Tayari
+e01-intake-form,eval,1,text-layer,,0,0,Phone: 0712 345 678
+e01-intake-form,eval,1,text-layer,,0,0,Temperature: 38.7 C
+e01-intake-form,eval,1,text-layer,,0,0,Pulse: 128 per minute
+e01-intake-form,eval,1,text-layer,,0,0,Reason for visit
+e01-intake-form,eval,1,text-layer,,0,0,The child has had a fever for three days and has vomited four times since this morning. The mother says the child is not breastfeeding well and is very sleepy.
+e01-intake-form,eval,1,text-layer,,0,0,Allergies: none known
+e01-intake-form,eval,1,text-layer,,0,0,Signature of the health worker: ________________
+e01-intake-form,eval,1,text-layer,,0,0,SAMPLE - NOT CLINICALLY VETTED
+e02-discharge-sw,eval,1,text-layer,,0,0,MAAGIZO YA KURUDI NYUMBANI
+e02-discharge-sw,eval,1,text-layer,,0,0,Jina la mgonjwa: Baraka Otieno
+e02-discharge-sw,eval,1,text-layer,,0,0,Umri: miaka 6
+e02-discharge-sw,eval,1,text-layer,,0,0,Tarehe ya kuruhusiwa: 14/10/2026
+e02-discharge-sw,eval,1,text-layer,,0,0,Dawa
+e02-discharge-sw,eval,1,text-layer,,0,0,Mpe mtoto vidonge viwili vya amoxicillin mara tatu kwa siku kwa siku tano. Usiache dawa hata kama mtoto anajisikia vizuri.
+e02-discharge-sw,eval,1,text-layer,,0,0,"Mpe paracetamol 250 mg kama joto liko juu, lakini si zaidi ya mara nne kwa siku."
+e02-discharge-sw,eval,1,text-layer,,0,0,Chakula na maji
+e02-discharge-sw,eval,1,text-layer,,0,0,Mpe mtoto maji safi ya kunywa mara kwa mara na endelea kumnyonyesha. Mpe chakula kidogo kidogo mara nyingi kwa siku.
+e02-discharge-sw,eval,2,text-layer,,0,0,Rudi kliniki mara moja kama
+e02-discharge-sw,eval,2,text-layer,,0,0,- mtoto hawezi kunywa wala kunyonya
+e02-discharge-sw,eval,2,text-layer,,0,0,- mtoto anatapika kila kitu
+e02-discharge-sw,eval,2,text-layer,,0,0,- mtoto amepata degedege
+e02-discharge-sw,eval,2,text-layer,,0,0,- homa haishuki baada ya siku mbili
+e02-discharge-sw,eval,2,text-layer,,0,0,Miadi ijayo: 21/10/2026 saa tatu asubuhi
+e02-discharge-sw,eval,2,text-layer,,0,0,SAMPLE - NOT CLINICALLY VETTED
+e03-med-label-en,eval,1,ocr,0.999,0,0,AMOXICILLIN 250 mg CAPSULES
+e03-med-label-en,eval,1,ocr,0.952,0,0,Patient: Amina Juma
+e03-med-label-en,eval,1,ocr,0.994,0,0,Take 1 capsule three times a day for 5 days. Finish all the capsules.
+e03-med-label-en,eval,1,ocr,0.994,0,0,Do not give to a child under 6 months
+e03-med-label-en,eval,1,ocr,0.982,0,0,Quantity: 15
+e03-med-label-en,eval,1,ocr,0.985,0,0,Date: 15/10/2026
+e03-med-label-en,eval,1,ocr,0.992,0,0,SAMPLE NOT CLINICALLY VETTED
+e04-ors-bilingual,eval,1,ocr,0.985,0,0,ORAL REHYDRATION SALTS
+e04-ors-bilingual,eval,1,ocr,0.982,0,0,Mix one sachet in 1 litre of clean water.
+e04-ors-bilingual,eval,1,ocr,0.942,0,0,Changanya pakiti moja na lita 1 ya maji safi.
+e04-ors-bilingual,eval,1,ocr,0.987,0,0,Give small sips after each loose stool.
+e04-ors-bilingual,eval,1,ocr,0.964,0,0,Mpe mafunda madogo baada ya kila choo laini.
+e04-ors-bilingual,eval,1,ocr,0.978,0,0,Throw away what is left after 24 hours.
+e04-ors-bilingual,eval,1,ocr,0.985,0,0,Mwaga kilichobaki baada ya saa 24.
+e04-ors-bilingual,eval,1,ocr,0.971,0,0,SAMPLE NOT CLINICALLY VETTED
+e05-vaccination-card,eval,1,ocr,0.99,0,0,CHILD HEALTH CARD
+e05-vaccination-card,eval,1,ocr,1,0,0,Child: Neema Wanjiru
+e05-vaccination-card,eval,1,ocr,1,0,0,Born: 02/02/2026
+e05-vaccination-card,eval,1,ocr,0.963,0,0,BCG: given at birth
+e05-vaccination-card,eval,1,ocr,0.994,0,0,Polio 1: 16/03/2026
+e05-vaccination-card,eval,1,ocr,0.993,0,0,Polio 2: 13/04/2026
+e05-vaccination-card,eval,1,ocr,0.973,0,0,Pentavalent 1: 16/03/2026
+e05-vaccination-card,eval,1,ocr,0.981,0,0,Pentavalent 2: 13/04/2026
+e05-vaccination-card,eval,1,ocr,0.958,0,0,Measles: due at 9 months
+e05-vaccination-card,eval,1,ocr,0.944,0,0,Bring this card to every visit.
+e05-vaccination-card,eval,1,ocr,0.973,0,0,SAMPLE NOT CLINICALLY VETTED
+e06-referral-letter,eval,1,ocr,0.955,0,0,REFERRAL NOTE
+e06-referral-letter,eval,1,ocr,0.964,0,0,From: Kilimani Health Centre
+e06-referral-letter,eval,1,ocr,0.991,0,0,To: Mwanza District Hospital
+e06-referral-letter,eval,1,ocr,0.995,0,0,Date: 15/10/2026
+e06-referral-letter,eval,1,ocr,0.808,1,0,Decar colleague;
+e06-referral-letter,eval,1,ocr,0.919,1,0,"Lam referring Mr. Hassan Ali, aged 42, who has had a cough for three weeks and has lost weight. He has night sweats and his temperature today was 38.2 €."
+e06-referral-letter,eval,1,ocr,0.978,0,0,His rapid malaria test was negative. He has not been tested for tuberculosis. He has no known allergies and takes no regular medicine.
+e06-referral-letter,eval,2,ocr,0.946,0,0,Please assess him for tuberculosis and advise on treatment. He will travel with his brother and needs help with the cost of transport.
+e06-referral-letter,eval,2,ocr,0.967,0,0,Yours sincerely.
+e06-referral-letter,eval,2,ocr,0.977,0,0,Grace Mwangi. Clinical Officer
+e06-referral-letter,eval,2,ocr,0.978,2,0,SAMPLE NOTCLINICALLY VETTED
+e07-med-label-sw,eval,1,ocr,1,0,0,PARACETAMOL 500 mg
+e07-med-label-sw,eval,1,ocr,0.969,0,0,Jina: Mama Rehema
+e07-med-label-sw,eval,1,ocr,0.966,0,0,Meza vidonge 2 kila baada ya saa 8
+e07-med-label-sw,eval,1,ocr,0.993,0,0,Usimeze zaidi ya vidonge 8 kwa siku
+e07-med-label-sw,eval,1,ocr,0.994,0,0,Weka mbali na watoto
+e07-med-label-sw,eval,1,ocr,0.963,0,0,SAMPLE NOT CLINICALLY VETTED
+e08-clinic-notice-sw,eval,1,ocr,0.999,0,0,TANGAZO
+e08-clinic-notice-sw,eval,1,ocr,0.969,0,0,Kliniki ya watoto itafunguliwa kila Jumanne na Alhamisi kuanzia saa mbili asubuhi hadi saa nane mchana
+e08-clinic-notice-sw,eval,1,ocr,0.983,0,0,Leta kadi ya mtoto na kitabu cha chanjo
+e08-clinic-notice-sw,eval,1,ocr,0.999,0,0,Huduma ni bure kwa watoto chini ya miaka 5
+e08-clinic-notice-sw,eval,1,ocr,0.976,0,0,SAMPLE NOT CLINICALLY VETTED
+e09-consent-form,eval,1,ocr,0.995,0,0,CONSENT FOR HIV TESTING
+e09-consent-form,eval,1,ocr,0.916,2,0,The health worker has explained the test to me understand that the result is private and that [ can ask questions at any time.
+e09-consent-form,eval,1,ocr,0.918,1,0,understand that L can refuse the test and that refusing will not change the care [
+e09-consent-form,eval,1,ocr,0.929,1,0,reccive at this clinic
+e09-consent-form,eval,1,ocr,0.932,1,0,"If the result is positive, Will be offered treatment and counselling"
+e09-consent-form,eval,1,ocr,0.992,0,0,Name: Joseph Kamau
+e09-consent-form,eval,1,ocr,0.973,0,2,Date: 15/10 2026
+e09-consent-form,eval,1,ocr,0.932,0,0,Signature:
+e09-consent-form,eval,1,ocr,0.673,3,0,SimplE NOTCLINICALLE VEULD
+e10-lab-slip,eval,1,ocr,0.968,1,0,LABORATORY RESULI
+e10-lab-slip,eval,1,ocr,0.773,3,0,Pallent: Hatuma Seid
+e10-lab-slip,eval,1,ocr,0.68,2,3,Haemoglobin: 9 .8 g/d1 (lo)
+e10-lab-slip,eval,1,ocr,0.734,2,0,Helaria RDT : posicive
+e10-lab-slip,eval,1,ocr,0.76,1,3,Blood glucose: 5 . 4 Inmol1
+e10-lab-slip,eval,1,ocr,0.811,2,0,"Urine: no protein, na suger"
+e10-lab-slip,eval,1,ocr,0.693,1,0,Checked y :
+e10-lab-slip,eval,1,ocr,0.987,1,0,Noroge
+e10-lab-slip,eval,1,ocr,0.268,4,2,SAke2li4es eoeeis Sieil VEIre l

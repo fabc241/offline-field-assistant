@@ -113,6 +113,20 @@ export const ttsSpec = (language: Lang, opts: TtsOptions = {}): ModelSpec => ({
 })
 
 /**
+ * EasyOCR (CRAFT detector + Latin recognizer) on Metal. Swahili needs no
+ * letters beyond English's. The engine defaults to the CPU, which took 3.9 s
+ * for a form page against 1.3 s on Metal (M4). Photos arrive upright (EXIF
+ * applied, tilt removed), so the engine's retry of unsure lines turned 90° and
+ * 270° is off: it found nothing more on the F8 dev documents. `overrides` are
+ * for the F8 A/B.
+ */
+export const ocrSpec = (overrides: Record<string, unknown> = {}): ModelSpec => ({
+  name: MODEL_CATALOG.ocrRecognizer,
+  config: { langList: ['en'], backendDevice: 'metal', defaultRotationAngles: [], ...overrides },
+  companions: { detectorModelSrc: MODEL_CATALOG.ocrDetector }
+})
+
+/**
  * How each runtime model is loaded. Features and the doctor share these, so
  * the runtime sees one spec (and keeps one loaded instance) per model.
  */
@@ -121,9 +135,5 @@ export const MODEL_SPECS = {
   stt: sttSpec(),
   tts: ttsSpec('sw'),
   embedder: { name: MODEL_CATALOG.embedder },
-  ocr: {
-    name: MODEL_CATALOG.ocrRecognizer,
-    config: { langList: ['en'] },
-    companions: { detectorModelSrc: MODEL_CATALOG.ocrDetector }
-  }
+  ocr: ocrSpec()
 } satisfies Record<string, ModelSpec>

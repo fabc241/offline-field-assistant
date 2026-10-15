@@ -699,3 +699,185 @@ Per query: `eval/outputs/guide-search.csv` (each variant) and
   all of it the query embedding. Keyword scoring is linear in the vocabulary
   (expansions are cached per query word) and stays well under a millisecond
   at the plan's ~50 cards.
+
+## F8 — Document translate (done 2026-10-15)
+
+`DocumentService` (`src/features/documents/`) takes a photo or a PDF and
+returns its text as segments in reading order. Each segment is translated
+with the F1 check and carries `{ page, bbox, original, translation,
+ocrConfidence, flags }`.
+- **PDF**: the text layer, read with pdf.js. A page with fewer than 20
+  letters and digits is a scan. It is rendered with `@napi-rs/canvas` at up
+  to 3 px per point and OCR'd.
+- **Photo** (PNG, JPEG, HEIC, BMP, WebP, TIFF; the kind is judged by the
+  bytes): turned upright from its EXIF orientation by `sharp`, flattened,
+  capped at 2560 px and OCR'd. HEIC goes through macOS `sips`, since the
+  prebuilt `sharp` has no HEVC decoder.
+- **Straightening** (`deskew.ts`): the tilt is the angle that gives the
+  sharpest horizontal projection of the ink, searched over ±8° in ~13 ms.
+  Pages tilted by 0.3° or more are rotated before OCR, and boxes are mapped
+  back to the original.
+- **OCR** runs `OCR_LATIN` + `OCR_CRAFT` line by line on Metal, with the
+  engine's rotated retries off. The engine's paragraph mode merged an English
+  line with the Swahili one below it and kept only the lowest confidence, so
+  `layout.ts` groups lines itself. Boxes on one row join into a line, and a
+  gap wider than 1.5 line heights splits fields. A line continues the
+  paragraph above it only when all of these hold: centre-to-centre spacing
+  ≤ 1.35 line heights, similar height, aligned, the line above does not end a
+  sentence or a label, the new line does not start a field ("Date of birth:")
+  or a list item, and the language does not switch.
+- **Confidence**: the engine scores a line as the product of its character
+  probabilities raised to 2/√n, so a 52-letter line read perfectly scored
+  0.59. The service takes the per-character geometric mean instead. A
+  segment's confidence is that of its weakest line.
+- **Translation**: the direction is fixed by `--to` (the other language is
+  the source). A segment already clearly in the target language, or one
+  without a 3-letter word (dates, "14.5 kg"), is kept as printed (`kept`).
+  OCR'd segments below 0.85 get `low-confidence`, listed first. They are
+  still translated: flags never block, as in F1.
+
+`ofa doc translate FILE --to sw [--out result.json] [--no-check] [--json]`
+prints each segment as it is translated. `ofa doc read FILE` prints the text
+only.
+
+**F1 change: a new flag, `translation-loop`.** On a label heading
+("AMOXICILLIN 250 mg CAPSULES") the 2B translator looped until its 256-token
+cap ("…ugonjwa wa ugonjwa wa…") and no check fired. The flag uses F2's
+repetition detector. It fires on that output and on none of the 1,130
+earlier F1 and F4 eval translations. It is named apart from the speech flag
+`repetition` because a conversation turn reports both.
+
+| Check | Result |
+|---|---|
+| Unit tests (`npm test`) | 271/271 pass (21 new) |
+| Real-model tests (`npm run test:models`) | 36/36 pass (4 new) |
+| Network audit: F8 eval, `test:models`, `ofa doctor --load`, `ofa doc translate` | no sockets opened |
+
+### Data
+
+`eval/datasets/documents.json` holds 15 placeholder forms and labels,
+**NOT clinically vetted**; the Swahili is my own and not vetted. Each is
+written as text with its layout, and `eval/make-documents.ts` renders it to
+`var/eval-docs/`, so the written text is the ground truth. The renderings:
+PDFs with a text layer; scanned PDFs (a JPEG per page, no text); and phone
+photos simulated from the page on a table, tilted 1–3.5°, shaded, blurred,
+noisy, downscaled and saved as JPEG 50–85 or HEIC. One is stored sideways
+with EXIF orientation 6. **The 10 eval documents (12 pages) were measured
+once, with the settings chosen on the 5 dev documents.** These are rendered
+fonts and simulated damage, not real phone photos. Real forms, handwriting
+(out of scope) and creased paper must be re-measured.
+
+A block is **intact** when one segment matches it within 15 % character
+error, so a block merged with another or split apart does not count.
+**Numbers** are digit groups as printed (14.5, 12/03/2019, 0712); one counts
+as read when the same string appears on the page.
+
+### Results (M4, warm)
+
+| Measure | All 12 pages | Text layer (3) | OCR (9) |
+|---|---|---|---|
+| CER, strict (case and punctuation count) | 3.3 % | **0 %** | 5.0 % |
+| CER, normalized (as F2's WER) | 1.9 % | 0 % | 2.8 % |
+| Blocks intact | 89/95 | 31/31 | 58/64 |
+| Numbers read exactly | 39/42 | 11/11 | 28/31 |
+| Time to read a page (median / max) | — | 8 ms / 11 ms | 4.4 s / 7.5 s |
+
+| Document | Kind | CER strict / normalized | Blocks | Numbers | Read |
+|---|---|---|---|---|---|
+| e01 intake form (en) | PDF, text | 0 / 0 | 15/15 | 7/7 | 11 ms |
+| e02 discharge (sw, 2 pages) | PDF, text | 0 / 0 | 16/16 | 4/4 | 7 ms |
+| e03 medicine label (en) | JPEG photo | 1.4 / 0 | 7/7 | 6/6 | 4.1 s |
+| e04 ORS sachet (en + sw) | JPEG photo, EXIF sideways | 0.7 / 0 | 8/8 | 4/4 | 4.9 s |
+| e05 vaccination card (en) | scanned PDF | 0.8 / 0 | 11/11 | 10/10 | 3.8 s |
+| e06 referral letter (en, 2 pages) | scanned PDF, A4 | 1.7 / 1.0 | 11/11 | 3/3 | 7.5 s/page |
+| e07 medicine label (sw) | HEIC photo, dim | 3.1 / 0 | 6/6 | 4/4 | 4.4 s |
+| e08 clinic notice (sw) | PNG screenshot | 2.2 / 0 | 5/5 | 1/1 | 3.0 s |
+| e09 consent form (en) | JPEG photo, A4, small text | 9.6 / 4.5 | 6/8 | 0/1 | 5.7 s |
+| e10 lab slip (en) | JPEG photo, typewriter, blurred | 26.0 / 22.3 | 4/8 | 0/2 | 2.1 s |
+
+**Translation** of the 10 eval documents into their other language (97
+segments; 3 Swahili lines of the bilingual sachet kept as printed):
+
+| Measure | Result |
+|---|---|
+| Time per page: read, translate, check (median / p90 / max) | 12.4 / 14.0 / 14.1 s |
+| Drift, text-layer pages (chrF of the read text's translation against the true text's) | 100 on all 3 |
+| Drift, OCR pages (median / lowest) | 88.8 / 53.2 (e10 lab slip) |
+| Peak worker RSS (OCR + translator + embedder) | 0.83 GB (RSS undercounts, see F0) |
+
+**Low-confidence flag** (a segment counts as misread when any word differs
+from the page's text):
+
+| | Dev (chose 0.85) | Eval at 0.85 |
+|---|---|---|
+| Misread segments flagged | 6/11 | **9/17** |
+| … with a misread number | 4/5 | 3/4 |
+| Clean segments flagged | 1/18 | **0/49** |
+| AUC: per-character mean / engine's raw score | 0.84 / 0.85 | 0.92 / 0.90 |
+
+The threshold sits midway in the dev gap: misread segments up to 0.77,
+clean ones from 0.92. On the eval set, 0.92 would flag 12/17 misread
+segments with no clean one, and 0.94 would flag 14/17 with 1/49 clean. That
+sweep ran on the eval documents, so it cannot be used to choose a value
+(as in F7).
+
+**A/B on the dev documents** (4 OCR pages; strict / normalized CER, blocks
+intact, numbers, median / max read time, AUC):
+
+| OCR setting | CER | Blocks | Numbers | Read | AUC |
+|---|---|---|---|---|---|
+| Engine defaults (magnify 1.5, retry unsure lines at 90°/270°) | 9.6 / 7.8 | 23/28 | 19/24 | 4.8 / 8.2 s | 0.82 |
+| **No rotation retries (app)** | **9.5 / 7.7** | 23/28 | 20/24 | 4.7 / 7.7 s | 0.84 |
+| … magnify 1.0 | 10.6 / 8.4 | 23/28 | 21/24 | 2.4 / 7.9 s | 0.86 |
+| … magnify 2.0 | 10.2 / 7.8 | 23/28 | 21/24 | 7.2 / 7.9 s | 0.90 |
+| … scans rendered at 2 px/pt instead of 3 | 10.2 / 8.3 | 22/28 | 19/24 | 4.7 / 7.2 s | 0.91 |
+| No straightening (app settings otherwise) | 18.8 / 17.4 | 16/28 | 19/24 | 4.0 / 6.9 s | — |
+
+On the eval OCR pages, straightening also halves the error: without it,
+strict CER is 9.3 % (5.0 % with it), with 51/64 blocks intact (58/64 with
+it).
+
+Per segment: `eval/outputs/documents-segments.csv` (read text, confidence,
+word and number errors) and `documents-translations.csv` (translation,
+back-translation, flags). Summary: `eval/outputs/documents-summary.json`.
+
+### Findings
+- **Text PDFs are exact and instant**: 0 % CER and every block intact, read
+  in about 10 ms. The time goes to translation: per sentence, 0.35 s to
+  translate and 0.3 s to check (F1).
+- **Straightening is what makes photos usable.** The engine boxes are
+  axis-aligned, so at a 2° tilt the two ends of a printed line sit a line
+  apart. The pieces then sorted into the wrong order ("…three times a day
+  days. Finish…"). Removing the tilt first halves CER on both sets and keeps
+  blocks whole.
+- **Confidence catches the badly read lines, not single-letter slips.** On the
+  blurred lab slip, 7 of 9 segments scored 0.27–0.81 and were flagged, but
+  "LABORATORY RESULI" (0.97) and "Noroge" for "P. Njoroge" (0.99) were not.
+  On the dev documents, "TABLEIS", "Hallma" and "mzimna" scored 0.93–0.98. One dev misread is
+  dangerous and scored 0.94: "kidonge 1 mara mbili" came back as "kidonge
+  mara mbili", with the dose digit dropped. A flag cannot be the only
+  safeguard. **The UI must show the photo crop (`bbox`) beside every
+  translation**, and medication doses still need the clinician's reading.
+- **OCR drops punctuation, and the translation notices.** Final full stops,
+  the dash in "SAMPLE - NOT" and slashes ("15/10 2026") go missing. The clean
+  PNG (e08) and the dim HEIC label (e07) have 0 % normalized CER, yet their
+  translations drift to chrF 86 because the translator reads an unpunctuated
+  line differently. A lost full stop also lets two lines join. The
+  language-switch rule stops this for bilingual labels; for same-language
+  lines (e09) it still happens.
+- **The translation check catches translator errors on documents too.**
+  "has vomited four times" → "amepiga mara nne" (*has hit four times*;
+  `negation-changed` fired on the back-translation). "saa tatu asubuhi" →
+  "3am", when it means 9 a.m. (`clock-time`). "REFERRAL NOTE" → "Taarifa ya
+  Upelelezi", an investigation report (`low-fidelity`). Drug names and
+  personal names in short lines raise `untranslated` (6 times), which is
+  expected for "PARACETAMOL 500 mg".
+- **Time per page is about 12 s with the check.** An OCR page takes 2–7.5 s;
+  the A4 scan is slowest at 3 px/pt. Magnify 1.0 halves the median read time
+  for +0.7 points of normalized CER, a trade to revisit on phones.
+  Rendering scans at 2 px/pt saved little and lost a block and a number.
+- **Platform notes:** HEIC needs macOS (`sips`); the Android build will need
+  another HEIC decoder. `sharp` and `@napi-rs/canvas` are native modules and
+  must be unpacked from the asar archive in F10. pdf.js 6 has no eval path,
+  and its fonts load from the package on disk, so reading a PDF opens no
+  socket.

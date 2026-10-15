@@ -1,0 +1,98 @@
+doc,page,to,confidence,original,translation,kept,backTranslation,flags
+e01-intake-form,1,sw,,PATIENT INTAKE FORM,Fomu ya Kuchukua Mgonjwa,,Patient Acceptance Form,
+e01-intake-form,1,sw,,Kilimani Health Centre - Outpatient Department,Kituo cha Afya Kilimani - Idara ya Wagonjwa wa Nje,,Kilimani Health Centre - Department of Outpatients,
+e01-intake-form,1,sw,,Name: Amina Juma,Jina: Amina Juma,,Name: Amina Juma,
+e01-intake-form,1,sw,,Sex: Female,Jinsia: Mwanamke,,Gender: Female,
+e01-intake-form,1,sw,,Date of birth: 12/03/2019,Tarehe ya kuzaliwa: 12/03/2019,,Date of birth: 12/03/2019,
+e01-intake-form,1,sw,,Weight: 14.5 kg,Uzito: 14.5 kg,,Weight: 14.5 kg,
+e01-intake-form,1,sw,,Village: Mwembe Tayari,Kijiji: Mwembe Tayari,,The village: Mwembe Tayari,
+e01-intake-form,1,sw,,Phone: 0712 345 678,Simu: 0712 345 678,,Tel: 0712 345 678,
+e01-intake-form,1,sw,,Temperature: 38.7 C,Joto: 38.7 C,,Temperature: 38.7 C,
+e01-intake-form,1,sw,,Pulse: 128 per minute,Pulse: 128 kwa dakika,,Pulse: 128 per minute,
+e01-intake-form,1,sw,,Reason for visit,Sababu ya ziara,,Reason for visit,
+e01-intake-form,1,sw,,The child has had a fever for three days and has vomited four times since this morning. The mother says the child is not breastfeeding well and is very sleepy.,Mtoto huyo amekuwa na homa kwa siku tatu na amepiga mara nne tangu asubuhi. Mama anasema mtoto huyo hana uwezo wa kunyonya vizuri na ana usingizi mwingi.,,The child has had a fever for three days and has had four seizures since morning. The mother says that the baby has difficulty absorbing nutrients and is sleeping a lot.,negation-changed
+e01-intake-form,1,sw,,Allergies: none known,Magonjwa ya mzio: hakuna yaliyojulikana,,Allergies: nothing known,
+e01-intake-form,1,sw,,Signature of the health worker: ________________,Saini ya mfanyakazi wa afya: ________________,,Healthcare worker signature: ________________,
+e01-intake-form,1,sw,,SAMPLE - NOT CLINICALLY VETTED,Sampuli - Haijathibitishwa Kliniki,,Samples - Not Clinically Proven,
+e02-discharge-sw,1,en,,MAAGIZO YA KURUDI NYUMBANI,Instructions for Returning to the Home,,Maagizo ya Kurudi Nyumbani,
+e02-discharge-sw,1,en,,Jina la mgonjwa: Baraka Otieno,Patient Name: Baraka Otieno,,Jina la mgonjwa: Baraka Otieno,
+e02-discharge-sw,1,en,,Umri: miaka 6,Age: 6 years,,Umri: Miaka 6,
+e02-discharge-sw,1,en,,Tarehe ya kuruhusiwa: 14/10/2026,Date of approval: 14/10/2026,,Tarehe ya idhini: 14/10/2026,
+e02-discharge-sw,1,en,,Dawa,Medication,,Dawa,
+e02-discharge-sw,1,en,,Mpe mtoto vidonge viwili vya amoxicillin mara tatu kwa siku kwa siku tano. Usiache dawa hata kama mtoto anajisikia vizuri.,Give the child two tablets of amoxicillin three times a day for five days. Do not stop the medication even if the child feels better.,,Mpe mtoto vidonge viwili vya amoxicillin mara tatu kwa siku kwa siku tano. Usiache kumpa mtoto dawa hata kama mtoto anajisikia vizuri.,
+e02-discharge-sw,1,en,,"Mpe paracetamol 250 mg kama joto liko juu, lakini si zaidi ya mara nne kwa siku.","Give paracetamol 250 mg if the temperature is high, but no more than four times a day.",,"Mpe paracetamol 250 mg kama joto ni kubwa, lakini usizidi mara nne kwa siku.",
+e02-discharge-sw,1,en,,Chakula na maji,Food and water,,Chakula na maji,
+e02-discharge-sw,1,en,,Mpe mtoto maji safi ya kunywa mara kwa mara na endelea kumnyonyesha. Mpe chakula kidogo kidogo mara nyingi kwa siku.,Give the baby clean drinking water regularly and continue to breast - feed. Give him small meals several times a day.,,Mpe mtoto maji safi ya kunywa mara kwa mara na endelea kumnyonyesha. Mpe chakula kidogo mara kadhaa kwa siku.,
+e02-discharge-sw,2,en,,Rudi kliniki mara moja kama,Return to the clinic immediately if,,Rudi kliniki mara moja ikiwa,
+e02-discharge-sw,2,en,,- mtoto hawezi kunywa wala kunyonya,- the baby cannot drink or suckle,,- mtoto hawezi kunywa au kunyonya,
+e02-discharge-sw,2,en,,- mtoto anatapika kila kitu,- the baby vomits everything,,- mtoto anatapika kila kitu,
+e02-discharge-sw,2,en,,- mtoto amepata degedege,- the child has had a seizure,,- mtoto amepata kifafa,
+e02-discharge-sw,2,en,,- homa haishuki baada ya siku mbili,- fever does not subside after two days,,- homa haipungui baada ya siku mbili,
+e02-discharge-sw,2,en,,Miadi ijayo: 21/10/2026 saa tatu asubuhi,Next appointment: 21/10/2026 at 3am,,Mkutano ujao: 21/10/2026 saa 3 asubuhi,clock-time
+e02-discharge-sw,2,en,,SAMPLE - NOT CLINICALLY VETTED,SAMPLE - NOT CLINICALLY VETTED,,Sampuli - Haijathibitishwa Kliniki,untranslated low-fidelity
+e03-med-label-en,1,sw,0.999,AMOXICILLIN 250 mg CAPSULES,AMOXICILLIN 250 mg CAPSULES (Mafuta ya kuzuia ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa,,AMOXICILLIN 250 mg CAPSULES (Anti-inflammatory drug) is used to treat infections caused by bacteria.,translation-loop
+e03-med-label-en,1,sw,0.952,Patient: Amina Juma,Mgonjwa: Amina Juma,,The patient: Amina Juma,
+e03-med-label-en,1,sw,0.994,Take 1 capsule three times a day for 5 days. Finish all the capsules.,Chukua vidonge 1 mara tatu kwa siku kwa siku 5. Maliza vidonge vyote.,,Take 1 tablet three times a day for 5 days. Finish all the pills.,
+e03-med-label-en,1,sw,0.994,Do not give to a child under 6 months,Usimpe mtoto chini ya miezi 6,,Do not give to a child under 6 months,
+e03-med-label-en,1,sw,0.982,Quantity: 15,Kiasi: 15,,The amount: 15,
+e03-med-label-en,1,sw,0.985,Date: 15/10/2026,Tarehe: 15/10/2026,,Date: 15/10/2026,
+e03-med-label-en,1,sw,0.992,SAMPLE NOT CLINICALLY VETTED,Sampuli haijathibitishwa kliniki,,The sample has not been clinically validated,
+e04-ors-bilingual,1,sw,0.985,ORAL REHYDRATION SALTS,Chumvi za kuongeza maji mwilini,,Salts to increase water retention,low-fidelity
+e04-ors-bilingual,1,sw,0.982,Mix one sachet in 1 litre of clean water.,Changanya sacheti moja katika lita 1 ya maji safi.,,Mix one sachet in 1 liter of clean water.,
+e04-ors-bilingual,1,sw,0.942,Changanya pakiti moja na lita 1 ya maji safi.,Changanya pakiti moja na lita 1 ya maji safi.,target-language,,
+e04-ors-bilingual,1,sw,0.987,Give small sips after each loose stool.,Mpe maji kidogo kidogo baada ya kila kinyesi kilicholegea.,,Give him a little water after each loose stool.,
+e04-ors-bilingual,1,sw,0.964,Mpe mafunda madogo baada ya kila choo laini.,Mpe mafunda madogo baada ya kila choo laini.,target-language,,
+e04-ors-bilingual,1,sw,0.978,Throw away what is left after 24 hours.,Tupa kile kilichobaki baada ya masaa 24.,,Throw away what is left after 24 hours.,
+e04-ors-bilingual,1,sw,0.985,Mwaga kilichobaki baada ya saa 24.,Mwaga kilichobaki baada ya saa 24.,target-language,,
+e04-ors-bilingual,1,sw,0.971,SAMPLE NOT CLINICALLY VETTED,Sampuli haijathibitishwa kliniki,,The sample has not been clinically validated,
+e05-vaccination-card,1,sw,0.99,CHILD HEALTH CARD,Kadi ya Afya ya Mtoto,,The Child Health Card,
+e05-vaccination-card,1,sw,1,Child: Neema Wanjiru,Mtoto: Neema Wanjiru,,The child: Neema Wanjiru,
+e05-vaccination-card,1,sw,1,Born: 02/02/2026,Kuzaliwa: 02/02/2026,,Born: 02/02/2026,
+e05-vaccination-card,1,sw,0.963,BCG: given at birth,BCG: inatolewa wakati wa kuzaliwa,,BCG: given at birth,
+e05-vaccination-card,1,sw,0.994,Polio 1: 16/03/2026,Polio 1: 16/03/2026,,Polio 1: 16/03/2026,
+e05-vaccination-card,1,sw,0.993,Polio 2: 13/04/2026,Polio 2: 13/04/2026,,Polio 2: 13/04/2026,
+e05-vaccination-card,1,sw,0.973,Pentavalent 1: 16/03/2026,Pentavalenti 1: 16/03/2026,,Pentavalenti 1: 16/03/2026,
+e05-vaccination-card,1,sw,0.981,Pentavalent 2: 13/04/2026,Pentavalenti 2: 13/04/2026,,Pentavalenti 2: 13/04/2026,
+e05-vaccination-card,1,sw,0.958,Measles: due at 9 months,Ugonjwa wa surua: hutokea baada ya miezi 9,,Measles: occurs after 9 months,
+e05-vaccination-card,1,sw,0.944,Bring this card to every visit.,Lete kadi hii kila unapotembelea.,,Bring this card with you whenever you visit.,
+e05-vaccination-card,1,sw,0.973,SAMPLE NOT CLINICALLY VETTED,Sampuli haijathibitishwa kliniki,,The sample has not been clinically validated,
+e06-referral-letter,1,sw,0.955,REFERRAL NOTE,Taarifa ya Upelelezi,,A Report of the Investigation,low-fidelity
+e06-referral-letter,1,sw,0.964,From: Kilimani Health Centre,Kutoka: Kituo cha Afya cha Kilimani,,From: Kilimani Health Center,
+e06-referral-letter,1,sw,0.991,To: Mwanza District Hospital,Kwa: Hospitali ya Mkoa wa Mwanza,,To: Mwanza Regional Hospital,
+e06-referral-letter,1,sw,0.995,Date: 15/10/2026,Tarehe: 15/10/2026,,Date: 15/10/2026,
+e06-referral-letter,1,sw,0.808,Decar colleague;,Mwenzangu Decar;,,My friend Decar;,low-confidence low-fidelity
+e06-referral-letter,1,sw,0.919,"Lam referring Mr. Hassan Ali, aged 42, who has had a cough for three weeks and has lost weight. He has night sweats and his temperature today was 38.2 €.","Lam akimtaja Bw Hassan Ali, mwenye umri wa miaka 42, ambaye amekuwa na kikohozi kwa wiki tatu na amepungua uzito. Ana jasho la usiku na joto lake leo lilikuwa 38.2 €.",,"Lam mentioned Mr. Hassan Ali, 42, who has had a cough for three weeks and has lost weight. He has night sweats and his temperature today was 38.2 €.",
+e06-referral-letter,1,sw,0.978,His rapid malaria test was negative. He has not been tested for tuberculosis. He has no known allergies and takes no regular medicine.,Kipimo chake cha malaria kilichofanywa haraka kilionyesha hakuna malaria. Hajapimwa ugonjwa wa kifua kikuu. Hana mzio wowote unaojulikana na hatumii dawa za kawaida.,,His rapid malaria test showed no malaria. He has not been tested for tuberculosis. She has no known allergies and does not use any conventional medications.,negation-changed low-fidelity
+e06-referral-letter,2,sw,0.946,Please assess him for tuberculosis and advise on treatment. He will travel with his brother and needs help with the cost of transport.,Tafadhali mchunguze kama ana kifua kikuu na umshauri kuhusu matibabu. Atasafiri pamoja na ndugu yake na anahitaji msaada wa gharama za usafiri.,,Please check if he has tuberculosis and advise him on treatment. He will be traveling with his brother and needs help with transportation expenses.,
+e06-referral-letter,2,sw,0.967,Yours sincerely.,Kwa unyofu wako.,,For your honesty.,low-fidelity
+e06-referral-letter,2,sw,0.977,Grace Mwangi. Clinical Officer,Grace Mwangi. Afisa wa Kliniki,,Grace Mwangi is a member of the House of Representatives. Clinical Officer,untranslated low-fidelity
+e06-referral-letter,2,sw,0.978,SAMPLE NOTCLINICALLY VETTED,Sampuli iliyothibitishwa kibiolojia,,Biologically verified sample,low-fidelity
+e07-med-label-sw,1,en,1,PARACETAMOL 500 mg,PARACETAMOL 500 MG,,Paracetamol 500 mg,untranslated
+e07-med-label-sw,1,en,0.969,Jina: Mama Rehema,Name: Mama Rehema,,Jina: Mama Rehema,
+e07-med-label-sw,1,en,0.966,Meza vidonge 2 kila baada ya saa 8,Tablet 2 tablets every 8 hours,,Tablet 2 vidonge kila baada ya masaa 8,
+e07-med-label-sw,1,en,0.993,Usimeze zaidi ya vidonge 8 kwa siku,Do not take more than 8 tablets a day,,Usitumie zaidi ya vidonge 8 kwa siku,
+e07-med-label-sw,1,en,0.994,Weka mbali na watoto,Keep away from children,,Kaa mbali na watoto,
+e07-med-label-sw,1,en,0.963,SAMPLE NOT CLINICALLY VETTED,SAMPLE is NOT CLINICALLY VETTED,,Sampuli haijathibitishwa kliniki,low-fidelity
+e08-clinic-notice-sw,1,en,0.999,TANGAZO,Announcement,,Tangazo,
+e08-clinic-notice-sw,1,en,0.969,Kliniki ya watoto itafunguliwa kila Jumanne na Alhamisi kuanzia saa mbili asubuhi hadi saa nane mchana,The children's clinic will be open every Tuesday and Thursday from 8 a.m. to 8 p.m.,,Kliniki ya watoto itafunguliwa kila Jumanne na Alhamisi kutoka saa 8 asubuhi hadi saa 8 jioni.,numbers-changed clock-time
+e08-clinic-notice-sw,1,en,0.983,Leta kadi ya mtoto na kitabu cha chanjo,Bring a child's card and a vaccination book,,Lete kadi ya mtoto na kitabu cha chanjo,
+e08-clinic-notice-sw,1,en,0.999,Huduma ni bure kwa watoto chini ya miaka 5,Service is free for children under 5,,Huduma ni bure kwa watoto chini ya miaka 5,
+e08-clinic-notice-sw,1,en,0.976,SAMPLE NOT CLINICALLY VETTED,SAMPLE is NOT CLINICALLY VETTED,,Sampuli haijathibitishwa kliniki,low-fidelity
+e09-consent-form,1,sw,0.995,CONSENT FOR HIV TESTING,Kukubali Kufanyiwa Uchunguzi wa VVU,,Accepting an HIV Test,
+e09-consent-form,1,sw,0.916,The health worker has explained the test to me understand that the result is private and that [ can ask questions at any time.,Mfanyakazi wa afya amenieleza kuhusu mtihani huo na kuelewa kwamba matokeo ni ya kibinafsi na kwamba [anaweza kuuliza maswali wakati wowote.,,The health worker has explained the test to me and understands that the results are personal and that [he can ask questions at any time.,
+e09-consent-form,1,sw,0.918,understand that L can refuse the test and that refusing will not change the care [,kuelewa kuwa L anaweza kukataa kupimwa na kwamba kukataa hakutabadilisha huduma [,,understand that L may refuse to be tested and that refusal will not change the care [,
+e09-consent-form,1,sw,0.929,reccive at this clinic,kupokea katika kliniki hii,,receive at this clinic,
+e09-consent-form,1,sw,0.932,"If the result is positive, Will be offered treatment and counselling","Ikiwa matokeo ni chanya, watapewa matibabu na ushauri",,"If the results are positive, they will be given treatment and counseling",
+e09-consent-form,1,sw,0.992,Name: Joseph Kamau,Jina: Joseph Kamau,,Name: Joseph Kamau,
+e09-consent-form,1,sw,0.973,Date: 15/10 2026,Tarehe: 15/10 2026,,Date: 15/10 2026,
+e09-consent-form,1,sw,0.932,Signature:,Saini:,,Sign:,
+e09-consent-form,1,sw,0.673,SimplE NOTCLINICALLE VEULD,SimplE NOTCLINICAL VEULD,,SimplE NOTCLINICAL VEHICLE,low-confidence low-fidelity
+e10-lab-slip,1,sw,0.968,LABORATORY RESULI,Matokeo ya Maabara,,Laboratory Results,
+e10-lab-slip,1,sw,0.773,Pallent: Hatuma Seid,Pallent: Hatuma Seid,,Pallent: Hattuma Seid,low-confidence untranslated
+e10-lab-slip,1,sw,0.68,Haemoglobin: 9 .8 g/d1 (lo),Hemoglobini: 9.8 g/d1 (lo),,Hemoglobin: 9.8 g/d1 (lo),low-confidence numbers-changed
+e10-lab-slip,1,sw,0.734,Helaria RDT : posicive,Helaria RDT: posicive,,Helaria RDT: posicive,low-confidence untranslated
+e10-lab-slip,1,sw,0.76,Blood glucose: 5 . 4 Inmol1,Glucose ya damu: 5 . 4 Inmol1,,Blood glucose: 5 . 4. Inmol1,low-confidence
+e10-lab-slip,1,sw,0.811,"Urine: no protein, na suger","Mkojo: hakuna protini, hakuna sukari",,"Urine: no protein, no sugar",low-confidence negation-changed
+e10-lab-slip,1,sw,0.693,Checked y :,Imekaguliwa y:,,It has been reviewed y:,low-confidence low-fidelity
+e10-lab-slip,1,sw,0.987,Noroge,Norooge,,Norooge,
+e10-lab-slip,1,sw,0.268,SAke2li4es eoeeis Sieil VEIre l,SAke2li4es eoeeis Sieil Veire l,,SAke2li4es eoeeis Sieil Veire l,low-confidence untranslated

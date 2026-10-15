@@ -1,0 +1,626 @@
+{
+  "documents": {
+    "eval": 10,
+    "dev": 5,
+    "evalPages": 12
+  },
+  "ocrConfig": {
+    "langList": [
+      "en"
+    ],
+    "backendDevice": "metal",
+    "defaultRotationAngles": []
+  },
+  "minConfidence": 0.85,
+  "dev": {
+    "ocrSettings": {
+      "engine defaults (magnify 1.5, retry unsure lines at 90/270)": {
+        "pages": 4,
+        "cerStrict": 9.59,
+        "cerNormalized": 7.8,
+        "blocksIntact": "23/28",
+        "numbersRead": "19/24",
+        "readMs": {
+          "median": 4824,
+          "max": 8162
+        },
+        "auc": 0.824
+      },
+      "no rotation retries (app)": {
+        "pages": 4,
+        "cerStrict": 9.49,
+        "cerNormalized": 7.69,
+        "blocksIntact": "23/28",
+        "numbersRead": "20/24",
+        "readMs": {
+          "median": 4692,
+          "max": 7742
+        },
+        "auc": 0.841
+      },
+      "no rotation retries, magnify 1.0": {
+        "pages": 4,
+        "cerStrict": 10.61,
+        "cerNormalized": 8.43,
+        "blocksIntact": "23/28",
+        "numbersRead": "21/24",
+        "readMs": {
+          "median": 2362,
+          "max": 7858
+        },
+        "auc": 0.857
+      },
+      "no rotation retries, magnify 2.0": {
+        "pages": 4,
+        "cerStrict": 10.2,
+        "cerNormalized": 7.8,
+        "blocksIntact": "23/28",
+        "numbersRead": "21/24",
+        "readMs": {
+          "median": 7239,
+          "max": 7876
+        },
+        "auc": 0.899
+      },
+      "no rotation retries, scans at 2 px/pt (not 3)": {
+        "pages": 4,
+        "cerStrict": 10.2,
+        "cerNormalized": 8.32,
+        "blocksIntact": "22/28",
+        "numbersRead": "19/24",
+        "readMs": {
+          "median": 4725,
+          "max": 7198
+        },
+        "auc": 0.914
+      }
+    },
+    "reading": {
+      "all": {
+        "pages": 5,
+        "cerStrict": 6.45,
+        "cerNormalized": 5.23,
+        "blocksIntact": "30/35",
+        "numbersRead": "22/26",
+        "readMs": {
+          "median": 2898,
+          "max": 7740
+        }
+      },
+      "textLayer": {
+        "pages": 1,
+        "cerStrict": 0,
+        "cerNormalized": 0,
+        "blocksIntact": "7/7",
+        "numbersRead": "2/2",
+        "readMs": {
+          "median": 11,
+          "max": 11
+        }
+      },
+      "ocr": {
+        "pages": 4,
+        "cerStrict": 9.49,
+        "cerNormalized": 7.69,
+        "blocksIntact": "23/28",
+        "numbersRead": "20/24",
+        "readMs": {
+          "median": 4690,
+          "max": 7740
+        }
+      }
+    },
+    "withoutDeskew": {
+      "pages": 4,
+      "cerStrict": 18.78,
+      "cerNormalized": 17.39,
+      "blocksIntact": "16/28",
+      "numbersRead": "19/24",
+      "readMs": {
+        "median": 4002,
+        "max": 6921
+      }
+    },
+    "confidence": {
+      "auc": 0.841,
+      "aucRaw": 0.848,
+      "sweep": [
+        {
+          "threshold": 0.8,
+          "misread": "6/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "1/18",
+          "recall": 0.5454545454545454,
+          "falseRate": 0.05555555555555555
+        },
+        {
+          "threshold": 0.85,
+          "misread": "6/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "1/18",
+          "recall": 0.5454545454545454,
+          "falseRate": 0.05555555555555555
+        },
+        {
+          "threshold": 0.88,
+          "misread": "6/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "1/18",
+          "recall": 0.5454545454545454,
+          "falseRate": 0.05555555555555555
+        },
+        {
+          "threshold": 0.9,
+          "misread": "6/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "1/18",
+          "recall": 0.5454545454545454,
+          "falseRate": 0.05555555555555555
+        },
+        {
+          "threshold": 0.92,
+          "misread": "6/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "1/18",
+          "recall": 0.5454545454545454,
+          "falseRate": 0.05555555555555555
+        },
+        {
+          "threshold": 0.94,
+          "misread": "7/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "3/18",
+          "recall": 0.6363636363636364,
+          "falseRate": 0.16666666666666666
+        },
+        {
+          "threshold": 0.95,
+          "misread": "8/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "5/18",
+          "recall": 0.7272727272727273,
+          "falseRate": 0.2777777777777778
+        },
+        {
+          "threshold": 0.96,
+          "misread": "9/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "6/18",
+          "recall": 0.8181818181818182,
+          "falseRate": 0.3333333333333333
+        },
+        {
+          "threshold": 0.97,
+          "misread": "9/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "7/18",
+          "recall": 0.8181818181818182,
+          "falseRate": 0.3888888888888889
+        },
+        {
+          "threshold": 0.98,
+          "misread": "11/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "10/18",
+          "recall": 1,
+          "falseRate": 0.5555555555555556
+        }
+      ],
+      "rawSweep": [
+        {
+          "threshold": 0.4,
+          "misread": "6/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "1/18",
+          "recall": 0.5454545454545454,
+          "falseRate": 0.05555555555555555
+        },
+        {
+          "threshold": 0.5,
+          "misread": "6/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "1/18",
+          "recall": 0.5454545454545454,
+          "falseRate": 0.05555555555555555
+        },
+        {
+          "threshold": 0.6,
+          "misread": "6/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "2/18",
+          "recall": 0.5454545454545454,
+          "falseRate": 0.1111111111111111
+        },
+        {
+          "threshold": 0.7,
+          "misread": "9/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "5/18",
+          "recall": 0.8181818181818182,
+          "falseRate": 0.2777777777777778
+        },
+        {
+          "threshold": 0.8,
+          "misread": "11/11",
+          "misreadNumbers": "4/5",
+          "cleanFlagged": "9/18",
+          "recall": 1,
+          "falseRate": 0.5
+        },
+        {
+          "threshold": 0.9,
+          "misread": "11/11",
+          "misreadNumbers": "5/5",
+          "cleanFlagged": "14/18",
+          "recall": 1,
+          "falseRate": 0.7777777777777778
+        }
+      ]
+    }
+  },
+  "eval": {
+    "reading": {
+      "all": {
+        "pages": 12,
+        "cerStrict": 3.34,
+        "cerNormalized": 1.9,
+        "blocksIntact": "89/95",
+        "numbersRead": "39/42",
+        "readMs": {
+          "median": 4062,
+          "max": 7512
+        }
+      },
+      "textLayer": {
+        "pages": 3,
+        "cerStrict": 0,
+        "cerNormalized": 0,
+        "blocksIntact": "31/31",
+        "numbersRead": "11/11",
+        "readMs": {
+          "median": 8,
+          "max": 11
+        }
+      },
+      "ocr": {
+        "pages": 9,
+        "cerStrict": 4.97,
+        "cerNormalized": 2.83,
+        "blocksIntact": "58/64",
+        "numbersRead": "28/31",
+        "readMs": {
+          "median": 4360,
+          "max": 7512
+        }
+      }
+    },
+    "withoutDeskew": {
+      "pages": 9,
+      "cerStrict": 9.28,
+      "cerNormalized": 7.09,
+      "blocksIntact": "51/64",
+      "numbersRead": "29/31",
+      "readMs": {
+        "median": 3801,
+        "max": 6876
+      }
+    },
+    "perDocument": {
+      "e01-intake-form": {
+        "title": "Patient intake form (English, PDF with text)",
+        "format": "pdf-text",
+        "pages": 1,
+        "cerStrict": 0,
+        "cerNormalized": 0,
+        "blocksIntact": "15/15",
+        "numbersRead": "7/7",
+        "readMs": {
+          "median": 11,
+          "max": 11
+        }
+      },
+      "e02-discharge-sw": {
+        "title": "Discharge instructions (Swahili, PDF with text, 2 pages)",
+        "format": "pdf-text",
+        "pages": 2,
+        "cerStrict": 0,
+        "cerNormalized": 0,
+        "blocksIntact": "16/16",
+        "numbersRead": "4/4",
+        "readMs": {
+          "median": 8,
+          "max": 8
+        }
+      },
+      "e03-med-label-en": {
+        "title": "Medicine label (English, phone photo, tilted, uneven light)",
+        "format": "photo-jpeg",
+        "pages": 1,
+        "cerStrict": 1.38,
+        "cerNormalized": 0,
+        "blocksIntact": "7/7",
+        "numbersRead": "6/6",
+        "readMs": {
+          "median": 4062,
+          "max": 4062
+        }
+      },
+      "e04-ors-bilingual": {
+        "title": "ORS sachet instructions (English and Swahili, phone photo stored sideways with EXIF orientation)",
+        "format": "photo-jpeg",
+        "pages": 1,
+        "cerStrict": 0.66,
+        "cerNormalized": 0,
+        "blocksIntact": "8/8",
+        "numbersRead": "4/4",
+        "readMs": {
+          "median": 4856,
+          "max": 4856
+        }
+      },
+      "e05-vaccination-card": {
+        "title": "Child vaccination card (English, scanned PDF, no text layer)",
+        "format": "pdf-scan",
+        "pages": 1,
+        "cerStrict": 0.78,
+        "cerNormalized": 0,
+        "blocksIntact": "11/11",
+        "numbersRead": "10/10",
+        "readMs": {
+          "median": 3845,
+          "max": 3845
+        }
+      },
+      "e06-referral-letter": {
+        "title": "Referral letter (English, scanned PDF, 2 pages, slightly skewed)",
+        "format": "pdf-scan",
+        "pages": 2,
+        "cerStrict": 1.65,
+        "cerNormalized": 1.02,
+        "blocksIntact": "11/11",
+        "numbersRead": "3/3",
+        "readMs": {
+          "median": 7512,
+          "max": 7512
+        }
+      },
+      "e07-med-label-sw": {
+        "title": "Medicine label (Swahili, iPhone HEIC photo, tilted, dim)",
+        "format": "photo-heic",
+        "pages": 1,
+        "cerStrict": 3.09,
+        "cerNormalized": 0,
+        "blocksIntact": "6/6",
+        "numbersRead": "4/4",
+        "readMs": {
+          "median": 4360,
+          "max": 4360
+        }
+      },
+      "e08-clinic-notice-sw": {
+        "title": "Clinic notice (Swahili, clean screenshot PNG)",
+        "format": "png",
+        "pages": 1,
+        "cerStrict": 2.2,
+        "cerNormalized": 0,
+        "blocksIntact": "5/5",
+        "numbersRead": "1/1",
+        "readMs": {
+          "median": 2990,
+          "max": 2990
+        }
+      },
+      "e09-consent-form": {
+        "title": "Consent form (English, phone photo of a full page, small text, tilted)",
+        "format": "photo-jpeg",
+        "pages": 1,
+        "cerStrict": 9.6,
+        "cerNormalized": 4.48,
+        "blocksIntact": "6/8",
+        "numbersRead": "0/1",
+        "readMs": {
+          "median": 5735,
+          "max": 5735
+        }
+      },
+      "e10-lab-slip": {
+        "title": "Lab result slip (English, typewriter font, blurry noisy phone photo)",
+        "format": "photo-jpeg",
+        "pages": 1,
+        "cerStrict": 26.02,
+        "cerNormalized": 22.28,
+        "blocksIntact": "4/8",
+        "numbersRead": "0/2",
+        "readMs": {
+          "median": 2143,
+          "max": 2143
+        }
+      }
+    },
+    "confidence": {
+      "auc": 0.921,
+      "aucRaw": 0.903,
+      "atDefault": {
+        "threshold": 0.85,
+        "misread": "9/17",
+        "misreadNumbers": "3/4",
+        "cleanFlagged": "0/49",
+        "recall": 0.5294117647058824,
+        "falseRate": 0
+      },
+      "sweep": [
+        {
+          "threshold": 0.8,
+          "misread": "7/17",
+          "misreadNumbers": "3/4",
+          "cleanFlagged": "0/49",
+          "recall": 0.4117647058823529,
+          "falseRate": 0
+        },
+        {
+          "threshold": 0.85,
+          "misread": "9/17",
+          "misreadNumbers": "3/4",
+          "cleanFlagged": "0/49",
+          "recall": 0.5294117647058824,
+          "falseRate": 0
+        },
+        {
+          "threshold": 0.88,
+          "misread": "9/17",
+          "misreadNumbers": "3/4",
+          "cleanFlagged": "0/49",
+          "recall": 0.5294117647058824,
+          "falseRate": 0
+        },
+        {
+          "threshold": 0.9,
+          "misread": "9/17",
+          "misreadNumbers": "3/4",
+          "cleanFlagged": "0/49",
+          "recall": 0.5294117647058824,
+          "falseRate": 0
+        },
+        {
+          "threshold": 0.92,
+          "misread": "12/17",
+          "misreadNumbers": "3/4",
+          "cleanFlagged": "0/49",
+          "recall": 0.7058823529411765,
+          "falseRate": 0
+        },
+        {
+          "threshold": 0.94,
+          "misread": "14/17",
+          "misreadNumbers": "3/4",
+          "cleanFlagged": "1/49",
+          "recall": 0.8235294117647058,
+          "falseRate": 0.02040816326530612
+        },
+        {
+          "threshold": 0.95,
+          "misread": "14/17",
+          "misreadNumbers": "3/4",
+          "cleanFlagged": "4/49",
+          "recall": 0.8235294117647058,
+          "falseRate": 0.08163265306122448
+        },
+        {
+          "threshold": 0.96,
+          "misread": "14/17",
+          "misreadNumbers": "3/4",
+          "cleanFlagged": "7/49",
+          "recall": 0.8235294117647058,
+          "falseRate": 0.14285714285714285
+        },
+        {
+          "threshold": 0.97,
+          "misread": "15/17",
+          "misreadNumbers": "3/4",
+          "cleanFlagged": "15/49",
+          "recall": 0.8823529411764706,
+          "falseRate": 0.30612244897959184
+        },
+        {
+          "threshold": 0.98,
+          "misread": "16/17",
+          "misreadNumbers": "4/4",
+          "cleanFlagged": "23/49",
+          "recall": 0.9411764705882353,
+          "falseRate": 0.46938775510204084
+        }
+      ]
+    },
+    "translate": {
+      "segments": 97,
+      "keptAsIs": 3,
+      "flags": {
+        "negation-changed": 3,
+        "clock-time": 2,
+        "untranslated": 6,
+        "low-fidelity": 12,
+        "translation-loop": 1,
+        "low-confidence": 9,
+        "numbers-changed": 2
+      },
+      "perPageMs": {
+        "median": 12414,
+        "p90": 14023,
+        "max": 14053
+      },
+      "drift": {
+        "textLayer": {
+          "median": 100,
+          "min": 100
+        },
+        "ocr": {
+          "median": 88.8,
+          "min": 53.2
+        },
+        "perPage": [
+          {
+            "doc": "e01-intake-form",
+            "page": 1,
+            "chrF": 100
+          },
+          {
+            "doc": "e02-discharge-sw",
+            "page": 1,
+            "chrF": 100
+          },
+          {
+            "doc": "e02-discharge-sw",
+            "page": 2,
+            "chrF": 100
+          },
+          {
+            "doc": "e03-med-label-en",
+            "page": 1,
+            "chrF": 98.2
+          },
+          {
+            "doc": "e04-ors-bilingual",
+            "page": 1,
+            "chrF": 97.2
+          },
+          {
+            "doc": "e05-vaccination-card",
+            "page": 1,
+            "chrF": 97
+          },
+          {
+            "doc": "e06-referral-letter",
+            "page": 1,
+            "chrF": 93.7
+          },
+          {
+            "doc": "e06-referral-letter",
+            "page": 2,
+            "chrF": 88.8
+          },
+          {
+            "doc": "e07-med-label-sw",
+            "page": 1,
+            "chrF": 85.8
+          },
+          {
+            "doc": "e08-clinic-notice-sw",
+            "page": 1,
+            "chrF": 85.5
+          },
+          {
+            "doc": "e09-consent-form",
+            "page": 1,
+            "chrF": 71.4
+          },
+          {
+            "doc": "e10-lab-slip",
+            "page": 1,
+            "chrF": 53.2
+          }
+        ]
+      },
+      "peakWorkerRssGb": 0.82
+    }
+  }
+}

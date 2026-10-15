@@ -1,4 +1,4 @@
-import type { LoadRequest, PcmChunk, SdkPort, TranscriptSegment } from '../../src/core/qvac.js'
+import type { LoadRequest, OcrBlock, PcmChunk, SdkPort, TranscriptSegment } from '../../src/core/qvac.js'
 
 /** Records calls; inference methods return canned values. */
 export class FakeSdk implements SdkPort {
@@ -45,5 +45,11 @@ export class FakeSdk implements SdkPort {
   async synthesize(req: { modelId: string; text: string; onChunk: (chunk: PcmChunk) => void }) {
     this.synthesized.push({ modelId: req.modelId, text: req.text })
     for (const samples of this.pcmChunks) req.onChunk({ samples, sampleRate: 24_000 })
+  }
+  ocrCalls: { modelId: string; image: Uint8Array; paragraph: boolean }[] = []
+  ocrBlocks: OcrBlock[] = [{ text: 'Hello', bbox: [0, 0, 50, 20], confidence: 0.99 }]
+  async ocr(req: { modelId: string; image: Uint8Array; paragraph: boolean }) {
+    this.ocrCalls.push(req)
+    return this.ocrBlocks
   }
 }

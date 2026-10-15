@@ -1,0 +1,318 @@
+{
+  "note": "F8 eval documents: placeholder forms and labels, NOT clinically vetted. Swahili is my own, not vetted. Each block is one unit a reader takes together (a field, a heading, a wrapped paragraph) and should come back as one segment; its lines are the printed lines. eval/make-documents.ts renders these as PDFs and photos. Set 'dev' tunes thresholds; 'eval' is measured.",
+  "documents": [
+    {
+      "id": "e01-intake-form",
+      "set": "eval",
+      "title": "Patient intake form (English, PDF with text)",
+      "format": "pdf-text",
+      "paper": "a4",
+      "font": "Helvetica",
+      "pages": [
+        [
+          [{ "lines": ["PATIENT INTAKE FORM"], "size": 18, "bold": true }],
+          [{ "lines": ["Kilimani Health Centre - Outpatient Department"], "size": 11 }],
+          [{ "lines": ["Name: Amina Juma"], "size": 11 }, { "lines": ["Sex: Female"], "size": 11, "x": 0.55 }],
+          [{ "lines": ["Date of birth: 12/03/2019"], "size": 11 }, { "lines": ["Weight: 14.5 kg"], "size": 11, "x": 0.55 }],
+          [{ "lines": ["Village: Mwembe Tayari"], "size": 11 }, { "lines": ["Phone: 0712 345 678"], "size": 11, "x": 0.55 }],
+          [{ "lines": ["Temperature: 38.7 C"], "size": 11 }, { "lines": ["Pulse: 128 per minute"], "size": 11, "x": 0.55 }],
+          [{ "lines": ["Reason for visit"], "size": 13, "bold": true }],
+          [{ "lines": ["The child has had a fever for three days and has vomited four times since this", "morning. The mother says the child is not breastfeeding well and is very sleepy."], "size": 11 }],
+          [{ "lines": ["Allergies: none known"], "size": 11 }],
+          [{ "lines": ["Signature of the health worker: ________________"], "size": 11 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 8 }]
+        ]
+      ]
+    },
+    {
+      "id": "e02-discharge-sw",
+      "set": "eval",
+      "title": "Discharge instructions (Swahili, PDF with text, 2 pages)",
+      "format": "pdf-text",
+      "paper": "a4",
+      "font": "Times-Roman",
+      "pages": [
+        [
+          [{ "lines": ["MAAGIZO YA KURUDI NYUMBANI"], "size": 18, "bold": true }],
+          [{ "lines": ["Jina la mgonjwa: Baraka Otieno"], "size": 12 }, { "lines": ["Umri: miaka 6"], "size": 12, "x": 0.6 }],
+          [{ "lines": ["Tarehe ya kuruhusiwa: 14/10/2026"], "size": 12 }],
+          [{ "lines": ["Dawa"], "size": 14, "bold": true }],
+          [{ "lines": ["Mpe mtoto vidonge viwili vya amoxicillin mara tatu kwa siku kwa siku tano. Usiache", "dawa hata kama mtoto anajisikia vizuri."], "size": 12 }],
+          [{ "lines": ["Mpe paracetamol 250 mg kama joto liko juu, lakini si zaidi ya mara nne kwa siku."], "size": 12 }],
+          [{ "lines": ["Chakula na maji"], "size": 14, "bold": true }],
+          [{ "lines": ["Mpe mtoto maji safi ya kunywa mara kwa mara na endelea kumnyonyesha. Mpe chakula", "kidogo kidogo mara nyingi kwa siku."], "size": 12 }]
+        ],
+        [
+          [{ "lines": ["Rudi kliniki mara moja kama"], "size": 14, "bold": true }],
+          [{ "lines": ["- mtoto hawezi kunywa wala kunyonya"], "size": 12 }],
+          [{ "lines": ["- mtoto anatapika kila kitu"], "size": 12 }],
+          [{ "lines": ["- mtoto amepata degedege"], "size": 12 }],
+          [{ "lines": ["- homa haishuki baada ya siku mbili"], "size": 12 }],
+          [{ "lines": ["Miadi ijayo: 21/10/2026 saa tatu asubuhi"], "size": 12 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 8 }]
+        ]
+      ]
+    },
+    {
+      "id": "e03-med-label-en",
+      "set": "eval",
+      "title": "Medicine label (English, phone photo, tilted, uneven light)",
+      "format": "photo-jpeg",
+      "paper": "label",
+      "font": "Helvetica",
+      "degrade": { "rotate": 2, "blur": 0.6, "noise": 6, "shade": 0.3, "scale": 0.8, "jpegQuality": 75 },
+      "pages": [
+        [
+          [{ "lines": ["AMOXICILLIN 250 mg CAPSULES"], "size": 13, "bold": true }],
+          [{ "lines": ["Patient: Amina Juma"], "size": 10 }],
+          [{ "lines": ["Take 1 capsule three times a day for 5", "days. Finish all the capsules."], "size": 10 }],
+          [{ "lines": ["Do not give to a child under 6 months."], "size": 10 }],
+          [{ "lines": ["Quantity: 15"], "size": 10 }, { "lines": ["Date: 15/10/2026"], "size": 10, "x": 0.5 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 7 }]
+        ]
+      ]
+    },
+    {
+      "id": "e04-ors-bilingual",
+      "set": "eval",
+      "title": "ORS sachet instructions (English and Swahili, phone photo stored sideways with EXIF orientation)",
+      "format": "photo-jpeg",
+      "paper": "label",
+      "font": "Helvetica",
+      "degrade": { "rotate": -1, "blur": 0.5, "noise": 5, "shade": 0.15, "scale": 0.9, "jpegQuality": 80, "exifOrientation": 6 },
+      "pages": [
+        [
+          [{ "lines": ["ORAL REHYDRATION SALTS"], "size": 13, "bold": true }],
+          [{ "lines": ["Mix one sachet in 1 litre of clean water."], "size": 10 }],
+          [{ "lines": ["Changanya pakiti moja na lita 1 ya maji safi."], "size": 10 }],
+          [{ "lines": ["Give small sips after each loose stool."], "size": 10 }],
+          [{ "lines": ["Mpe mafunda madogo baada ya kila choo laini."], "size": 10 }],
+          [{ "lines": ["Throw away what is left after 24 hours."], "size": 10 }],
+          [{ "lines": ["Mwaga kilichobaki baada ya saa 24."], "size": 10 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 7 }]
+        ]
+      ]
+    },
+    {
+      "id": "e05-vaccination-card",
+      "set": "eval",
+      "title": "Child vaccination card (English, scanned PDF, no text layer)",
+      "format": "pdf-scan",
+      "paper": "card",
+      "font": "Helvetica",
+      "degrade": { "rotate": 0.5, "noise": 8, "jpegQuality": 80 },
+      "pages": [
+        [
+          [{ "lines": ["CHILD HEALTH CARD"], "size": 14, "bold": true }],
+          [{ "lines": ["Child: Neema Wanjiru"], "size": 10 }, { "lines": ["Born: 02/02/2026"], "size": 10, "x": 0.55 }],
+          [{ "lines": ["BCG: given at birth"], "size": 10 }],
+          [{ "lines": ["Polio 1: 16/03/2026"], "size": 10 }, { "lines": ["Polio 2: 13/04/2026"], "size": 10, "x": 0.55 }],
+          [{ "lines": ["Pentavalent 1: 16/03/2026"], "size": 10 }, { "lines": ["Pentavalent 2: 13/04/2026"], "size": 10, "x": 0.55 }],
+          [{ "lines": ["Measles: due at 9 months"], "size": 10 }],
+          [{ "lines": ["Bring this card to every visit."], "size": 10 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 7 }]
+        ]
+      ]
+    },
+    {
+      "id": "e06-referral-letter",
+      "set": "eval",
+      "title": "Referral letter (English, scanned PDF, 2 pages, slightly skewed)",
+      "format": "pdf-scan",
+      "paper": "a4",
+      "font": "Times-Roman",
+      "degrade": { "rotate": 1, "noise": 10, "blur": 0.4, "jpegQuality": 75 },
+      "pages": [
+        [
+          [{ "lines": ["REFERRAL NOTE"], "size": 16, "bold": true }],
+          [{ "lines": ["From: Kilimani Health Centre"], "size": 12 }],
+          [{ "lines": ["To: Mwanza District Hospital"], "size": 12 }],
+          [{ "lines": ["Date: 15/10/2026"], "size": 12 }],
+          [{ "lines": ["Dear colleague,"], "size": 12 }],
+          [{ "lines": ["I am referring Mr. Hassan Ali, aged 42, who has had a cough for three weeks and", "has lost weight. He has night sweats and his temperature today was 38.2 C."], "size": 12 }],
+          [{ "lines": ["His rapid malaria test was negative. He has not been tested for tuberculosis. He", "has no known allergies and takes no regular medicine."], "size": 12 }]
+        ],
+        [
+          [{ "lines": ["Please assess him for tuberculosis and advise on treatment. He will travel with his", "brother and needs help with the cost of transport."], "size": 12 }],
+          [{ "lines": ["Yours sincerely,"], "size": 12 }],
+          [{ "lines": ["Grace Mwangi, Clinical Officer"], "size": 12 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 8 }]
+        ]
+      ]
+    },
+    {
+      "id": "e07-med-label-sw",
+      "set": "eval",
+      "title": "Medicine label (Swahili, iPhone HEIC photo, tilted, dim)",
+      "format": "photo-heic",
+      "paper": "label",
+      "font": "Helvetica",
+      "degrade": { "rotate": -3, "blur": 0.7, "noise": 8, "shade": 0.45, "scale": 0.8, "jpegQuality": 85 },
+      "pages": [
+        [
+          [{ "lines": ["PARACETAMOL 500 mg"], "size": 13, "bold": true }],
+          [{ "lines": ["Jina: Mama Rehema"], "size": 10 }],
+          [{ "lines": ["Meza vidonge 2 kila baada ya saa 8."], "size": 10 }],
+          [{ "lines": ["Usimeze zaidi ya vidonge 8 kwa siku."], "size": 10 }],
+          [{ "lines": ["Weka mbali na watoto."], "size": 10 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 7 }]
+        ]
+      ]
+    },
+    {
+      "id": "e08-clinic-notice-sw",
+      "set": "eval",
+      "title": "Clinic notice (Swahili, clean screenshot PNG)",
+      "format": "png",
+      "paper": "card",
+      "font": "Helvetica",
+      "pages": [
+        [
+          [{ "lines": ["TANGAZO"], "size": 16, "bold": true }],
+          [{ "lines": ["Kliniki ya watoto itafunguliwa kila Jumanne na Alhamisi kuanzia", "saa mbili asubuhi hadi saa nane mchana."], "size": 11 }],
+          [{ "lines": ["Leta kadi ya mtoto na kitabu cha chanjo."], "size": 11 }],
+          [{ "lines": ["Huduma ni bure kwa watoto chini ya miaka 5."], "size": 11 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 7 }]
+        ]
+      ]
+    },
+    {
+      "id": "e09-consent-form",
+      "set": "eval",
+      "title": "Consent form (English, phone photo of a full page, small text, tilted)",
+      "format": "photo-jpeg",
+      "paper": "a4",
+      "font": "Times-Roman",
+      "degrade": { "rotate": 3, "blur": 0.8, "noise": 8, "shade": 0.25, "scale": 0.75, "jpegQuality": 70 },
+      "pages": [
+        [
+          [{ "lines": ["CONSENT FOR HIV TESTING"], "size": 16, "bold": true }],
+          [{ "lines": ["The health worker has explained the test to me. I understand that the result is", "private and that I can ask questions at any time."], "size": 12 }],
+          [{ "lines": ["I understand that I can refuse the test and that refusing will not change the care I", "receive at this clinic."], "size": 12 }],
+          [{ "lines": ["If the result is positive, I will be offered treatment and counselling."], "size": 12 }],
+          [{ "lines": ["Name: Joseph Kamau"], "size": 12 }, { "lines": ["Date: 15/10/2026"], "size": 12, "x": 0.55 }],
+          [{ "lines": ["Signature: ______________"], "size": 12 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 8 }]
+        ]
+      ]
+    },
+    {
+      "id": "e10-lab-slip",
+      "set": "eval",
+      "title": "Lab result slip (English, typewriter font, blurry noisy phone photo)",
+      "format": "photo-jpeg",
+      "paper": "card",
+      "font": "Courier",
+      "degrade": { "rotate": 1.5, "blur": 1.1, "noise": 14, "shade": 0.3, "scale": 0.7, "jpegQuality": 60 },
+      "pages": [
+        [
+          [{ "lines": ["LABORATORY RESULT"], "size": 13, "bold": true }],
+          [{ "lines": ["Patient: Fatuma Said"], "size": 10 }],
+          [{ "lines": ["Haemoglobin: 9.8 g/dL (low)"], "size": 10 }],
+          [{ "lines": ["Malaria RDT: positive"], "size": 10 }],
+          [{ "lines": ["Blood glucose: 5.4 mmol/L"], "size": 10 }],
+          [{ "lines": ["Urine: no protein, no sugar"], "size": 10 }],
+          [{ "lines": ["Checked by: P. Njoroge"], "size": 10 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 7 }]
+        ]
+      ]
+    },
+    {
+      "id": "d01-appointment-card",
+      "set": "dev",
+      "title": "Appointment card (English, phone photo)",
+      "format": "photo-jpeg",
+      "paper": "card",
+      "font": "Helvetica",
+      "degrade": { "rotate": 2.5, "blur": 0.7, "noise": 8, "shade": 0.3, "scale": 0.8, "jpegQuality": 70 },
+      "pages": [
+        [
+          [{ "lines": ["NEXT APPOINTMENT"], "size": 14, "bold": true }],
+          [{ "lines": ["Name: Zawadi Mohamed"], "size": 10 }],
+          [{ "lines": ["Clinic: Antenatal care"], "size": 10 }],
+          [{ "lines": ["Date: 29/10/2026 at 9:00 in the morning"], "size": 10 }],
+          [{ "lines": ["Bring your mother and child booklet and any medicine", "you are taking."], "size": 10 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 7 }]
+        ]
+      ]
+    },
+    {
+      "id": "d02-dose-chart-sw",
+      "set": "dev",
+      "title": "Dosage chart (Swahili, scanned PDF)",
+      "format": "pdf-scan",
+      "paper": "a4",
+      "font": "Times-Roman",
+      "degrade": { "rotate": -1.5, "noise": 12, "blur": 0.6, "jpegQuality": 65 },
+      "pages": [
+        [
+          [{ "lines": ["JEDWALI LA DAWA YA MALARIA"], "size": 16, "bold": true }],
+          [{ "lines": ["Kilo 5 hadi 14: kidonge 1 mara mbili kwa siku kwa siku 3"], "size": 12 }],
+          [{ "lines": ["Kilo 15 hadi 24: vidonge 2 mara mbili kwa siku kwa siku 3"], "size": 12 }],
+          [{ "lines": ["Kilo 25 hadi 34: vidonge 3 mara mbili kwa siku kwa siku 3"], "size": 12 }],
+          [{ "lines": ["Mtu mzima: vidonge 4 mara mbili kwa siku kwa siku 3"], "size": 12 }],
+          [{ "lines": ["Meza dawa pamoja na chakula au maziwa. Kama mgonjwa atatapika ndani ya", "saa moja, mpe dozi tena."], "size": 12 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 8 }]
+        ]
+      ]
+    },
+    {
+      "id": "d03-handout-bilingual",
+      "set": "dev",
+      "title": "Health talk handout (English and Swahili, PDF with text, dense)",
+      "format": "pdf-text",
+      "paper": "a4",
+      "font": "Helvetica",
+      "rowGap": 0.3,
+      "pages": [
+        [
+          [{ "lines": ["Handwashing / Kunawa mikono"], "size": 16, "bold": true }],
+          [{ "lines": ["Wash your hands with soap and clean water before you cook, before you eat and after", "you use the toilet. Rub all parts of the hands for at least 20 seconds."], "size": 11 }],
+          [{ "lines": ["Nawa mikono kwa sabuni na maji safi kabla ya kupika, kabla ya kula na baada ya", "kutoka chooni. Sugua sehemu zote za mikono kwa angalau sekunde 20."], "size": 11 }],
+          [{ "lines": ["When: before feeding a baby"], "size": 11 }],
+          [{ "lines": ["Lini: kabla ya kumlisha mtoto"], "size": 11 }],
+          [{ "lines": ["Where: at home, at school and at the clinic"], "size": 11 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 8 }]
+        ]
+      ]
+    },
+    {
+      "id": "d04-pharmacy-label-hard",
+      "set": "dev",
+      "title": "Pharmacy label (English, very blurry dark photo)",
+      "format": "photo-jpeg",
+      "paper": "label",
+      "font": "Courier",
+      "degrade": { "rotate": -2, "blur": 1.8, "noise": 22, "shade": 0.55, "scale": 0.5, "jpegQuality": 50 },
+      "pages": [
+        [
+          [{ "lines": ["METFORMIN 500 mg TABLETS"], "size": 12, "bold": true }],
+          [{ "lines": ["Take 1 tablet twice a day with food."], "size": 10 }],
+          [{ "lines": ["Do not stop without asking the clinic."], "size": 10 }],
+          [{ "lines": ["Quantity: 60"], "size": 10 }, { "lines": ["Refills: 2"], "size": 10, "x": 0.5 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 7 }]
+        ]
+      ]
+    },
+    {
+      "id": "d05-registration-sw",
+      "set": "dev",
+      "title": "Registration form (Swahili, iPhone HEIC photo, tilted)",
+      "format": "photo-heic",
+      "paper": "a4",
+      "font": "Helvetica",
+      "degrade": { "rotate": 3.5, "blur": 1.0, "noise": 12, "shade": 0.35, "scale": 0.65, "jpegQuality": 80 },
+      "pages": [
+        [
+          [{ "lines": ["FOMU YA USAJILI"], "size": 16, "bold": true }],
+          [{ "lines": ["Jina kamili: Halima Mussa"], "size": 12 }, { "lines": ["Jinsia: Mke"], "size": 12, "x": 0.6 }],
+          [{ "lines": ["Tarehe ya kuzaliwa: 05/07/1991"], "size": 12 }],
+          [{ "lines": ["Kijiji: Kibaoni"], "size": 12 }, { "lines": ["Simu: 0754 210 987"], "size": 12, "x": 0.6 }],
+          [{ "lines": ["Sababu ya kuja: maumivu ya tumbo na kuharisha kwa siku mbili."], "size": 12 }],
+          [{ "lines": ["Je una mzio wa dawa yoyote? Hapana"], "size": 12 }],
+          [{ "lines": ["SAMPLE - NOT CLINICALLY VETTED"], "size": 8 }]
+        ]
+      ]
+    }
+  ]
+}

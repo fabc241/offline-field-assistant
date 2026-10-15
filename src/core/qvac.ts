@@ -47,6 +47,16 @@ export interface SdkPort {
    * tokens when the model was loaded with `streamChunkTokens`.
    */
   synthesize(req: { modelId: string; text: string; onChunk: (chunk: PcmChunk) => void }): Promise<void>
+  /** Text blocks in a PNG, JPEG or BMP image; `paragraph` merges nearby lines. */
+  ocr(req: { modelId: string; image: Uint8Array; paragraph: boolean }): Promise<OcrBlock[]>
+}
+
+export interface OcrBlock {
+  text: string
+  /** [x0, y0, x1, y1] in image pixels. */
+  bbox?: [number, number, number, number]
+  /** 0–1, from the recognizer. */
+  confidence?: number
 }
 
 export interface PcmChunk {
@@ -306,6 +316,12 @@ export function createSdkPort(): SdkPort {
         onChunk({ samples: chunk.buffer, sampleRate })
       }
       await result.done
+    },
+    async ocr({ modelId, image, paragraph }) {
+      const sdk = await loadSdk()
+      // Bytes travel as base64; the SDK types them as bare-buffer's Buffer.
+      const buffer = Buffer.from(image.buffer, image.byteOffset, image.byteLength) as unknown as Parameters<Sdk['ocr']>[0]['image']
+      return sdk.ocr({ modelId, image: buffer, options: { paragraph } }).blocks
     }
   }
 }

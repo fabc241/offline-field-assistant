@@ -95,6 +95,8 @@ describe('TranslationService', () => {
     expect((await empty.translateWithCheck('Drink water now.', 'en', 'sw')).flags).toEqual(['empty-output', 'low-fidelity'])
     const echo = new TranslationService(new TableTranslator({}), new FakeEmbedder())
     expect((await echo.translateWithCheck('Drink water now.', 'en', 'sw')).flags).toEqual(['untranslated'])
+    const looping = new TranslationService(new TableTranslator({ 'AMOXICILLIN CAPSULES': 'Vidonge vya ugonjwa wa ugonjwa wa ugonjwa wa ugonjwa' }), new FakeEmbedder())
+    expect((await looping.translateWithCheck('AMOXICILLIN CAPSULES', 'en', 'sw')).flags).toContain('translation-loop')
   })
 
   it('can back-translate with a different model', async () => {
