@@ -8,7 +8,7 @@ import { qvacTranscriber, type Lang, type Transcriber, type TranscriptSegment } 
 import { ModelStore, writeManifest } from '../../src/core/model-store.js'
 import { QvacRuntime } from '../../src/core/qvac.js'
 import { SpeechToText } from '../../src/features/speech/speech-service.js'
-import { hasRepetitionLoop, joinSegments } from '../../src/features/speech/transcript.js'
+import { hasRepetitionLoop, joinSegments, unglueSwahiliNumbers } from '../../src/features/speech/transcript.js'
 import { FakeSdk } from './fake-sdk.js'
 
 const seg = (text: string, startMs = 0, endMs = 1000): TranscriptSegment => ({ text, startMs, endMs })
@@ -29,6 +29,16 @@ describe('joinSegments', () => {
       'Mtoto ana homa, tangu jana.'
     )
     expect(joinSegments([])).toBe('')
+  })
+})
+
+describe('unglueSwahiliNumbers', () => {
+  it('splits number words Whisper glued together, keeping everything else', () => {
+    expect(unglueSwahiliNumbers('Mbe mtoto mililitatano marambili kwa siku tatu.')).toBe(
+      'Mbe mtoto mililita tano mara mbili kwa siku tatu.'
+    )
+    expect(unglueSwahiliNumbers('Miatano, kuminambili.')).toBe('Mia tano, kumi na mbili.')
+    expect(unglueSwahiliNumbers('Wanandoa hawa wanaweza kuchagua.')).toBe('Wanandoa hawa wanaweza kuchagua.')
   })
 })
 
@@ -53,6 +63,12 @@ describe('SpeechToText', () => {
     expect(tr.calls).toEqual([[32_000, 'sw']])
     expect(t).toMatchObject({ lang: 'sw', text: 'Mtoto ana homa.', audioMs: 2000, flags: [] })
     expect(t.realTimeFactor).toBeGreaterThanOrEqual(0)
+  })
+
+  it('splits glued Swahili number words in Swahili transcripts only', async () => {
+    const stt = new SpeechToText(new FakeTranscriber([seg(' Mpe mililitatano marambili.')]))
+    expect((await stt.transcribe(second(), 'sw')).text).toBe('Mpe mililita tano mara mbili.')
+    expect((await stt.transcribe(second(), 'en')).text).toBe('Mpe mililitatano marambili.')
   })
 
   it('normalizes the level before the model sees it', async () => {

@@ -6,7 +6,7 @@
 import { performance } from 'node:perf_hooks'
 import { durationMs, loadSpeech, normalizePeak } from '../../core/audio.js'
 import type { Lang, Transcriber, TranscriptSegment } from '../../core/engines.js'
-import { hasRepetitionLoop, joinSegments } from './transcript.js'
+import { hasRepetitionLoop, joinSegments, unglueSwahiliNumbers } from './transcript.js'
 
 export const STT_FLAGS = ['no-speech', 'repetition'] as const
 export type SttFlag = (typeof STT_FLAGS)[number]
@@ -40,7 +40,8 @@ export class SpeechToText {
     const t0 = performance.now()
     const segments = audioMs < MIN_AUDIO_MS ? [] : await this.transcriber.transcribe(samples, lang)
     const transcribeMs = performance.now() - t0
-    const text = joinSegments(segments)
+    const joined = joinSegments(segments)
+    const text = lang === 'sw' ? unglueSwahiliNumbers(joined) : joined
 
     const flags = new Set<SttFlag>()
     if (!text) flags.add('no-speech')

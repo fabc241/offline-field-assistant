@@ -110,13 +110,22 @@ export class TranslationService {
     this.backTranslator = opts.backTranslator ?? translator
   }
 
-  async translate(text: string, from: Lang, to: Lang): Promise<Translation> {
+  /** `onSentence` gets each sentence's translation as soon as it exists, in order (sentences as split by `segment`). */
+  async translate(
+    text: string,
+    from: Lang,
+    to: Lang,
+    opts: { onSentence?: (index: number, translation: string) => void } = {}
+  ): Promise<Translation> {
     if (from === to) throw new Error(`Source and target language are both "${from}"`)
     const t0 = performance.now()
     const lines = segment(text)
     const sources = lines.flatMap((l) => l.sentences)
     const translations: string[] = []
-    for (const s of sources) translations.push(await this.translator.translate(s, from, to))
+    for (const [i, s] of sources.entries()) {
+      translations.push(await this.translator.translate(s, from, to))
+      opts.onSentence?.(i, translations[i]!)
+    }
     return {
       from,
       to,

@@ -95,14 +95,31 @@ export function splitLong(sentence: string, max = MAX_PART_CHARS): string[] {
   return [sentence.slice(0, cut).trim(), ...splitLong(sentence.slice(cut).trim(), max)]
 }
 
+/**
+ * Text laid out in lines, whose sentences may still be arriving: conversation
+ * mode speaks the first translated sentence while the next is translated.
+ */
+export interface PendingLine {
+  sentences: Promise<string>[]
+  /** The line break after this line ('' for the last). */
+  eol: string
+}
+
+export const pendingLines = (text: string): PendingLine[] =>
+  segment(text).map((l) => ({ sentences: l.sentences.map((s) => Promise.resolve(s)), eol: l.eol }))
+
+/** One sentence's parts, each followed by a sentence pause until the caller knows better. */
+function sentenceParts(sentence: string, lang: Lang, raw: boolean): SpeechPart[] {
+  return splitLong(sentence)
+    .filter(speakable)
+    .map((piece) => ({ text: piece, spoken: raw ? piece : toSpokenForm(piece, lang), pauseAfterMs: PAUSE_SENTENCE_MS }))
+}
+
 /** What will be spoken, in order. Pure; the unit tests pin it down. */
 export function planSpeech(text: string, lang: Lang, { raw = false } = {}): SpeechPart[] {
   const parts: SpeechPart[] = []
   for (const line of segment(text)) {
-    const pieces = line.sentences.flatMap((s) => splitLong(s))
-    for (const piece of pieces.filter(speakable)) {
-      parts.push({ text: piece, spoken: raw ? piece : toSpokenForm(piece, lang), pauseAfterMs: PAUSE_SENTENCE_MS })
-    }
+    for (const sentence of line.sentences) parts.push(...sentenceParts(sentence, lang, raw))
     const last = parts.at(-1)
     if (last && line.eol) last.pauseAfterMs = PAUSE_LINE_MS
   }
@@ -133,12 +150,18 @@ export function playbackStall(chunks: { atMs: number; audioMs: number }[]): numb
 export class ReadAloud {
   constructor(private readonly speaker: Speaker) {}
 
-  async speak(text: string, lang: Lang, opts: SpeakOptions = {}): Promise<Speech> {
+  /**
+   * Speaks `text`, or lines whose sentences are still arriving: each sentence
+   * is spoken once it is there and everything before it has been spoken.
+   * Same parts and pauses as `planSpeech`.
+   */
+  async speak(text: string | PendingLine[], lang: Lang, opts: SpeakOptions = {}): Promise<Speech> {
     const t0 = performance.now()
-    const plan = planSpeech(text, lang, { raw: opts.raw })
+    const lines = typeof text === 'string' ? pendingLines(text) : text
     const chunks: Float32Array[] = []
     const arrivals: { atMs: number; audioMs: number }[] = []
     const parts: SpokenPart[] = []
+    const said: string[] = []
     let sampleRate = 0
     let total = 0
 
@@ -151,16 +174,29 @@ export class ReadAloud {
       opts.onAudio?.({ samples, sampleRate: rate })
     }
 
-    for (const part of plan) {
-      const startMs = sampleRate ? (total / sampleRate) * 1000 : 0
-      const before = total
-      const s0 = performance.now()
-      await this.speaker.speak(part.spoken, lang, (chunk) => emit(chunk.samples, chunk.sampleRate))
-      const synthMs = performance.now() - s0
-      const audioMs = sampleRate ? ((total - before) / sampleRate) * 1000 : 0
-      parts.push({ ...part, startMs, audioMs, synthMs, flags: durationFlags(part.spoken, audioMs, lang) })
-      if (part.pauseAfterMs && sampleRate) emit(new Float32Array(Math.round((part.pauseAfterMs / 1000) * sampleRate)), sampleRate)
+    for (const line of lines) {
+      const sentences: string[] = []
+      for (const pending of line.sentences) {
+        const sentence = await pending
+        sentences.push(sentence)
+        for (const part of sentenceParts(sentence, lang, opts.raw ?? false)) {
+          // The pause after a part is only known once the next part exists (none after the last).
+          const prev = parts.at(-1)
+          if (prev?.pauseAfterMs && sampleRate) emit(new Float32Array(Math.round((prev.pauseAfterMs / 1000) * sampleRate)), sampleRate)
+          const startMs = sampleRate ? (total / sampleRate) * 1000 : 0
+          const before = total
+          const s0 = performance.now()
+          await this.speaker.speak(part.spoken, lang, (chunk) => emit(chunk.samples, chunk.sampleRate))
+          const synthMs = performance.now() - s0
+          const audioMs = sampleRate ? ((total - before) / sampleRate) * 1000 : 0
+          parts.push({ ...part, startMs, audioMs, synthMs, flags: durationFlags(part.spoken, audioMs, lang) })
+        }
+      }
+      said.push(sentences.join(' ') + line.eol)
+      const last = parts.at(-1)
+      if (last && line.eol) last.pauseAfterMs = PAUSE_LINE_MS
     }
+    if (parts.length) parts.at(-1)!.pauseAfterMs = 0
 
     const samples = new Float32Array(total)
     let at = 0
@@ -173,7 +209,7 @@ export class ReadAloud {
     const flags = new Set(parts.flatMap((p) => p.flags))
     return {
       lang,
-      text,
+      text: typeof text === 'string' ? text : said.join(''),
       parts,
       samples,
       sampleRate,

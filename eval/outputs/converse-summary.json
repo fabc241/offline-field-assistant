@@ -1,0 +1,969 @@
+{
+  "variants": {
+    "streamed": {},
+    "wait-for-translation": {
+      "speakAsTranslated": false
+    },
+    "check-with-speech": {
+      "speakAsTranslated": false,
+      "checkStart": "with-speech"
+    }
+  },
+  "sets": {
+    "intake": 47,
+    "fleurs": 134
+  },
+  "budget": "first translated audio within 5 s of the end of the utterance",
+  "warmUpMs": 8374,
+  "memory": {
+    "modelsLoadedGb": 5.38,
+    "modelsStillLoaded": 5,
+    "systemUsedGb": {
+      "before": 5.53,
+      "peak": 14.99
+    },
+    "workerRssGb": {
+      "before": 0.25,
+      "peak": 4.76
+    },
+    "note": "RSS undercounts on Apple Silicon (memory-mapped weights, Metal buffers in unified memory); system used includes every other process"
+  },
+  "results": {
+    "intake clinician (en→sw) streamed": {
+      "turns": 22,
+      "utteranceS": {
+        "median": 5.8,
+        "max": 6.9
+      },
+      "sttMs": {
+        "median": 1346,
+        "p90": 1431,
+        "max": 1963
+      },
+      "translateMs": {
+        "median": 1313,
+        "p90": 1655,
+        "max": 1793
+      },
+      "firstAudioMs": {
+        "median": 4591,
+        "p90": 4937,
+        "max": 5717
+      },
+      "firstAudioWithinBudget": "20/22",
+      "afterSttMs": {
+        "median": 3200,
+        "p90": 3573,
+        "max": 4230
+      },
+      "checkDoneMs": {
+        "median": 5749,
+        "p90": 6083,
+        "max": 7062
+      },
+      "checkAfterFirstAudioMs": {
+        "median": 1154,
+        "p90": 1306,
+        "max": 1863
+      },
+      "speechDoneMs": {
+        "median": 8496,
+        "p90": 10061,
+        "max": 11325
+      },
+      "audioOutS": 6.7,
+      "stalls": {
+        "turns": 12,
+        "totalMs": 7212
+      },
+      "byLength": {
+        "< 3.5 s": {
+          "turns": 0
+        },
+        "3.5–6.5 s": {
+          "turns": 19,
+          "firstAudioMs": {
+            "median": 4543,
+            "p90": 5198,
+            "max": 5717
+          }
+        },
+        "6.5–10 s": {
+          "turns": 3,
+          "firstAudioMs": {
+            "median": 4591,
+            "p90": 4712,
+            "max": 4712
+          }
+        },
+        "≥ 10 s": {
+          "turns": 0
+        }
+      },
+      "chrF": {
+        "spoken": 72.7,
+        "textOnly": 77.7
+      },
+      "quantitiesKept": {
+        "spoken": "10/11",
+        "textOnly": "11/11",
+        "lost": {
+          "en-i47-i48": "8"
+        },
+        "source": {
+          "en-i07-i09": "34 year 5 year",
+          "en-i13-i15": "3 day 2 week",
+          "en-i19-i21": "4 time",
+          "en-i25-i27": "38.5 °c",
+          "en-i28-i29": "140/90 6 kg",
+          "en-i36-i38": "7 month",
+          "en-i42-i44": "2 tablet 3 time 1 tablet 8 hour 5 day",
+          "en-i45-i46": "5 ml 2 time 500 mg",
+          "en-i47-i48": "8 tablet 1 day",
+          "en-i52-i53": "1 sachet 1 l",
+          "en-i56-i57": "2 day"
+        }
+      },
+      "flags": {
+        "numbers-changed": [
+          "en-i47-i48",
+          "en-i58-i60"
+        ],
+        "low-fidelity": [
+          "en-i22-i24",
+          "en-i56-i57"
+        ],
+        "clock-time": [
+          "en-i58-i60"
+        ]
+      }
+    },
+    "intake patient (sw→en) streamed": {
+      "turns": 25,
+      "utteranceS": {
+        "median": 6,
+        "max": 7.6
+      },
+      "sttMs": {
+        "median": 1477,
+        "p90": 1671,
+        "max": 1778
+      },
+      "translateMs": {
+        "median": 887,
+        "p90": 1145,
+        "max": 1457
+      },
+      "firstAudioMs": {
+        "median": 4137,
+        "p90": 5012,
+        "max": 6167
+      },
+      "firstAudioWithinBudget": "22/25",
+      "afterSttMs": {
+        "median": 2608,
+        "p90": 3380,
+        "max": 4524
+      },
+      "checkDoneMs": {
+        "median": 5578,
+        "p90": 6715,
+        "max": 7037
+      },
+      "checkAfterFirstAudioMs": {
+        "median": 1392,
+        "p90": 2051,
+        "max": 2629
+      },
+      "speechDoneMs": {
+        "median": 7474,
+        "p90": 9222,
+        "max": 10058
+      },
+      "audioOutS": 4.7,
+      "stalls": {
+        "turns": 16,
+        "totalMs": 14197
+      },
+      "byLength": {
+        "< 3.5 s": {
+          "turns": 1,
+          "firstAudioMs": {
+            "median": 3575,
+            "p90": 3575,
+            "max": 3575
+          }
+        },
+        "3.5–6.5 s": {
+          "turns": 15,
+          "firstAudioMs": {
+            "median": 3990,
+            "p90": 5012,
+            "max": 6167
+          }
+        },
+        "6.5–10 s": {
+          "turns": 9,
+          "firstAudioMs": {
+            "median": 4317,
+            "p90": 5977,
+            "max": 5977
+          }
+        },
+        "≥ 10 s": {
+          "turns": 0
+        }
+      },
+      "chrF": {
+        "spoken": 48.1,
+        "textOnly": 80.4
+      },
+      "quantitiesKept": {
+        "spoken": "10/15",
+        "textOnly": "15/15",
+        "lost": {
+          "sw-i05-i07": "34 +38",
+          "sw-i14-i16": "2",
+          "sw-i20-i21": "4",
+          "sw-i27-i28": "90",
+          "sw-i44-i45": "8"
+        },
+        "source": {
+          "sw-i05-i07": "34 year",
+          "sw-i08-i10": "5 year",
+          "sw-i11-i13": "3 day",
+          "sw-i14-i16": "2 week",
+          "sw-i20-i21": "4 time",
+          "sw-i27-i28": "38.5 °c 140/90",
+          "sw-i29-i31": "6 kg",
+          "sw-i36-i38": "7 month",
+          "sw-i42-i43": "2 tablet 3 time",
+          "sw-i44-i45": "1 tablet 8 hour 5 day 5 ml 2 time",
+          "sw-i46-i47": "500 mg 8 tablet 1 day",
+          "sw-i50-i52": "1 1 sachet 1 l",
+          "sw-i53-i55": "1 time",
+          "sw-i56-i57": "2 day",
+          "sw-i58-i59": "1 week 12"
+        }
+      },
+      "flags": {
+        "numbers-changed": [
+          "sw-i05-i07",
+          "sw-i42-i43"
+        ],
+        "low-fidelity": [
+          "sw-i29-i31",
+          "sw-i36-i38",
+          "sw-i58-i59"
+        ]
+      }
+    },
+    "intake clinician (en→sw) wait-for-translation": {
+      "turns": 22,
+      "utteranceS": {
+        "median": 5.8,
+        "max": 6.9
+      },
+      "sttMs": {
+        "median": 1343,
+        "p90": 1489,
+        "max": 1583
+      },
+      "translateMs": {
+        "median": 1059,
+        "p90": 1301,
+        "max": 1367
+      },
+      "firstAudioMs": {
+        "median": 4696,
+        "p90": 5036,
+        "max": 5305
+      },
+      "firstAudioWithinBudget": "19/22",
+      "afterSttMs": {
+        "median": 3354,
+        "p90": 3665,
+        "max": 3816
+      },
+      "checkDoneMs": {
+        "median": 5864,
+        "p90": 6256,
+        "max": 6758
+      },
+      "checkAfterFirstAudioMs": {
+        "median": 1165,
+        "p90": 1348,
+        "max": 1663
+      },
+      "speechDoneMs": {
+        "median": 8502,
+        "p90": 10172,
+        "max": 10738
+      },
+      "audioOutS": 6.7,
+      "stalls": {
+        "turns": 13,
+        "totalMs": 7076
+      },
+      "byLength": {
+        "< 3.5 s": {
+          "turns": 0
+        },
+        "3.5–6.5 s": {
+          "turns": 19,
+          "firstAudioMs": {
+            "median": 4569,
+            "p90": 5095,
+            "max": 5305
+          }
+        },
+        "6.5–10 s": {
+          "turns": 3,
+          "firstAudioMs": {
+            "median": 4704,
+            "p90": 4852,
+            "max": 4852
+          }
+        },
+        "≥ 10 s": {
+          "turns": 0
+        }
+      },
+      "chrF": {
+        "spoken": 72.7,
+        "textOnly": 77.7
+      },
+      "quantitiesKept": {
+        "spoken": "10/11",
+        "textOnly": "11/11",
+        "lost": {
+          "en-i47-i48": "8"
+        },
+        "source": {
+          "en-i07-i09": "34 year 5 year",
+          "en-i13-i15": "3 day 2 week",
+          "en-i19-i21": "4 time",
+          "en-i25-i27": "38.5 °c",
+          "en-i28-i29": "140/90 6 kg",
+          "en-i36-i38": "7 month",
+          "en-i42-i44": "2 tablet 3 time 1 tablet 8 hour 5 day",
+          "en-i45-i46": "5 ml 2 time 500 mg",
+          "en-i47-i48": "8 tablet 1 day",
+          "en-i52-i53": "1 sachet 1 l",
+          "en-i56-i57": "2 day"
+        }
+      },
+      "flags": {
+        "numbers-changed": [
+          "en-i47-i48",
+          "en-i58-i60"
+        ],
+        "low-fidelity": [
+          "en-i22-i24",
+          "en-i56-i57"
+        ],
+        "clock-time": [
+          "en-i58-i60"
+        ]
+      }
+    },
+    "intake patient (sw→en) wait-for-translation": {
+      "turns": 25,
+      "utteranceS": {
+        "median": 6,
+        "max": 7.6
+      },
+      "sttMs": {
+        "median": 1472,
+        "p90": 1683,
+        "max": 1775
+      },
+      "translateMs": {
+        "median": 727,
+        "p90": 966,
+        "max": 1163
+      },
+      "firstAudioMs": {
+        "median": 4269,
+        "p90": 5114,
+        "max": 6230
+      },
+      "firstAudioWithinBudget": "22/25",
+      "afterSttMs": {
+        "median": 2678,
+        "p90": 3473,
+        "max": 4455
+      },
+      "checkDoneMs": {
+        "median": 5708,
+        "p90": 6836,
+        "max": 7116
+      },
+      "checkAfterFirstAudioMs": {
+        "median": 1397,
+        "p90": 2070,
+        "max": 2557
+      },
+      "speechDoneMs": {
+        "median": 7610,
+        "p90": 9271,
+        "max": 10167
+      },
+      "audioOutS": 4.7,
+      "stalls": {
+        "turns": 16,
+        "totalMs": 15601
+      },
+      "byLength": {
+        "< 3.5 s": {
+          "turns": 1,
+          "firstAudioMs": {
+            "median": 3608,
+            "p90": 3608,
+            "max": 3608
+          }
+        },
+        "3.5–6.5 s": {
+          "turns": 15,
+          "firstAudioMs": {
+            "median": 4026,
+            "p90": 5114,
+            "max": 6230
+          }
+        },
+        "6.5–10 s": {
+          "turns": 9,
+          "firstAudioMs": {
+            "median": 4433,
+            "p90": 6060,
+            "max": 6060
+          }
+        },
+        "≥ 10 s": {
+          "turns": 0
+        }
+      },
+      "chrF": {
+        "spoken": 48.1,
+        "textOnly": 80.4
+      },
+      "quantitiesKept": {
+        "spoken": "10/15",
+        "textOnly": "15/15",
+        "lost": {
+          "sw-i05-i07": "34 +38",
+          "sw-i14-i16": "2",
+          "sw-i20-i21": "4",
+          "sw-i27-i28": "90",
+          "sw-i44-i45": "8"
+        },
+        "source": {
+          "sw-i05-i07": "34 year",
+          "sw-i08-i10": "5 year",
+          "sw-i11-i13": "3 day",
+          "sw-i14-i16": "2 week",
+          "sw-i20-i21": "4 time",
+          "sw-i27-i28": "38.5 °c 140/90",
+          "sw-i29-i31": "6 kg",
+          "sw-i36-i38": "7 month",
+          "sw-i42-i43": "2 tablet 3 time",
+          "sw-i44-i45": "1 tablet 8 hour 5 day 5 ml 2 time",
+          "sw-i46-i47": "500 mg 8 tablet 1 day",
+          "sw-i50-i52": "1 1 sachet 1 l",
+          "sw-i53-i55": "1 time",
+          "sw-i56-i57": "2 day",
+          "sw-i58-i59": "1 week 12"
+        }
+      },
+      "flags": {
+        "numbers-changed": [
+          "sw-i05-i07",
+          "sw-i42-i43"
+        ],
+        "low-fidelity": [
+          "sw-i29-i31",
+          "sw-i36-i38",
+          "sw-i58-i59"
+        ]
+      }
+    },
+    "intake clinician (en→sw) check-with-speech": {
+      "turns": 22,
+      "utteranceS": {
+        "median": 5.8,
+        "max": 6.9
+      },
+      "sttMs": {
+        "median": 1344,
+        "p90": 1390,
+        "max": 1543
+      },
+      "translateMs": {
+        "median": 1099,
+        "p90": 1326,
+        "max": 1391
+      },
+      "firstAudioMs": {
+        "median": 5539,
+        "p90": 5849,
+        "max": 6506
+      },
+      "firstAudioWithinBudget": "4/22",
+      "afterSttMs": {
+        "median": 4203,
+        "p90": 4490,
+        "max": 4962
+      },
+      "checkDoneMs": {
+        "median": 3642,
+        "p90": 4147,
+        "max": 4788
+      },
+      "checkAfterFirstAudioMs": {
+        "median": -1686,
+        "p90": -1401,
+        "max": -1337
+      },
+      "speechDoneMs": {
+        "median": 8532,
+        "p90": 10191,
+        "max": 10990
+      },
+      "audioOutS": 6.7,
+      "stalls": {
+        "turns": 0,
+        "totalMs": 0
+      },
+      "byLength": {
+        "< 3.5 s": {
+          "turns": 0
+        },
+        "3.5–6.5 s": {
+          "turns": 19,
+          "firstAudioMs": {
+            "median": 5406,
+            "p90": 6211,
+            "max": 6506
+          }
+        },
+        "6.5–10 s": {
+          "turns": 3,
+          "firstAudioMs": {
+            "median": 5673,
+            "p90": 5830,
+            "max": 5830
+          }
+        },
+        "≥ 10 s": {
+          "turns": 0
+        }
+      },
+      "chrF": {
+        "spoken": 72.7,
+        "textOnly": 77.7
+      },
+      "quantitiesKept": {
+        "spoken": "10/11",
+        "textOnly": "11/11",
+        "lost": {
+          "en-i47-i48": "8"
+        },
+        "source": {
+          "en-i07-i09": "34 year 5 year",
+          "en-i13-i15": "3 day 2 week",
+          "en-i19-i21": "4 time",
+          "en-i25-i27": "38.5 °c",
+          "en-i28-i29": "140/90 6 kg",
+          "en-i36-i38": "7 month",
+          "en-i42-i44": "2 tablet 3 time 1 tablet 8 hour 5 day",
+          "en-i45-i46": "5 ml 2 time 500 mg",
+          "en-i47-i48": "8 tablet 1 day",
+          "en-i52-i53": "1 sachet 1 l",
+          "en-i56-i57": "2 day"
+        }
+      },
+      "flags": {
+        "numbers-changed": [
+          "en-i47-i48",
+          "en-i58-i60"
+        ],
+        "low-fidelity": [
+          "en-i22-i24",
+          "en-i56-i57"
+        ],
+        "clock-time": [
+          "en-i58-i60"
+        ]
+      }
+    },
+    "intake patient (sw→en) check-with-speech": {
+      "turns": 25,
+      "utteranceS": {
+        "median": 6,
+        "max": 7.6
+      },
+      "sttMs": {
+        "median": 1451,
+        "p90": 1658,
+        "max": 1818
+      },
+      "translateMs": {
+        "median": 733,
+        "p90": 972,
+        "max": 1185
+      },
+      "firstAudioMs": {
+        "median": 5257,
+        "p90": 6391,
+        "max": 7149
+      },
+      "firstAudioWithinBudget": "11/25",
+      "afterSttMs": {
+        "median": 3822,
+        "p90": 4732,
+        "max": 5332
+      },
+      "checkDoneMs": {
+        "median": 3706,
+        "p90": 4719,
+        "max": 5827
+      },
+      "checkAfterFirstAudioMs": {
+        "median": -1497,
+        "p90": -827,
+        "max": -564
+      },
+      "speechDoneMs": {
+        "median": 7626,
+        "p90": 9460,
+        "max": 10544
+      },
+      "audioOutS": 4.7,
+      "stalls": {
+        "turns": 8,
+        "totalMs": 2295
+      },
+      "byLength": {
+        "< 3.5 s": {
+          "turns": 1,
+          "firstAudioMs": {
+            "median": 3966,
+            "p90": 3966,
+            "max": 3966
+          }
+        },
+        "3.5–6.5 s": {
+          "turns": 15,
+          "firstAudioMs": {
+            "median": 4787,
+            "p90": 6055,
+            "max": 7149
+          }
+        },
+        "6.5–10 s": {
+          "turns": 9,
+          "firstAudioMs": {
+            "median": 5555,
+            "p90": 6488,
+            "max": 6488
+          }
+        },
+        "≥ 10 s": {
+          "turns": 0
+        }
+      },
+      "chrF": {
+        "spoken": 48.1,
+        "textOnly": 80.4
+      },
+      "quantitiesKept": {
+        "spoken": "10/15",
+        "textOnly": "15/15",
+        "lost": {
+          "sw-i05-i07": "34 +38",
+          "sw-i14-i16": "2",
+          "sw-i20-i21": "4",
+          "sw-i27-i28": "90",
+          "sw-i44-i45": "8"
+        },
+        "source": {
+          "sw-i05-i07": "34 year",
+          "sw-i08-i10": "5 year",
+          "sw-i11-i13": "3 day",
+          "sw-i14-i16": "2 week",
+          "sw-i20-i21": "4 time",
+          "sw-i27-i28": "38.5 °c 140/90",
+          "sw-i29-i31": "6 kg",
+          "sw-i36-i38": "7 month",
+          "sw-i42-i43": "2 tablet 3 time",
+          "sw-i44-i45": "1 tablet 8 hour 5 day 5 ml 2 time",
+          "sw-i46-i47": "500 mg 8 tablet 1 day",
+          "sw-i50-i52": "1 1 sachet 1 l",
+          "sw-i53-i55": "1 time",
+          "sw-i56-i57": "2 day",
+          "sw-i58-i59": "1 week 12"
+        }
+      },
+      "flags": {
+        "numbers-changed": [
+          "sw-i05-i07",
+          "sw-i42-i43"
+        ],
+        "low-fidelity": [
+          "sw-i29-i31",
+          "sw-i36-i38",
+          "sw-i58-i59"
+        ]
+      }
+    },
+    "fleurs clinician (en→sw) streamed": {
+      "turns": 67,
+      "utteranceS": {
+        "median": 8.8,
+        "max": 19.7
+      },
+      "sttMs": {
+        "median": 1287,
+        "p90": 1396,
+        "max": 1432
+      },
+      "translateMs": {
+        "median": 958,
+        "p90": 1489,
+        "max": 2249
+      },
+      "firstAudioMs": {
+        "median": 6323,
+        "p90": 7925,
+        "max": 9064
+      },
+      "firstAudioWithinBudget": "12/67",
+      "afterSttMs": {
+        "median": 5015,
+        "p90": 6608,
+        "max": 7668
+      },
+      "checkDoneMs": {
+        "median": 6978,
+        "p90": 8651,
+        "max": 10169
+      },
+      "checkAfterFirstAudioMs": {
+        "median": 628,
+        "p90": 1224,
+        "max": 1682
+      },
+      "speechDoneMs": {
+        "median": 6675,
+        "p90": 10308,
+        "max": 12237
+      },
+      "audioOutS": 6.6,
+      "stalls": {
+        "turns": 4,
+        "totalMs": 4039
+      },
+      "byLength": {
+        "< 3.5 s": {
+          "turns": 0
+        },
+        "3.5–6.5 s": {
+          "turns": 15,
+          "firstAudioMs": {
+            "median": 4927,
+            "p90": 7106,
+            "max": 7320
+          }
+        },
+        "6.5–10 s": {
+          "turns": 28,
+          "firstAudioMs": {
+            "median": 6349,
+            "p90": 7439,
+            "max": 7940
+          }
+        },
+        "≥ 10 s": {
+          "turns": 24,
+          "firstAudioMs": {
+            "median": 6998,
+            "p90": 8210,
+            "max": 9064
+          }
+        }
+      },
+      "chrF": {
+        "spoken": 59.6,
+        "textOnly": 61.6
+      },
+      "quantitiesKept": {
+        "spoken": "21/23",
+        "textOnly": "21/23",
+        "lost": {
+          "en-1914": "+20",
+          "en-1769": "+3"
+        },
+        "source": {
+          "en-1914": "2",
+          "en-1662": "2",
+          "en-1790": "1",
+          "en-1740": "1",
+          "en-1710": "34",
+          "en-1975": "800",
+          "en-1864": "2005",
+          "en-1769": "1",
+          "en-1999": "1960",
+          "en-1732": "11 12 13 1000 1300",
+          "en-1930": "6",
+          "en-1799": "2",
+          "en-1980": "100 %",
+          "en-1808": "2 year",
+          "en-1884": "1",
+          "en-2007": "6",
+          "en-1765": "1537",
+          "en-1906": "1 1",
+          "en-1998": "2",
+          "en-1687": "2",
+          "en-1923": "2",
+          "en-1823": "2 1",
+          "en-1693": "36 7"
+        }
+      },
+      "flags": {
+        "low-fidelity": [
+          "en-1987",
+          "en-1687"
+        ]
+      }
+    },
+    "fleurs patient (sw→en) streamed": {
+      "turns": 67,
+      "utteranceS": {
+        "median": 13.7,
+        "max": 24.9
+      },
+      "sttMs": {
+        "median": 1484,
+        "p90": 1709,
+        "max": 1925
+      },
+      "translateMs": {
+        "median": 592,
+        "p90": 1013,
+        "max": 1813
+      },
+      "firstAudioMs": {
+        "median": 5280,
+        "p90": 6617,
+        "max": 7814
+      },
+      "firstAudioWithinBudget": "23/67",
+      "afterSttMs": {
+        "median": 3851,
+        "p90": 5103,
+        "max": 6105
+      },
+      "checkDoneMs": {
+        "median": 6405,
+        "p90": 8355,
+        "max": 10818
+      },
+      "checkAfterFirstAudioMs": {
+        "median": 966,
+        "p90": 2259,
+        "max": 3223
+      },
+      "speechDoneMs": {
+        "median": 5789,
+        "p90": 9821,
+        "max": 12123
+      },
+      "audioOutS": 5.3,
+      "stalls": {
+        "turns": 6,
+        "totalMs": 10270
+      },
+      "byLength": {
+        "< 3.5 s": {
+          "turns": 0
+        },
+        "3.5–6.5 s": {
+          "turns": 0
+        },
+        "6.5–10 s": {
+          "turns": 9,
+          "firstAudioMs": {
+            "median": 4544,
+            "p90": 5729,
+            "max": 5729
+          }
+        },
+        "≥ 10 s": {
+          "turns": 58,
+          "firstAudioMs": {
+            "median": 5479,
+            "p90": 6847,
+            "max": 7814
+          }
+        }
+      },
+      "chrF": {
+        "spoken": 56.4,
+        "textOnly": 70.9
+      },
+      "quantitiesKept": {
+        "spoken": "13/21",
+        "textOnly": "18/21",
+        "lost": {
+          "sw-1769": "3",
+          "sw-1710": "34 +38",
+          "sw-1975": "800 +8",
+          "sw-2007": "6",
+          "sw-1765": "1537 +1577",
+          "sw-1687": "2",
+          "sw-1732": "11 12 13",
+          "sw-1980": "100"
+        },
+        "source": {
+          "sw-1999": "1960",
+          "sw-1998": "2",
+          "sw-1769": "3",
+          "sw-1823": "2",
+          "sw-1710": "34",
+          "sw-1975": "800",
+          "sw-1674": "1 minute",
+          "sw-1914": "20 2",
+          "sw-1790": "1",
+          "sw-2007": "6",
+          "sw-1693": "36 7",
+          "sw-1765": "1537",
+          "sw-1864": "2005",
+          "sw-1687": "2",
+          "sw-1808": "2 year",
+          "sw-1732": "11 12 13 1000 1300",
+          "sw-1906": "1",
+          "sw-1980": "100 %",
+          "sw-1923": "2",
+          "sw-1662": "2",
+          "sw-1930": "6"
+        }
+      },
+      "flags": {
+        "numbers-changed": [
+          "sw-1999",
+          "sw-1769",
+          "sw-1802",
+          "sw-1975",
+          "sw-1765",
+          "sw-1687",
+          "sw-1808",
+          "sw-1732"
+        ],
+        "low-fidelity": [
+          "sw-1765",
+          "sw-1687"
+        ]
+      }
+    }
+  }
+}

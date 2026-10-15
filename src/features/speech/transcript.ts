@@ -1,5 +1,6 @@
 /** Text clean-up and sanity checks on Whisper output. */
 import type { TranscriptSegment } from '../../core/engines.js'
+import { splitGluedSwahili } from '../translate/quantities.js'
 
 /** A segment that is only a sound annotation: "[Music]", "(laughs)", "*coughs*". */
 const ANNOTATION = /^\s*(\[[^\]]*\]|\([^)]*\)|\*[^*]*\*)\s*$/
@@ -13,6 +14,21 @@ export function joinSegments(segments: TranscriptSegment[]): string {
     .replace(/\s+/g, ' ')
     .replace(/\s+([,.!?;:])/g, '$1')
     .trim()
+}
+
+/**
+ * Whisper glues Swahili number words to each other and to their units
+ * ("mililitatano marambili"). The translator misreads such words (that
+ * example came out as "15 milliliters"), so they are split back into words
+ * ("mililita tano mara mbili") before anyone reads or translates them.
+ */
+export function unglueSwahiliNumbers(text: string): string {
+  return text.replace(/\p{L}+/gu, (word) => {
+    const pieces = splitGluedSwahili(word.toLowerCase())
+    if (pieces.length < 2) return word
+    const joined = pieces.join(' ')
+    return word[0] === word[0]!.toUpperCase() ? joined[0]!.toUpperCase() + joined.slice(1) : joined
+  })
 }
 
 /**

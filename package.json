@@ -15,8 +15,8 @@
     "fetch-models": "tsx scripts/fetch-models.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --dir tests/unit",
-    "test:models": "vitest run --dir tests/models",
-    "eval": "npm run eval:translate && npm run eval:stt && npm run eval:tts",
+    "test:models": "vitest run --dir tests/models --no-file-parallelism",
+    "eval": "npm run eval:translate && npm run eval:stt && npm run eval:tts && npm run eval:converse",
     "eval:translate": "tsx eval/run-translate.ts",
     "electron:smoke": "electron .",
     "package": "electron-forge package --arch=arm64",
@@ -25,7 +25,8 @@
     "eval:make-intake-audio": "tsx eval/make-intake-audio.ts",
     "eval:stt": "tsx eval/run-stt.ts",
     "import-paza": "tsx scripts/import-paza.ts",
-    "eval:tts": "tsx eval/run-tts.ts"
+    "eval:tts": "tsx eval/run-tts.ts",
+    "eval:converse": "tsx eval/run-converse.ts"
   },
   "dependencies": {
     "@qvac/sdk": "0.21.0"

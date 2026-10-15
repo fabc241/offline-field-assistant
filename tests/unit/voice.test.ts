@@ -116,6 +116,30 @@ describe('ReadAloud', () => {
     expect(speech.firstAudioMs).toBeLessThanOrEqual(speech.synthMs)
   })
 
+  it('speaks sentences as they arrive, with the same parts, pauses and audio as the whole text', async () => {
+    const text = 'Take 2 tablets. Drink water.\nCome back in 3 days.'
+    const whole = await new ReadAloud(new FakeSpeaker()).speak(text, 'en')
+
+    const speaker = new FakeSpeaker()
+    let arrive!: (s: string) => void
+    const late = new Promise<string>((resolve) => (arrive = resolve))
+    const lines = [
+      { sentences: [Promise.resolve('Take 2 tablets.'), Promise.resolve('Drink water.')], eol: '\n' },
+      { sentences: [late], eol: '' }
+    ]
+    const speaking = new ReadAloud(speaker).speak(lines, 'en')
+    await new Promise((r) => setTimeout(r, 0))
+    expect(speaker.calls.map((c) => c[0])).toEqual(['Take two tablets.', 'Drink water.'])
+    arrive('Come back in 3 days.')
+    const streamed = await speaking
+
+    expect(streamed.text).toBe(text)
+    expect(streamed.samples).toEqual(whole.samples)
+    const shape = (p: { text: string; spoken: string; pauseAfterMs: number; startMs: number }) => [p.text, p.spoken, p.pauseAfterMs, p.startMs]
+    expect(streamed.parts.map(shape)).toEqual(whole.parts.map(shape))
+    expect(streamed.parts.map((p) => p.pauseAfterMs)).toEqual(planSpeech(text, 'en').map((p) => p.pauseAfterMs))
+  })
+
   it('spells numbers out before the speaker sees them', async () => {
     const speaker = new FakeSpeaker()
     await new ReadAloud(speaker).speak('Mpe ml 5.', 'sw')

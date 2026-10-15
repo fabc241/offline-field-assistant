@@ -264,3 +264,138 @@ Decisions:
 - **Duration flags** (`too-long`, `too-short`) did not fire in 700 renders.
   Observed 48–116 ms per letter (en) and 64–158 (sw). Bounds are set at about
   half and twice that, for gross failures only.
+
+## F4 — Conversation pipeline (done 2026-10-15)
+
+`ConversationService.turn({ audio, speakerSide })` runs speech-to-text in the
+speaker's language, translates, and reads the translation aloud in the other
+language. It returns `{ id, sourceLang, sourceText, translation,
+backTranslation, fidelity, flags, audioPath, timings }`, plus the full
+transcript, check and speech results. The clinician side speaks English and
+the patient side Swahili (configurable). Partial results go to `onEvent`
+(transcript, audio chunks, translation, check), so a UI can play audio
+before the turn is over. All five models stay loaded together: Whisper,
+AfriSLM 2B, EmbeddingGemma, and one Chatterbox per language. Warm-up runs
+each model once per language (8–10 s) and reports anything the memory
+budget evicted.
+
+| Check | Result |
+|---|---|
+| Unit tests (`npm test`) | 186/186 pass |
+| Real-model tests (`npm run test:models`) | 26/26 pass (now one file at a time, see below) |
+| Network audit, full eval (275 turns) | no sockets opened |
+
+### Scheduling (what the listener waits for)
+1. Speech-to-text (~1.3–1.5 s, the encoder's fixed 30 s window).
+2. Each sentence is translated, and **spoken as soon as it is translated**.
+3. The back-translation check starts once the first audio has arrived and
+   the whole translation exists. It runs while the first sentence plays, and
+   its result arrives a median 0.6–1.4 s after the audio starts.
+
+"Turn latency" here means from the end of the utterance to the first
+translated audio: how long the listener waits. Synthesis of later sentences
+overlaps playback.
+
+### Data
+- **intake**: F3's spoken-form renders of the 60 intake sentences
+  (synthetic Chatterbox speech), consecutive sentences joined with 0.4 s
+  gaps until a turn lasts ≥ 4.5 s. This gives 22 English and 25 Swahili turns
+  of 4.5–7.6 s (median 5.8–6.0 s), 2–3 sentences each. This is the "5 s
+  utterance" of the budget. The reference is the intake set's other language
+  (placeholder, not vetted).
+- **fleurs**: the 67 FLEURS test sentences present in both languages, as
+  human read speech in each. The other language's FLEURS text is a
+  professional reference. Utterances run 4–25 s (median 8.8 s en, 13.7 s sw),
+  with long Wikipedia sentences.
+
+Per turn: `eval/outputs/converse.csv`. Summary: `eval/outputs/converse-summary.json`.
+
+### Results (M4, warm, all models loaded)
+
+| Set | Turns | First audio median / p90 | Within 5 s | Speech-to-text | Translation | Check after first audio | chrF spoken / text-only |
+|---|---|---|---|---|---|---|---|
+| intake, clinician en→sw | 22 | **4.59 / 4.94 s** | 20/22 | 1.35 s | 1.31 s | 1.15 s | 72.7 / 77.7 |
+| intake, patient sw→en | 25 | **4.14 / 5.01 s** | 22/25 | 1.48 s | 0.89 s | 1.39 s | 48.1 / 80.4 |
+| fleurs, clinician en→sw | 67 | 6.32 / 7.93 s | 12/67 | 1.29 s | 0.96 s | 0.63 s | 59.6 / 61.6 |
+| fleurs, patient sw→en | 67 | 5.28 / 6.62 s | 23/67 | 1.48 s | 0.59 s | 0.97 s | 56.4 / 70.9 |
+
+"Translation" is the whole translation; speech starts after the first
+sentence. "chrF text-only" translates the reference source text directly. The
+gap to "spoken" is what speech recognition costs.
+
+**Budget: met for ~5 s utterances.** In the intake turns of 3.5–6.5 s, first
+audio has a median of 4.54 s (en) and 3.99 s (sw), with p90 5.20 and 5.01 s;
+42/47 intake turns are within 5 s. Once speech-to-text is done, the wait is
+the first sentence's translation and synthesis: median 3.2 s (en→sw) and
+2.6 s (sw→en). It grows with the length of the first sentence, so FLEURS's
+long sentences (first audio 4.9 s at 3.5–6.5 s, 7.0 s at ≥ 10 s for en→sw)
+miss the budget. Timings varied 5–15 % between three full runs (FLEURS en→sw
+median 7.0 / 7.5 / 6.3 s); `mediaanalysisd` was using ~1.2 CPU cores
+throughout.
+
+### A/B: scheduling (intake turns, each variant run back to back on the same turn)
+
+| Variant | First audio en→sw median / p90 | sw→en median / p90 | Within 5 s | Turns with a stall (total) |
+|---|---|---|---|---|
+| **streamed (default)**: speak each sentence once translated, check after first audio | **4.59 / 4.94 s** | **4.14 / 5.01 s** | **42/47** | 28/47 (21.4 s) |
+| wait-for-translation: speak after the whole translation | 4.70 / 5.04 s | 4.27 / 5.11 s | 41/47 | 29/47 (22.7 s) |
+| check-with-speech: as above, check started together with speech | 5.54 / 5.85 s | 5.26 / 6.39 s | 15/47 | 8/47 (2.3 s) |
+
+Decisions:
+- **Check after the first audio.** Starting it together with the speech puts
+  the back-translation on the GPU next to Chatterbox. That costs 0.7–1.0 s of
+  first audio (in all three runs), and the check line would only
+  arrive ~1.6 s *before* the audio, which nobody needs.
+- **Speak as translated.** It is 0.1–0.2 s faster in every run, less than
+  the ~0.7 s spent translating later sentences. The translator keeps working
+  on those sentences while Chatterbox synthesizes the first one, and they
+  compete for the GPU.
+- **Stalls are longer pauses, not cut words.** The check and the later
+  translations run while sentence 2 is synthesized, so sentence 2 is late in
+  about half the turns (≈ 0.5–0.9 s extra pause on top of the 250 ms sentence
+  pause). Synthesis is per whole sentence, so a stall never falls inside a
+  sentence. The UI should show "speaking…" until the last audio.
+
+### Memory
+- Weights loaded: **5.38 GB** (the plan's 4.5 GB left out EmbeddingGemma and
+  the second Chatterbox), under the 10 GB budget. All 5 models stayed
+  loaded through 275 turns.
+- QVAC worker RSS peaked at **4.76 GB** (a lower bound on Apple Silicon:
+  memory-mapped weights, Metal buffers in unified memory).
+- The SDK's system "used" memory went from 5.5 GB to a 15.0 GB peak of 16 GB.
+  That figure includes the file cache of the model files and every other
+  app, so it overstates the app. Practical limit: the model tests failed
+  with Metal and decode errors (`T3 step eval failed`, whisper -6/-8) when
+  vitest ran the test files in parallel, each with its own QVAC worker and
+  model set. `npm run test:models` now runs one file at a time. One
+  conversation set fits a 16 GB Mac; two do not.
+
+### Findings
+- **Whisper's glued Swahili numbers broke translations.** "Mpe mtoto ml 5 mara
+  mbili kwa siku 3" was heard as "mililitatano marambili" and translated as
+  "15 milliliters of milk every three days" (`numbers-changed` did fire).
+  Swahili transcripts are now un-glued with F1's splitter before anyone
+  reads or translates them ("mililita tano mara mbili"; `transcript.ts`).
+  On the patient intake turns, flagged number changes went 4 → 2,
+  quantities kept 9/15 → 10/15, chrF 47.1 → 48.1. F2/F3 eval numbers predate this
+  and were not re-run.
+- **The check cannot see speech-recognition errors.** It compares the
+  translation with what was *heard*. A number Whisper mishears or drops never
+  reaches the check: "mara nne" was heard as "mara ne", "miaka 34" as "miaka
+  thilakini nane" → "thirty-eight years old", with no flag. On the Swahili
+  side, 5/15 intake turns and 8/21 FLEURS turns lost a quantity (text-only:
+  0/15 and 3/21). The UI must show the speaker what was heard
+  (the `transcript` event comes first), so the speaker can repeat a number
+  that came out wrong.
+- **Swahili speech recognition is the weak link**, not translation. On FLEURS,
+  speech input costs 14.5 chrF sw→en (70.9 → 56.4) against 2 en→sw
+  (61.6 → 59.6). On the synthetic intake speech it costs 32 chrF (80.4 → 48.1),
+  but that set is Chatterbox Swahili, which F2 already found hard to
+  recognize. Treat 48 as a floor, not a field number.
+- **The first sentence's synthesis dominates the wait** (about 2.3–2.8 s of
+  the median 4.1–4.6 s). Candidate next steps, not tried here: split a long first
+  sentence at a clause break for its own synthesis, or chunk-stream only the
+  first sentence (F3: 0.2–0.35 s sooner, with stalls inside the sentence).
+- Translated speech is written to `var/conversation/<id>.wav` as plain WAV.
+  This is patient audio at rest, unencrypted; retention and encryption belong
+  to F9.

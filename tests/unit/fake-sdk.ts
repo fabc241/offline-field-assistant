@@ -32,8 +32,8 @@ export class FakeSdk implements SdkPort {
   async translate() {
     return ''
   }
-  async embed() {
-    return []
+  async embed(req: { modelId: string; texts: string[] }) {
+    return req.texts.map(() => [1, 0])
   }
   async transcribe(req: { modelId: string; audio: Float32Array }) {
     this.transcribed.push(req)
