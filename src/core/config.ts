@@ -18,6 +18,14 @@ export interface AppConfig {
   voices: Partial<Record<Lang, string>>
   /** Installed content packs (OFA_PACKS_DIR). */
   packsDir: string
+  /** Encrypted activity log, one file per day (OFA_LOG_DIR). */
+  logDir: string
+  /** Also log what people said and read, not just metadata (OFA_LOG_TRANSCRIPTS=1). Off by default. */
+  logTranscripts: boolean
+  /** Keychain service holding the log key (OFA_KEYCHAIN_SERVICE). */
+  keychainService: string
+  /** The installed license file (OFA_LICENSE). */
+  licenseFile: string
 }
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
@@ -32,6 +40,17 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
       ...(env.OFA_VOICE_EN ? { en: path.resolve(env.OFA_VOICE_EN) } : {}),
       ...(env.OFA_VOICE_SW ? { sw: path.resolve(env.OFA_VOICE_SW) } : {})
     },
-    packsDir: path.resolve(env.OFA_PACKS_DIR ?? path.join(PROJECT_ROOT, 'var/packs'))
+    packsDir: path.resolve(env.OFA_PACKS_DIR ?? path.join(PROJECT_ROOT, 'var/packs')),
+    logDir: path.resolve(env.OFA_LOG_DIR ?? path.join(PROJECT_ROOT, 'var/logs')),
+    logTranscripts: flag(env, 'OFA_LOG_TRANSCRIPTS'),
+    keychainService: env.OFA_KEYCHAIN_SERVICE || 'Offline Field Assistant',
+    licenseFile: path.resolve(env.OFA_LICENSE ?? path.join(PROJECT_ROOT, 'var/license/license.ofalicense'))
   }
+}
+
+function flag(env: NodeJS.ProcessEnv, name: string): boolean {
+  const value = (env[name] ?? '').toLowerCase()
+  if (value === '1' || value === 'true') return true
+  if (value === '' || value === '0' || value === 'false') return false
+  throw new Error(`${name} must be 1 or 0, got "${env[name]}"`)
 }

@@ -14,6 +14,14 @@ npm run fetch-models        # online, once: ~4.7 GB into models/
 npm run ofa -- doctor --verify --load
 ```
 
+Without a license the CLI opens read-only (phrasebook and guide only). On the
+dev machine, issue a development license for this Mac and install it:
+
+```bash
+npm run ofa -- license issue --key keys/ofa-license-dev-2026.key.pem --id ofa-dev-mac --licensee "OFA development" --seats 1 --expiry 2027-10-15 --device "$(npm run -s ofa -- license device-id)" --out var/license/dev.ofalicense
+npm run ofa -- license install var/license/dev.ofalicense
+```
+
 ## Commands
 
 | Command | What it does |
@@ -46,6 +54,11 @@ npm run ofa -- doctor --verify --load
 | `npm run ofa -- doc translate form.pdf --to sw --out result.json` | Translates a photo (PNG, JPEG, HEIC, …) or PDF segment by segment, each with the back-translation check; text PDFs give their text layer, scans and photos are straightened and OCR'd, and badly read lines are flagged `low-confidence` (`--no-check`, `--json`) |
 | `npm run ofa -- doc read form.jpg` | The text found, by segment, with OCR confidence (`--json`: pages, boxes) |
 | `npm run eval:documents` | F8 eval: renders placeholder forms and labels as PDFs, scans and phone photos (`var/eval-docs/`), then OCR character error rate, intact segments, numbers read, the low-confidence flag, time per page and translation drift → `eval/outputs/` |
+| `npm run ofa -- license show` / `license device-id` | The installed license, its mode (full or read-only) and the features it opens / this Mac's device id, for a license bound to it |
+| `npm run ofa -- license install FILE` | Checks a license file against the built-in vendor keys and this device, then installs it (`OFA_LICENSE`, default `var/license/license.ofalicense`) |
+| `npm run ofa -- license issue --key KEY --id ID --licensee NAME --seats N --expiry YYYY-MM-DD` | Vendor only: signs a license (`--features a,b` or `all`, `--device ID`, `--out FILE`); `license keygen --out keys/NAME` makes a vendor key |
+| `npm run ofa -- logs status` / `logs export [--out FILE]` / `logs wipe --yes` | The encrypted activity log (`OFA_LOG_DIR`, default `var/logs/`): what is kept and whether every line checks out / decrypted records for review, one JSON per line (`--since`, `--until`) / deletes every file and the log key |
+| `npm run eval:platform` | F9 eval: Keychain and Electron safeStorage timings, log speed, every-bit tamper sweeps of a log and a license, license scenarios, and the real CLI checked to log metadata only → `eval/outputs/` |
 | `npm run eval:guide` | F7 eval: top-3 hit rate on 100 questions per kind and language, out-of-scope questions answered "no match", fusion A/B, spoken questions read by Chatterbox and heard by Whisper → `eval/outputs/` |
 | `npm run electron:smoke` | Runs the Electron main process, which loads a model and exits |
 | `npm run package` | Packages the arm64 app with Electron Forge + the QVAC plugin |
@@ -103,6 +116,29 @@ HEIC photos are converted with macOS's `sips` (the prebuilt image library
 has no HEVC decoder). Elsewhere, HEIC is refused with a request for JPEG.
 `sharp` and `@napi-rs/canvas` are native modules: packaging (F10) must unpack
 them from the asar archive.
+
+## License and activity log
+
+The license is a JSON file signed with Ed25519 by the vendor (keys in
+`src/features/platform/license-keys.ts`, separate from the pack keys). It is
+checked once at start-up, never online. A valid license opens the features it
+lists. Expired, missing, forged or for another device, it opens the app
+read-only: the phrasebook and the guide stay available, so a clinic is never
+locked out of the danger signs. A license that expires mid-session changes
+nothing until the next start. Seats cannot be counted offline; a license with
+`--device` opens only on that Mac.
+
+Every command records what it did in an append-only log, one file per UTC day,
+each line encrypted on its own with AES-256-GCM. The 256-bit key is in the
+macOS Keychain (`OFA_KEYCHAIN_SERVICE`, default "Offline Field Assistant"); the
+Electron app keeps it with `safeStorage` (`electron/key-check.ts`). By default
+only metadata is recorded: feature, timings, flags, languages, models and pack
+used, outcome. What people said, typed or read is recorded only with
+`OFA_LOG_TRANSCRIPTS=1`. Lines older than 30 days are deleted. A line that was
+edited, moved, duplicated or removed from the middle of a session shows up in
+`logs status` and `logs export`; lines cut from the very end, or a whole day
+deleted, do not. `logs wipe` deletes the key too, so copies of old lines left
+on the disk can no longer be read.
 
 ## Rules
 

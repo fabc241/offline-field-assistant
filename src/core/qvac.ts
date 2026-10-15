@@ -119,6 +119,7 @@ const SYSTEM_MEMORY_SHARE = 0.7
 export class QvacRuntime {
   private readonly entries = new Map<string, Entry>()
   private readonly acquiring = new Map<string, Promise<Entry>>()
+  private readonly used = new Set<string>()
   private admission: Promise<unknown> = Promise.resolve()
   private budgetPromise: Promise<number> | undefined
 
@@ -157,6 +158,11 @@ export class QvacRuntime {
       lastUsed: e.lastUsed,
       busy: e.active > 0
     }))
+  }
+
+  /** Every model loaded so far, companions included, as NAME@first 12 hex digits of its sha256. */
+  modelVersions(): string[] {
+    return [...this.used].sort().map((name) => `${name}@${this.store.entry(name).sha256.slice(0, 12)}`)
   }
 
   async unload(key: string): Promise<void> {
@@ -215,6 +221,8 @@ export class QvacRuntime {
     assertLocalSource(modelSrc)
     for (const [k, v] of Object.entries(modelConfig)) if (k.endsWith('Src') && typeof v === 'string') assertLocalSource(v)
 
+    this.used.add(spec.name)
+    for (const [, companionName] of companions) this.used.add(companionName)
     const entry: Entry = {
       key,
       name: spec.name,

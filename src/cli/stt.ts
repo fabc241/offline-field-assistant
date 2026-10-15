@@ -7,10 +7,11 @@ import { isLang, qvacTranscriber } from '../core/engines.js'
 import { ModelStore } from '../core/model-store.js'
 import { QvacRuntime, createSdkPort } from '../core/qvac.js'
 import { STT_FLAG_HELP, SpeechToText } from '../features/speech/speech-service.js'
+import { modelsOf, type Session } from './session.js'
 
 const USAGE = 'Usage: ofa stt --lang en|sw [--model NAME] [--json] clip.wav [more.wav …]'
 
-export async function sttCommand(config: AppConfig, args: string[]): Promise<boolean> {
+export async function sttCommand(config: AppConfig, args: string[], session: Session): Promise<boolean> {
   const { values, positionals } = parseArgs({
     args,
     allowPositionals: true,
@@ -30,6 +31,7 @@ export async function sttCommand(config: AppConfig, args: string[]): Promise<boo
     console.error(`✖ Not found: ${missing.filter(Boolean).join(', ')}`)
     return false
   }
+  if (!(await session.require('speech', 'transcribe'))) return false
 
   const runtime = new QvacRuntime(await ModelStore.open(config.modelsDir), createSdkPort(), config)
   const spec = sttSpec(values.model)
@@ -42,6 +44,17 @@ export async function sttCommand(config: AppConfig, args: string[]): Promise<boo
     if (!values.json) console.error(`${spec.name} loaded in ${s(performance.now() - t0)}`)
     for (const file of positionals) {
       const t = await stt.transcribe(file, lang)
+      await session.activity.record({
+        feature: 'speech',
+        action: 'transcribe',
+        outcome: 'ok',
+        langs: { from: lang },
+        timings: { audioMs: t.audioMs, transcribeMs: t.transcribeMs },
+        counts: { segments: t.segments.length },
+        flags: t.flags,
+        ...modelsOf(runtime),
+        content: { transcript: t.text }
+      })
       if (values.json) {
         console.log(JSON.stringify({ file, ...t }, null, 2))
         continue

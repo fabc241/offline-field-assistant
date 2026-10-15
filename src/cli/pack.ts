@@ -11,6 +11,7 @@ import { PackError, PackLoader, type LoadedPack, type PackLoaderOptions } from '
 import { generateSigningKey, loadPrivateKey, trustedKey } from '../features/packs/signing.js'
 import { PackStore } from '../features/packs/store.js'
 import { TRUSTED_PACK_KEYS } from '../features/packs/trusted-keys.js'
+import type { Session } from './session.js'
 
 const USAGE = `Usage:
   ofa pack keygen --out keys/NAME                 new Ed25519 signing key (NAME.key.pem, NAME.pub.pem)
@@ -21,33 +22,38 @@ const USAGE = `Usage:
   ofa pack list                                   installed packs
 Keys: OFA_PACK_KEY can stand in for --key; OFA_PACK_KEY_PASSPHRASE encrypts and decrypts keys.`
 
-type Sub = (config: AppConfig, args: string[]) => Promise<boolean>
+type Sub = (config: AppConfig, args: string[], session: Session) => Promise<boolean>
 
-export async function packCommand(config: AppConfig, args: string[]): Promise<boolean> {
+export async function packCommand(config: AppConfig, args: string[], session: Session): Promise<boolean> {
   const [sub, ...rest] = args
   const run = sub ? subcommands[sub] : undefined
   if (!run) {
     console.error(USAGE)
     return false
   }
-  return run(config, rest)
+  return run(config, rest, session)
+}
+
+/** Writes NAME.key.pem (0600) and NAME.pub.pem, never over existing files. */
+export async function writeKeyPair(out: string, trustNote: string): Promise<void> {
+  const key = generateSigningKey(process.env.OFA_PACK_KEY_PASSPHRASE || undefined)
+  const privateFile = `${out}.key.pem`
+  const publicFile = `${out}.pub.pem`
+  await fs.mkdir(path.dirname(path.resolve(privateFile)), { recursive: true })
+  // "wx": never overwrite a key.
+  await fs.writeFile(privateFile, key.privateKeyPem, { flag: 'wx', mode: 0o600 })
+  await fs.writeFile(publicFile, key.publicKeyPem, { flag: 'wx' })
+  console.log(`Key ${key.keyId}`)
+  console.log(`  private  ${privateFile}  (keep it secret and off the devices)`)
+  console.log(`  public   ${publicFile}`)
+  console.log(trustNote)
 }
 
 const subcommands: Record<string, Sub> = {
   async keygen(_config, args) {
     const { values } = parseArgs({ args, options: { out: { type: 'string' } } })
     if (!values.out) return usage()
-    const key = generateSigningKey(process.env.OFA_PACK_KEY_PASSPHRASE || undefined)
-    const privateFile = `${values.out}.key.pem`
-    const publicFile = `${values.out}.pub.pem`
-    await fs.mkdir(path.dirname(path.resolve(privateFile)), { recursive: true })
-    // "wx": never overwrite a key.
-    await fs.writeFile(privateFile, key.privateKeyPem, { flag: 'wx', mode: 0o600 })
-    await fs.writeFile(publicFile, key.publicKeyPem, { flag: 'wx' })
-    console.log(`Key ${key.keyId}`)
-    console.log(`  private  ${privateFile}  (keep it secret and off the devices)`)
-    console.log(`  public   ${publicFile}`)
-    console.log('Devices accept packs signed with this key once the public key is in src/features/packs/trusted-keys.ts.')
+    await writeKeyPair(values.out, 'Devices accept packs signed with this key once the public key is in src/features/packs/trusted-keys.ts.')
     return true
   },
 
@@ -119,16 +125,24 @@ const subcommands: Record<string, Sub> = {
     })
   },
 
-  async install(config, args) {
+  async install(config, args, session) {
     const { positionals } = parseArgs({ args, allowPositionals: true })
     const [file] = positionals
     if (!file || positionals.length > 1) return usage()
-    return withLoader(config, [], async (loader) => {
+    if (!(await session.require('packs', 'install'))) return false
+    const ok = await withLoader(config, [], async (loader) => {
       const pack = await new PackStore(config.packsDir, loader).install(file)
       printPack('Installed', pack)
       console.log(`  in ${config.packsDir}`)
+      await session.activity.record({
+        feature: 'packs',
+        action: 'install',
+        outcome: 'ok',
+        detail: { pack: `${pack.manifest.id}@${pack.manifest.version}`, vectors: pack.embeddings }
+      })
       return true
-    })
+    }, (err) => session.activity.record({ feature: 'packs', action: 'install', outcome: 'refused', reason: err.problem }))
+    return ok
   },
 
   async list(config) {
@@ -143,7 +157,8 @@ const subcommands: Record<string, Sub> = {
 async function withLoader(
   config: AppConfig,
   extraKeys: PackLoaderOptions['trustedKeys'],
-  fn: (loader: PackLoader) => Promise<boolean>
+  fn: (loader: PackLoader) => Promise<boolean>,
+  onRefused?: (err: PackError) => Promise<void>
 ): Promise<boolean> {
   const store = await ModelStore.open(config.modelsDir)
   const spec = MODEL_SPECS.embedder
@@ -157,6 +172,7 @@ async function withLoader(
   } catch (err) {
     if (!(err instanceof PackError)) throw err
     console.error(`✖ Pack refused (${err.problem}): ${err.message}`)
+    await onRefused?.(err)
     return false
   } finally {
     await runtime.unloadAll()

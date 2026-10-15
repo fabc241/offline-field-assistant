@@ -53,6 +53,15 @@ describe('QvacRuntime', () => {
     expect(rt.loaded()[0]!.bytes).toBe(2 * GB)
   })
 
+  it('lists every model it loaded, companions included, with a hash prefix, even after unloading', async () => {
+    const rt = new QvacRuntime(store, new FakeSdk(), { memoryBudgetBytes: 10 * GB })
+    expect(rt.modelVersions()).toEqual([])
+    await rt.use({ name: 'T', companions: { s3genModelSrc: 'S' } }, async () => undefined)
+    await rt.use({ name: 'A' }, async () => undefined)
+    await rt.unloadAll()
+    expect(rt.modelVersions()).toEqual(['A@x', 'S@x', 'T@x'])
+  })
+
   it('evicts the least recently used idle model to stay under budget', async () => {
     let clock = 0
     const sdk = new FakeSdk()

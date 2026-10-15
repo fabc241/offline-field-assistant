@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises'
+import { performance } from 'node:perf_hooks'
 import { parseArgs } from 'node:util'
 import { MODEL_SPECS } from '../core/catalog.js'
 import type { AppConfig } from '../core/config.js'
@@ -11,6 +12,7 @@ import { PackStore } from '../features/packs/store.js'
 import { TRUSTED_PACK_KEYS } from '../features/packs/trusted-keys.js'
 import { STT_FLAG_HELP, SpeechToText } from '../features/speech/speech-service.js'
 import { loadInstalledPack } from './installed-pack.js'
+import { modelsOf, type Session } from './session.js'
 
 const USAGE = `Usage:
   ofa guide [--lang en|sw] [--limit N] [--keyword-only] [--json] "question"
@@ -20,7 +22,7 @@ const USAGE = `Usage:
   ofa guide --card ID [--lang en|sw] [--json] one card in full
 Every command takes --pack ID when more than one pack is installed (ofa pack list).`
 
-export async function guideCommand(config: AppConfig, args: string[]): Promise<boolean> {
+export async function guideCommand(config: AppConfig, args: string[], session: Session): Promise<boolean> {
   const { values, positionals } = parseArgs({
     args,
     allowPositionals: true,
@@ -46,6 +48,9 @@ export async function guideCommand(config: AppConfig, args: string[]): Promise<b
     console.error(`✖ Not found: ${values.voice}`)
     return false
   }
+  const action = values.card ? 'card' : values.voice ? 'voice-search' : 'search'
+  if (!(await session.require('guide', action))) return false
+  if (values.voice && !(await session.require('speech', action))) return false
 
   const models = await ModelStore.open(config.modelsDir)
   const runtime = new QvacRuntime(models, createSdkPort(), config)
@@ -62,6 +67,25 @@ export async function guideCommand(config: AppConfig, args: string[]): Promise<b
       ...(embedder ? { embedder } : {}),
       ...(values.voice ? { speech: new SpeechToText(qvacTranscriber(runtime, MODEL_SPECS.stt)) } : {})
     })
+    const packRef = `${guide.packId}@${guide.packVersion}`
+    const t0 = performance.now()
+    const record = (r: GuideResult, extra: { sttMs?: number; heard?: string; flags?: string[] } = {}) =>
+      session.activity.record({
+        feature: 'guide',
+        action,
+        outcome: 'ok',
+        langs: { from: r.lang },
+        timings: { totalMs: performance.now() - t0, ...(extra.sttMs !== undefined ? { sttMs: extra.sttMs } : {}) },
+        counts: { hits: r.status === 'match' ? r.hits.length : 0 },
+        detail: { status: r.status, mode: r.mode, pack: packRef },
+        flags: [...(extra.flags ?? []), ...(r.degraded ? ['keyword-fallback'] : [])],
+        ...modelsOf(runtime),
+        content: {
+          query: r.query,
+          ...(extra.heard !== undefined ? { heard: extra.heard } : {}),
+          ...(r.status === 'match' ? { cards: r.hits.map((h) => h.card.id).join(',') } : {})
+        }
+      })
 
     if (values.card) {
       const card = guide.card(values.card, (lang as Lang | undefined) ?? 'en')
@@ -69,6 +93,7 @@ export async function guideCommand(config: AppConfig, args: string[]): Promise<b
         console.error(`✖ No card "${values.card}" in ${guide.packId}; cards: ${guide.list('en').map((c) => c.id).join(', ')}`)
         return false
       }
+      await session.activity.record({ feature: 'guide', action, outcome: 'ok', langs: { to: card.lang }, detail: { pack: packRef }, content: { card: card.id } })
       if (values.json) return printJson(card)
       header(guide)
       printCard(card)
@@ -79,6 +104,7 @@ export async function guideCommand(config: AppConfig, args: string[]): Promise<b
     if (values.voice) {
       const { transcript, result: r } = await guide.searchByVoice(values.voice, lang as Lang, { limit })
       if (values['keyword-only']) delete r.degraded
+      await record(r, { sttMs: transcript.transcribeMs, heard: transcript.text, flags: transcript.flags })
       if (values.json) return printJson({ transcript, result: r })
       console.log(`Heard (${lang}): ${transcript.text || '—'}`)
       for (const f of transcript.flags) console.log(`⚠ ${f}: ${STT_FLAG_HELP[f]}`)
@@ -87,6 +113,7 @@ export async function guideCommand(config: AppConfig, args: string[]): Promise<b
       result = await guide.search(query, (lang as Lang | undefined) ?? guide.guessLang(query), { limit })
       // Keywords only was asked for: not a degraded search.
       if (values['keyword-only']) delete result.degraded
+      await record(result)
       if (values.json) return printJson(result)
     }
     header(guide)

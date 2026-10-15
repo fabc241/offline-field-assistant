@@ -9,6 +9,7 @@ import { TRUSTED_PACK_KEYS } from '../features/packs/trusted-keys.js'
 import { Phrasebook, type PhraseEntry } from '../features/phrasebook/phrasebook.js'
 import { loadInstalledPack } from './installed-pack.js'
 import { playWav } from './player.js'
+import type { Session } from './session.js'
 
 const USAGE = `Usage:
   ofa phrase list [--category C] [--json]                     phrases of the installed pack
@@ -19,16 +20,17 @@ Every command takes --pack ID when more than one pack is installed (ofa pack lis
 
 const SYNTHETIC_NOTE = 'synthetic placeholder (text-to-speech), not a native speaker'
 
-type Sub = (open: (packId: string | undefined) => Promise<Phrasebook>, args: string[]) => Promise<boolean>
+type Sub = (open: (packId: string | undefined) => Promise<Phrasebook>, args: string[], session: Session) => Promise<boolean>
 
 const PACK_OPTION = { pack: { type: 'string' } } as const
 
-export async function phraseCommand(config: AppConfig, args: string[]): Promise<boolean> {
+export async function phraseCommand(config: AppConfig, args: string[], session: Session): Promise<boolean> {
   const [sub, ...rest] = args
   const run = sub ? subcommands[sub] : undefined
   if (!run) return usage()
+  if (!(await session.require('phrasebook', sub!))) return false
   try {
-    return await run((packId) => openPhrasebook(config, packId), rest)
+    return await run((packId) => openPhrasebook(config, packId), rest, session)
   } catch (err) {
     if (!(err instanceof PackError)) throw err
     console.error(`✖ Pack refused (${err.problem}): ${err.message}`)
@@ -62,7 +64,7 @@ const subcommands: Record<string, Sub> = {
     return true
   },
 
-  async search(open, args) {
+  async search(open, args, session) {
     const { values, positionals } = parseArgs({
       args,
       allowPositionals: true,
@@ -74,6 +76,15 @@ const subcommands: Record<string, Sub> = {
     if (!lang || !isLang(lang) || !query.trim() || !(Number.isInteger(limit) && limit > 0)) return usage()
     const book = await open(values.pack)
     const hits = book.search(query, lang, { limit })
+    await session.activity.record({
+      feature: 'phrasebook',
+      action: 'search',
+      outcome: 'ok',
+      langs: { from: lang },
+      counts: { hits: hits.length },
+      detail: { pack: `${book.packId}@${book.packVersion}` },
+      content: { query, phrases: hits.map((h) => h.phrase.id).join(',') }
+    })
     if (values.json) return printJson(hits)
     header(book)
     if (!hits.length) console.log(`\nNo phrase matches "${query}".`)
@@ -81,7 +92,7 @@ const subcommands: Record<string, Sub> = {
     return true
   },
 
-  async play(open, args) {
+  async play(open, args, session) {
     const { values, positionals } = parseArgs({
       args,
       allowPositionals: true,
@@ -109,6 +120,14 @@ const subcommands: Record<string, Sub> = {
       console.log(`  → ${values.out}`)
     }
     if (!values['no-play']) await playWav(wav)
+    await session.activity.record({
+      feature: 'phrasebook',
+      action: 'play',
+      outcome: 'ok',
+      langs: { to: lang },
+      detail: { pack: `${book.packId}@${book.packVersion}`, recording: recording.synthetic ? 'synthetic' : 'recorded' },
+      content: { phrase: phrase.id }
+    })
     return true
   }
 }

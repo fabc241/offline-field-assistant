@@ -881,3 +881,143 @@ back-translation, flags). Summary: `eval/outputs/documents-summary.json`.
   must be unpacked from the asar archive in F10. pdf.js 6 has no eval path,
   and its fonts load from the package on disk, so reading a PDF opens no
   socket.
+
+## F9 — Platform: keys, encrypted logs, license (done 2026-10-15)
+
+`src/features/platform/` holds three pieces, wired into every `ofa` command
+through `src/cli/session.ts`:
+- **`KeyProvider`** (`keys.ts`) holds a random 256-bit log key in a
+  `SecretVault`. The CLI uses the macOS Keychain through `/usr/bin/security`.
+  The secret goes in on stdin (`security -i`), so it never shows on a command
+  line that `ps` could read. The Electron app uses `safeStorage`: the key is
+  in an encrypted file whose own key is in the Keychain
+  (`electron/key-check.ts` runs it in a real Electron app). A key that
+  already exists is never replaced, so two processes that race to make the
+  first key both end up with the same one.
+- **`SecureLog`** (`secure-log.ts`): append-only JSONL, one file per UTC day,
+  mode 0600. Each line is encrypted on its own with AES-256-GCM. The
+  envelope carries the key id, the writer's session, the line's number in
+  that session and day, the IV, the ciphertext and the tag. The day, key id,
+  session and number are bound to the ciphertext as additional data. Lines
+  must be byte-for-byte canonical, and the plaintext is padded to 64-byte
+  blocks. Day files older than 30 days are deleted on every write and read.
+  `wipe` deletes the files and then the key.
+- **`ActivityLog`** (`activity.ts`) decides what is recorded: feature,
+  action, outcome, languages, timings, counts, flags, models (NAME@sha256
+  prefix), pack id@version, and app and SDK versions. Every metadata string
+  must be a single token (no spaces), so a sentence cannot slip in. Errors
+  are recorded by kind, never by message. Text from people (transcripts,
+  translations, queries, OCR text) and the ids of the cards and phrases used
+  go in `content`, which is kept only with `OFA_LOG_TRANSCRIPTS=1`. A
+  failure to log is reported once on stderr and never fails the command.
+- **`License`** (`license.ts`): `{ licensee, seats, issued, expiry, features,
+  deviceId? }`, signed with Ed25519 by a vendor key compiled into
+  `license-keys.ts`. The vendor keys are kept apart from the pack keys, and
+  the signed bytes start with a domain string, so a pack signature cannot
+  pass as a license. The license is checked once at start-up, never online.
+  `valid` opens the listed features. `expired`, `missing`, `invalid` and
+  `wrong-device` open the app read-only: the guide and the phrasebook only.
+  The device id is a hash of IOPlatformUUID, `XXXX-XXXX-XXXX-XXXX`.
+
+Commands: `ofa license show|device-id|install|keygen|issue` and
+`ofa logs status|export|wipe`; `ofa doctor` shows both. Commands that need a
+licensed feature refuse with the reason and record the refusal.
+
+| Check | Result |
+|---|---|
+| Unit tests (`npm test`) | 319/319 pass (48 new) |
+| Real-model and system tests (`npm run test:models`) | 40/40 pass (4 new: Keychain, device id, Electron safeStorage across launches) |
+| Network audit: F9 eval (incl. 7 real-model CLI runs), `test:models` | no sockets opened |
+
+### Results (M4)
+
+| Measure | Result |
+|---|---|
+| Keychain: make the key / read it | 46 ms / median 11 ms (one `security` process each) |
+| Electron safeStorage | key ready in 13 ms; same key on the next launch, 3/3 records read back, wipe removes it; 0.27 s per launch |
+| CLI start-up check (license + device id + versions) | median 8.5 ms (8.4 ms of it is `ioreg`); the first record adds the 11 ms Keychain read |
+| Append one activity record | median 0.05 ms, p99 0.09 ms (10,000 records) |
+| Read and verify | 10.5 µs per line (10,000 lines in 105 ms) |
+| Size | 986 bytes per line for a 591-byte record (base64, padding, envelope) |
+| Log tamper sweep: every bit of every byte of a 3-day, 12-line log flipped in turn | **0 / 94,368 read back without a problem** (54,978 tampered, 38,460 malformed, 528 unknown-key, 390 missing-lines, 12 out-of-order) |
+| License check | median 0.05 ms |
+| License tamper sweep: every bit of a 617-byte license flipped | **0 / 4,936 accepted** |
+
+| Deliberate edit to the log | Detected as |
+|---|---|
+| Delete a middle line / the first line of a day | missing-lines |
+| Duplicate a line | out-of-order |
+| Swap two lines | missing-lines, out-of-order |
+| Move a line to the same position in another day | tampered |
+| Append a line from another day | tampered, out-of-order |
+| Replay a line written with an old (wiped) key | unknown-key |
+| Cut off the last line of a day | **not detected** |
+| Delete a whole day file | **not detected** |
+
+| License | Status | Opens |
+|---|---|---|
+| Valid; or bound to this device | valid | everything listed |
+| Expires in 10 days | valid + `expires-soon` | everything listed |
+| Clock before the issue date | valid + `clock-behind` | everything listed |
+| Expired, missing | expired / missing | guide, phrasebook |
+| Signed by an untrusted key | invalid (unknown-key) | guide, phrasebook |
+| Untrusted signature claiming the vendor key id; expiry edited after signing; pack-style signature without the license domain | invalid (bad-signature) | guide, phrasebook |
+| Reformatted (same JSON, other bytes) | invalid (malformed) | guide, phrasebook |
+| Bound to another device | wrong-device | guide, phrasebook |
+
+**End to end through the real CLI** (separate processes, scratch log,
+Keychain item and license; real models). `translate`, `stt`, `speak`,
+`converse`, `guide`, `phrase search` and `doc read` each left one record
+(8 with the license install). No record had `content`. Of the 73 words (5+
+letters) that people typed, said, heard or read in these runs, three appear
+in the decrypted log, all as the code's own field values. "speak" is the
+action name; it matched the phrase "Please speak slowly". "patient" is the
+conversation side, and "sample" is in the pack id `sample-intake@0.2.0`. No
+word appears outside those fixed-name fields. The raw files contain none of
+the 6+ letter words, and none of the field names (`feature`, `outcome`, …).
+With `OFA_LOG_TRANSCRIPTS=1` the typed sentence and the guide question are
+in the decrypted log, and still not in the raw files. With an expired
+license, `translate` exits 1 ("translate is not available. The license for F9
+eval expired on 2026-10-01: read-only mode (phrasebook and guide only)"),
+while `guide` and `phrase play` still work. Both refusals are recorded, and
+so is the refused install of the expired file. `logs wipe` without `--yes`
+does nothing. With it, the log restarts with one `logs/wipe` record. The old
+raw lines, copied back in, are 3 × unknown-key: unreadable.
+
+### Findings
+- **What the log cannot notice.** Each session numbers its lines, so a gap
+  or a repeat shows a deletion or a reorder. Lines cut from the very end of a
+  session, or a whole day file deleted, leave no gap. Catching that would need
+  a running count kept outside the files (for instance in the Keychain), which
+  every writer would have to update.
+- **Sessions keep concurrent writers apart.** Two `ofa` processes writing at
+  once each number their own session, so neither breaks the other's sequence
+  and there is no lock. A writer that died mid-line is detected: the next one
+  starts a fresh line, and only the partial line reads as `malformed`.
+- **Metadata still says something.** Timings and languages show that a
+  conversation happened and how long it took. Card and phrase ids would show
+  what it was about (`hiv-testing`, say), so they go in `content` with the
+  transcripts, not in metadata.
+- **Retention follows the device clock.** A clock set years ahead deletes the
+  whole log at the next write.
+- **The license is a lock against forgery and casual sharing, not against
+  the clock.** Offline, turning the clock back keeps an expired license
+  valid. A stored "latest time seen" would stop that, but it would also lock
+  out a device that once booted with a wrong future date, even after the
+  clock is fixed. Never locking a clinic out matters more, so there is no
+  such check. A clock before the issue date only warns. Seats cannot be
+  counted offline; `--device` binds a license to one Mac.
+- **The read-only floor is the guide and the phrasebook.** They only look up
+  content already on the device, and they carry the danger signs. Pack
+  installs need a valid license, because read-only means nothing new is
+  installed. `logs export`, `logs wipe` and `license install` always work.
+- **Review access is the Keychain.** Whoever can read the login Keychain
+  item can export the log. The export is written 0600 and never over an
+  existing file, and the export itself is recorded. A supervisor-only export
+  (encrypted to a reviewer's key) is not built.
+- **Dev-only artifacts.** The license key `keys/ofa-license-dev-2026.key.pem`
+  (git-ignored) and the dev license in `var/license/` are for this Mac only;
+  F10 swaps in the vendor's release key. Dev runs of `electron/key-check.ts`
+  use the unbranded Electron binary, so its safeStorage key sits in a
+  Keychain item called "Electron Safe Storage"; the packaged app will have
+  its own.

@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --dir tests/unit",
     "test:models": "vitest run --dir tests/models --no-file-parallelism",
-    "eval": "npm run eval:translate && npm run eval:stt && npm run eval:tts && npm run eval:converse && npm run eval:packs && npm run eval:phrasebook && npm run eval:guide && npm run eval:documents",
+    "eval": "npm run eval:translate && npm run eval:stt && npm run eval:tts && npm run eval:converse && npm run eval:packs && npm run eval:phrasebook && npm run eval:guide && npm run eval:documents && npm run eval:platform",
     "eval:translate": "tsx eval/run-translate.ts",
     "electron:smoke": "electron .",
     "package": "electron-forge package --arch=arm64",
@@ -31,7 +31,8 @@
     "make-phrase-recordings": "tsx scripts/make-phrase-recordings.ts",
     "eval:phrasebook": "tsx eval/run-phrasebook.ts",
     "eval:guide": "tsx eval/run-guide.ts",
-    "eval:documents": "tsx eval/run-documents.ts"
+    "eval:documents": "tsx eval/run-documents.ts",
+    "eval:platform": "tsx eval/run-platform.ts"
   },
   "dependencies": {
     "@napi-rs/canvas": "1.0.10",

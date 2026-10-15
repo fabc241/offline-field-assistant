@@ -4,10 +4,11 @@ import { isLang, qvacEmbedder, qvacTranslator, type Lang } from '../core/engines
 import { ModelStore } from '../core/model-store.js'
 import { QvacRuntime, createSdkPort } from '../core/qvac.js'
 import { FLAG_HELP, TranslationService, type CheckedTranslation } from '../features/translate/translation-service.js'
+import { modelsOf, type Session } from './session.js'
 
 const USAGE = 'Usage: ofa translate --from en|sw --to sw|en [--plain] [--json] "text"   (no text: read stdin)'
 
-export async function translateCommand(config: AppConfig, args: string[]): Promise<boolean> {
+export async function translateCommand(config: AppConfig, args: string[], session: Session): Promise<boolean> {
   const { values, positionals } = parseArgs({
     args,
     allowPositionals: true,
@@ -28,15 +29,38 @@ export async function translateCommand(config: AppConfig, args: string[]): Promi
     console.error(USAGE)
     return false
   }
+  if (!(await session.require('translate', 'translate'))) return false
 
   const runtime = new QvacRuntime(await ModelStore.open(config.modelsDir), createSdkPort(), config)
   const service = new TranslationService(qvacTranslator(runtime), qvacEmbedder(runtime))
   try {
     if (values.plain) {
-      console.log((await service.translate(text, from, to)).translation)
+      const plain = await service.translate(text, from, to)
+      console.log(plain.translation)
+      await session.activity.record({
+        feature: 'translate',
+        action: 'translate-plain',
+        outcome: 'ok',
+        langs: { from, to },
+        timings: { translateMs: plain.translateMs },
+        counts: { sentences: plain.sentences.length, chars: text.length },
+        ...modelsOf(runtime),
+        content: { source: text, translation: plain.translation }
+      })
       return true
     }
     const result = await service.translateWithCheck(text, from, to)
+    await session.activity.record({
+      feature: 'translate',
+      action: 'translate',
+      outcome: 'ok',
+      langs: { from, to },
+      timings: result.timings,
+      counts: { sentences: result.sentences.length, chars: text.length },
+      flags: result.flags,
+      ...modelsOf(runtime),
+      content: { source: text, translation: result.translation, backTranslation: result.backTranslation }
+    })
     if (values.json) {
       const { lines: _layout, ...rest } = result
       console.log(JSON.stringify(rest, null, 2))

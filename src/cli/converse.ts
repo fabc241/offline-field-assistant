@@ -7,10 +7,11 @@ import { QvacRuntime, createSdkPort } from '../core/qvac.js'
 import { TURN_FLAG_HELP, isSide, type Turn, type TurnEvent } from '../features/conversation/conversation-service.js'
 import { createConversation } from '../features/conversation/setup.js'
 import { AfplayQueue } from './player.js'
+import { modelsOf, type Session } from './session.js'
 
 const USAGE = 'Usage: ofa converse --side clinician|patient [--play] [--out-dir DIR] [--json] turn.wav [more.wav …]'
 
-export async function converseCommand(config: AppConfig, args: string[]): Promise<boolean> {
+export async function converseCommand(config: AppConfig, args: string[], session: Session): Promise<boolean> {
   const { values, positionals } = parseArgs({
     args,
     allowPositionals: true,
@@ -31,6 +32,7 @@ export async function converseCommand(config: AppConfig, args: string[]): Promis
     console.error(`✖ Not found: ${missing.filter(Boolean).join(', ')}`)
     return false
   }
+  if (!(await session.require('conversation', 'turn'))) return false
 
   const runtime = new QvacRuntime(await ModelStore.open(config.modelsDir), createSdkPort(), config)
   const audioDir = path.resolve(values['out-dir'] ?? path.join(PROJECT_ROOT, 'var/conversation'))
@@ -59,6 +61,18 @@ export async function converseCommand(config: AppConfig, args: string[]): Promis
           }
           log(describe(e))
         }
+      })
+      const { firstAudioMs, sttMs, translateMs, speechDoneMs, checkDoneMs, totalMs, utteranceMs } = turn.timings
+      await session.activity.record({
+        feature: 'conversation',
+        action: 'turn',
+        outcome: 'ok',
+        langs: { from: turn.sourceLang, to: turn.targetLang },
+        timings: { utteranceMs, sttMs, translateMs, firstAudioMs, speechDoneMs, checkDoneMs, totalMs },
+        detail: { side: turn.speakerSide },
+        flags: turn.flags,
+        ...modelsOf(runtime),
+        content: { transcript: turn.sourceText, translation: turn.translation, backTranslation: turn.backTranslation }
       })
       if (values.json) {
         console.log(JSON.stringify({ file, ...turn }, null, 2))

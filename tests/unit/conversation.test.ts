@@ -4,6 +4,7 @@ import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { decodeWav } from '../../src/core/audio.js'
 import { MODEL_CATALOG as M } from '../../src/core/catalog.js'
+import { loadConfig } from '../../src/core/config.js'
 import type {
   EmbedTask,
   Embedder,
@@ -328,7 +329,7 @@ describe('createConversation', () => {
     sdk.pcmChunks = [new Array(RATE).fill(1000)] // 1 s, long enough for speech-to-text to run on
     return new QvacRuntime(await ModelStore.open(dir), sdk, { memoryBudgetBytes: budgetGb * GB })
   }
-  const config = (modelsDir: string) => ({ modelsDir, memoryBudgetBytes: 0, voices: {}, packsDir: dir })
+  const config = (modelsDir: string) => ({ ...loadConfig({}), modelsDir, memoryBudgetBytes: 0, voices: {}, packsDir: dir })
 
   it('keeps STT, translator, embedder and one TTS per language loaded together', async () => {
     const rt = await runtime(6)

@@ -17,6 +17,7 @@ import {
 } from '../features/documents/document-service.js'
 import { DocumentError } from '../features/documents/input.js'
 import { FLAG_HELP, TranslationService } from '../features/translate/translation-service.js'
+import { modelsOf, type Session } from './session.js'
 
 const USAGE = `Usage:
   ofa doc translate FILE --to en|sw [--out result.json] [--no-check] [--json]
@@ -27,7 +28,7 @@ const USAGE = `Usage:
 const FLAG_TEXT: Record<DocFlag, string> = { ...DOC_FLAG_HELP, ...FLAG_HELP }
 const LANG_NAME = { en: 'English', sw: 'Swahili' } as const
 
-export async function docCommand(config: AppConfig, args: string[]): Promise<boolean> {
+export async function docCommand(config: AppConfig, args: string[], session: Session): Promise<boolean> {
   const [sub, ...rest] = args
   const { values, positionals } = parseArgs({
     args: rest,
@@ -48,6 +49,7 @@ export async function docCommand(config: AppConfig, args: string[]): Promise<boo
     console.error(`✖ Not found: ${file}`)
     return false
   }
+  if (!(await session.require('documents', sub))) return false
 
   const runtime = new QvacRuntime(await ModelStore.open(config.modelsDir), createSdkPort(), config)
   const service = new DocumentService(
@@ -57,7 +59,18 @@ export async function docCommand(config: AppConfig, args: string[]): Promise<boo
   )
   try {
     const read = await service.read(file)
+    const pages = { pages: read.pages.length, ocrPages: read.pages.filter((p) => p.source === 'ocr').length }
     if (sub === 'read') {
+      await session.activity.record({
+        feature: 'documents',
+        action: 'read',
+        outcome: 'ok',
+        timings: { readMs: read.readMs },
+        counts: { ...pages, segments: read.segments.length },
+        detail: { kind: read.kind },
+        ...modelsOf(runtime),
+        content: { text: read.segments.map((x) => x.text).join('\n') }
+      })
       if (values.json) return printJson(read)
       printRead(read)
       return true
@@ -71,6 +84,21 @@ export async function docCommand(config: AppConfig, args: string[]): Promise<boo
     const result = await service.translate(read, to, {
       check: !values['no-check'],
       onSegment: values.json ? undefined : (s, i, n) => printSegment(s, i, n, read.pages.length > 1)
+    })
+    await session.activity.record({
+      feature: 'documents',
+      action: 'translate',
+      outcome: 'ok',
+      langs: { to },
+      timings: result.timings,
+      counts: { ...pages, segments: result.segments.length, kept: result.segments.filter((x) => x.kept).length },
+      detail: { kind: result.kind, check: values['no-check'] ? 'off' : 'on' },
+      flags: result.flags,
+      ...modelsOf(runtime),
+      content: {
+        original: result.segments.map((x) => x.original).join('\n'),
+        translation: result.segments.map((x) => x.translation).join('\n')
+      }
     })
     if (values.out) {
       await fs.mkdir(path.dirname(path.resolve(values.out)), { recursive: true })

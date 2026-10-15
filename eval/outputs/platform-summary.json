@@ -1,0 +1,398 @@
+{
+  "date": "2026-10-15",
+  "machine": "Apple M4 · 16 GB · darwin 27.0.0",
+  "keychain": {
+    "createMs": 46.2,
+    "readMs": {
+      "median": 11.198,
+      "p99": 13.871,
+      "max": 13.871
+    }
+  },
+  "electron": {
+    "version": "44.7.1",
+    "available": true,
+    "keyMs": 13.2,
+    "sameKeyNextLaunch": true,
+    "recordsReadBack": 3,
+    "problems": 0,
+    "wipedKey": true,
+    "launchMs": [
+      701,
+      274,
+      280
+    ]
+  },
+  "log": {
+    "records": 10000,
+    "appendMs": {
+      "median": 0.048,
+      "p99": 0.089,
+      "max": 2.998
+    },
+    "bytesPerLine": 986,
+    "plaintextBytesPerRecord": 591,
+    "readAndVerifyMs": 105,
+    "readPerLineUs": 10.5
+  },
+  "tamper": {
+    "lines": 12,
+    "bytes": 11796,
+    "flips": 94368,
+    "silentlyAccepted": 0,
+    "firstProblem": {
+      "malformed": 38460,
+      "unknown-key": 528,
+      "tampered": 54978,
+      "missing-lines": 390,
+      "out-of-order": 12
+    },
+    "attacks": [
+      {
+        "attack": "delete a middle line",
+        "detected": true,
+        "problems": [
+          "missing-lines"
+        ]
+      },
+      {
+        "attack": "delete the first line of a day",
+        "detected": true,
+        "problems": [
+          "missing-lines"
+        ]
+      },
+      {
+        "attack": "duplicate a line",
+        "detected": true,
+        "problems": [
+          "out-of-order"
+        ]
+      },
+      {
+        "attack": "swap two lines",
+        "detected": true,
+        "problems": [
+          "missing-lines",
+          "out-of-order"
+        ]
+      },
+      {
+        "attack": "move a line to the next day (same position)",
+        "detected": true,
+        "problems": [
+          "tampered"
+        ]
+      },
+      {
+        "attack": "replay a line written with an old key",
+        "detected": true,
+        "problems": [
+          "unknown-key"
+        ]
+      },
+      {
+        "attack": "append a line from another day",
+        "detected": true,
+        "problems": [
+          "out-of-order",
+          "tampered"
+        ]
+      },
+      {
+        "attack": "cut off the last line of a day (not detected)",
+        "detected": false,
+        "problems": []
+      },
+      {
+        "attack": "delete a whole day (not detected)",
+        "detected": false,
+        "problems": []
+      }
+    ]
+  },
+  "license": {
+    "bytes": 617,
+    "checkMs": {
+      "median": 0.052,
+      "p99": 0.075,
+      "max": 0.481
+    },
+    "flips": 4936,
+    "flipsAccepted": 0,
+    "scenarios": [
+      {
+        "scenario": "valid",
+        "status": "valid",
+        "mode": "full",
+        "warnings": [],
+        "features": [
+          "conversation",
+          "translate",
+          "speech",
+          "read-aloud",
+          "documents",
+          "guide",
+          "phrasebook",
+          "packs"
+        ]
+      },
+      {
+        "scenario": "expires in 10 days",
+        "status": "valid",
+        "mode": "full",
+        "warnings": [
+          "expires-soon"
+        ],
+        "features": [
+          "conversation",
+          "translate",
+          "speech",
+          "read-aloud",
+          "documents",
+          "guide",
+          "phrasebook",
+          "packs"
+        ]
+      },
+      {
+        "scenario": "expired",
+        "status": "expired",
+        "mode": "read-only",
+        "warnings": [],
+        "features": [
+          "guide",
+          "phrasebook"
+        ]
+      },
+      {
+        "scenario": "missing",
+        "status": "missing",
+        "mode": "read-only",
+        "warnings": [],
+        "features": [
+          "guide",
+          "phrasebook"
+        ]
+      },
+      {
+        "scenario": "signed by an untrusted key",
+        "status": "invalid",
+        "problem": "unknown-key",
+        "mode": "read-only",
+        "warnings": [],
+        "features": [
+          "guide",
+          "phrasebook"
+        ]
+      },
+      {
+        "scenario": "untrusted signature claiming the vendor key id",
+        "status": "invalid",
+        "problem": "bad-signature",
+        "mode": "read-only",
+        "warnings": [],
+        "features": [
+          "guide",
+          "phrasebook"
+        ]
+      },
+      {
+        "scenario": "expiry edited after signing",
+        "status": "invalid",
+        "problem": "bad-signature",
+        "mode": "read-only",
+        "warnings": [],
+        "features": [
+          "guide",
+          "phrasebook"
+        ]
+      },
+      {
+        "scenario": "reformatted (not canonical)",
+        "status": "invalid",
+        "problem": "malformed",
+        "mode": "read-only",
+        "warnings": [],
+        "features": [
+          "guide",
+          "phrasebook"
+        ]
+      },
+      {
+        "scenario": "pack-style signature (no license domain)",
+        "status": "invalid",
+        "problem": "bad-signature",
+        "mode": "read-only",
+        "warnings": [],
+        "features": [
+          "guide",
+          "phrasebook"
+        ]
+      },
+      {
+        "scenario": "bound to this device",
+        "status": "valid",
+        "mode": "full",
+        "warnings": [],
+        "features": [
+          "conversation",
+          "translate",
+          "speech",
+          "read-aloud",
+          "documents",
+          "guide",
+          "phrasebook",
+          "packs"
+        ]
+      },
+      {
+        "scenario": "bound to another device",
+        "status": "wrong-device",
+        "mode": "read-only",
+        "warnings": [],
+        "features": [
+          "guide",
+          "phrasebook"
+        ]
+      },
+      {
+        "scenario": "clock before issue date",
+        "status": "valid",
+        "mode": "full",
+        "warnings": [
+          "clock-behind"
+        ],
+        "features": [
+          "conversation",
+          "translate",
+          "speech",
+          "read-aloud",
+          "documents",
+          "guide",
+          "phrasebook",
+          "packs"
+        ]
+      }
+    ]
+  },
+  "startup": {
+    "openSessionMs": {
+      "median": 8.455,
+      "p99": 9.978,
+      "max": 9.978
+    },
+    "deviceIdMs": {
+      "median": 8.383,
+      "p99": 10.148,
+      "max": 10.148
+    },
+    "firstRecordAddsKeychainReadMs": 11.198
+  },
+  "cli": {
+    "boundToDevice": true,
+    "metadataOnly": {
+      "commands": [
+        {
+          "command": "translate",
+          "code": 0,
+          "wallMs": 4026
+        },
+        {
+          "command": "stt",
+          "code": 0,
+          "wallMs": 3167
+        },
+        {
+          "command": "speak",
+          "code": 0,
+          "wallMs": 3403
+        },
+        {
+          "command": "converse",
+          "code": 0,
+          "wallMs": 14600
+        },
+        {
+          "command": "guide",
+          "code": 0,
+          "wallMs": 2137
+        },
+        {
+          "command": "phrase search",
+          "code": 0,
+          "wallMs": 285
+        },
+        {
+          "command": "doc read",
+          "code": 0,
+          "wallMs": 5393
+        }
+      ],
+      "records": 8,
+      "recorded": [
+        "license/install/ok",
+        "translate/translate/ok",
+        "speech/transcribe/ok",
+        "read-aloud/speak/ok",
+        "conversation/turn/ok",
+        "guide/search/ok",
+        "phrasebook/search/ok",
+        "documents/read/ok"
+      ],
+      "exportCode": 0,
+      "sensitiveWords": 73,
+      "wordsInDecryptedLog": [
+        {
+          "word": "speak",
+          "fields": [
+            "action"
+          ]
+        },
+        {
+          "word": "patient",
+          "fields": [
+            "detail.side"
+          ]
+        },
+        {
+          "word": "sample",
+          "fields": [
+            "detail.pack"
+          ]
+        }
+      ],
+      "wordsOutsideNamedFields": [],
+      "recordsWithContent": 0,
+      "readableInRawFiles": []
+    },
+    "transcripts": {
+      "records": 2,
+      "withContent": 2,
+      "typedTextInDecryptedLog": true,
+      "questionInDecryptedLog": true,
+      "readableInRawFiles": []
+    },
+    "readOnly": {
+      "translateExit": 1,
+      "translateMessage": "✖ translate is not available. The license for F9 eval expired on 2026-10-01: read-only mode (phrasebook and guide only).",
+      "guideExit": 0,
+      "phrasePlayExit": 0,
+      "installExpiredExit": 1,
+      "refusalsRecorded": [
+        "translate/translate: license-expired",
+        "license/install: license-expired"
+      ]
+    },
+    "wiped": {
+      "withoutYesExit": 1,
+      "filesBefore": 1,
+      "exit": 0,
+      "recordsAfter": [
+        "logs/wipe"
+      ],
+      "rawCopyReadable": false
+    },
+    "replayProblems": 3
+  }
+}

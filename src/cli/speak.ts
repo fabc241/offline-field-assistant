@@ -10,11 +10,12 @@ import { QvacRuntime, createSdkPort } from '../core/qvac.js'
 import { ReadAloud, TTS_FLAG_HELP } from '../features/voice/read-aloud.js'
 import { speakerSpecs } from '../features/voice/voices.js'
 import { AfplayQueue } from './player.js'
+import { modelsOf, type Session } from './session.js'
 
 const USAGE =
   'Usage: ofa speak --lang en|sw [--play] [--out FILE.wav] [--chunk-tokens N] [--raw] [--json] "text"   (no text: read stdin)'
 
-export async function speakCommand(config: AppConfig, args: string[]): Promise<boolean> {
+export async function speakCommand(config: AppConfig, args: string[], session: Session): Promise<boolean> {
   const { values, positionals } = parseArgs({
     args,
     allowPositionals: true,
@@ -38,6 +39,7 @@ export async function speakCommand(config: AppConfig, args: string[]): Promise<b
     console.error(USAGE)
     return false
   }
+  if (!(await session.require('read-aloud', 'speak'))) return false
   const out = path.resolve(values.out ?? path.join(PROJECT_ROOT, 'var/speech', `${lang}-${stamp()}.wav`))
 
   const runtime = new QvacRuntime(await ModelStore.open(config.modelsDir), createSdkPort(), config)
@@ -54,6 +56,18 @@ export async function speakCommand(config: AppConfig, args: string[]): Promise<b
     const speech = await reader.speak(text, lang, { raw: values.raw, onAudio: player && ((c) => player.enqueue(c)) })
     await fs.mkdir(path.dirname(out), { recursive: true })
     await fs.writeFile(out, encodeWav(speech.samples, speech.sampleRate))
+    await session.activity.record({
+      feature: 'read-aloud',
+      action: 'speak',
+      outcome: 'ok',
+      langs: { to: lang },
+      timings: { audioMs: speech.audioMs, synthMs: speech.synthMs, firstAudioMs: speech.firstAudioMs, stallMs: speech.stallMs },
+      counts: { parts: speech.parts.length, chars: text.length },
+      detail: { voice: config.voices[lang] ? 'reference' : 'built-in', mode: values.raw ? 'raw' : 'spoken' },
+      flags: speech.flags,
+      ...modelsOf(runtime),
+      content: { text }
+    })
     if (values.json) {
       const { samples: _samples, ...rest } = speech
       console.log(JSON.stringify({ out, ...rest }, null, 2))

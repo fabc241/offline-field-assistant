@@ -3,13 +3,15 @@ import { ALL_MODEL_NAMES, MODEL_SPECS } from '../core/catalog.js'
 import type { AppConfig } from '../core/config.js'
 import { ModelStore } from '../core/model-store.js'
 import { QvacRuntime, createSdkPort, sdkVersion, systemResources } from '../core/qvac.js'
+import { LICENSE_FEATURES, allows } from '../features/platform/license.js'
+import type { Session } from './session.js'
 
 /** One load per runtime model, with the companions it cannot load without. */
 const SMOKE_SPECS = Object.values(MODEL_SPECS)
 
 const gb = (b: number) => (b < 1024 ** 3 ? `${(b / 1024 ** 2).toFixed(0)} MB` : `${(b / 1024 ** 3).toFixed(2)} GB`)
 
-export async function doctor(config: AppConfig, opts: { verify: boolean; load: boolean }): Promise<boolean> {
+export async function doctor(config: AppConfig, session: Session, opts: { verify: boolean; load: boolean }): Promise<boolean> {
   let healthy = true
   const store = await ModelStore.open(config.modelsDir)
   const version = await sdkVersion()
@@ -49,6 +51,27 @@ export async function doctor(config: AppConfig, opts: { verify: boolean; load: b
     }
   } else {
     console.log(`GPU             ${gpus.status}`)
+  }
+
+  const { license } = session
+  console.log(`\nLicense         ${license.mode === 'full' ? '✓' : '⚠'} ${license.message}`)
+  console.log(`  available     ${LICENSE_FEATURES.filter((f) => allows(license, f)).join(', ')}`)
+  console.log(`  device id     ${license.deviceId ?? 'unavailable'}`)
+  if (license.mode !== 'full') healthy = false
+
+  if (session.keys) {
+    try {
+      const key = await session.keys.existingLogKey()
+      const days = (await session.log!.files()).length
+      console.log(`Activity log    ✓ ${config.logDir}, ${days} day file${days === 1 ? '' : 's'}`)
+      console.log(`  key           ${key ? key.id : 'none yet'} in ${session.keys.name}`)
+      console.log(`  recording     metadata${config.logTranscripts ? ' and transcripts (OFA_LOG_TRANSCRIPTS=1)' : ' only'}`)
+    } catch (err) {
+      healthy = false
+      console.log(`Activity log    ✗ ${(err as Error).message}`)
+    }
+  } else {
+    console.log('Activity log    ⚠ off: no key store on this platform')
   }
 
   if (opts.load) {

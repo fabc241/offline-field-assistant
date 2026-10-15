@@ -9,5 +9,5 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["src", "scripts", "tests", "eval"]
+  "include": ["src", "scripts", "tests", "eval", "electron"]
 }
