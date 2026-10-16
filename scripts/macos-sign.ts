@@ -100,9 +100,10 @@ export async function checkSignatures(app: string): Promise<SignatureCheck> {
   }
   const { stdout: ent } = await exec('/usr/bin/codesign', ['-d', '--entitlements', '-', '--xml', app]).catch(() => ({ stdout: '' }))
   const { stderr: info } = await exec('/usr/bin/codesign', ['-dvv', app]).catch((e: { stderr: string }) => ({ stderr: e.stderr }))
+  // spctl echoes the absolute app path; keep only the bundle name so reports never carry the home directory.
   const gatekeeper = await exec('/usr/sbin/spctl', ['--assess', '--type', 'execute', '-vv', app]).then(
-    (r) => r.stderr.trim(),
-    (e: { stderr: string }) => e.stderr.trim()
+    (r) => r.stderr.trim().replaceAll(app, path.basename(app)),
+    (e: { stderr: string }) => e.stderr.trim().replaceAll(app, path.basename(app))
   )
   return {
     valid: verify,
