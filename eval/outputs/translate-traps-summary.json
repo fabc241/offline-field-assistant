@@ -1,0 +1,67 @@
+{
+  "model": "TRANSLATEPSY_AFRISLM_2B_TRANSLATION_Q4_K_M",
+  "traps": 4,
+  "trapsFired": 4,
+  "caughtByTermChanged": "4/4",
+  "termChangedOnSavedRoundTrips": "2/367",
+  "flaggedSavedRoundTrips": [
+    {
+      "where": "translate-TRANSLATEPSY_AFRISLM_2B_TRANSLATION_Q4_K_M-back-TRANSLATEPSY_AFRISLM_4B_TRANSLATION_Q4_K_M:i45",
+      "source": "Give the child 5 ml of the syrup twice a day.",
+      "back": "Give the child 5 ml of the broth twice a day.",
+      "meanings": [
+        "broth"
+      ]
+    },
+    {
+      "where": "translate-TRANSLATEPSY_AFRISLM_2B_TRANSLATION_Q4_K_M:i45",
+      "source": "Give the child 5 ml of the syrup twice a day.",
+      "back": "Give the child 5 ml of the broth twice a day.",
+      "meanings": [
+        "broth"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "id": "t01",
+      "source": "Is he drinking?",
+      "translation": "Je, anakunywa pombe?",
+      "back_translation": "Does he drink alcohol?",
+      "fidelity": "0.944",
+      "flags": "term-changed",
+      "trap_fired": "yes",
+      "caught": "yes"
+    },
+    {
+      "id": "t02",
+      "source": "Give him oral rehydration solution after every loose stool.",
+      "translation": "Mpe dawa ya kumuongezea maji kinywani kila anapopata kinyesi.",
+      "back_translation": "Give him a mouthwash every time he has a bowel movement.",
+      "fidelity": "0.857",
+      "flags": "term-changed",
+      "trap_fired": "yes",
+      "caught": "yes"
+    },
+    {
+      "id": "t03",
+      "source": "Give the child 5 ml of the syrup twice a day.",
+      "translation": "Mpe mtoto 5 ml ya mchuzi mara mbili kwa siku.",
+      "back_translation": "Give the child 5 ml of the broth twice a day.",
+      "fidelity": "0.926",
+      "flags": "term-changed",
+      "trap_fired": "yes",
+      "caught": "yes"
+    },
+    {
+      "id": "t04",
+      "source": "After every loose stool, give him ORS to drink.",
+      "translation": "Kila anapopata kinyesi kizito, mpe ORS anywe.",
+      "back_translation": "Whenever he has a heavy stool, give him ORS to drink.",
+      "fidelity": "0.915",
+      "flags": "term-changed",
+      "trap_fired": "yes",
+      "caught": "yes"
+    }
+  ]
+}

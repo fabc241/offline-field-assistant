@@ -32,7 +32,9 @@ const table = {
   'Come at 9:30.': 'Njoo saa 9:30.',
   'Njoo saa 9:30.': 'Come at 9:30.',
   'Keep warm.': 'Weka joto.',
-  'Weka joto.': 'Stay somewhere else.'
+  'Weka joto.': 'Stay somewhere else.',
+  'Is he drinking?': 'Je, anakunywa pombe?',
+  'Je, anakunywa pombe?': 'Does he drink alcohol?'
 }
 
 describe('TranslationService', () => {
@@ -65,6 +67,13 @@ describe('TranslationService', () => {
     const svc = new TranslationService(new TableTranslator(table), new FakeEmbedder())
     const res = await svc.translateWithCheck('Do not drink alcohol.', 'en', 'sw')
     expect(res.flags).toEqual(['negation-changed'])
+  })
+
+  it('flags a term that came back with another meaning, even when the wording scores as faithful', async () => {
+    const svc = new TranslationService(new TableTranslator(table), new FakeEmbedder())
+    const res = await svc.translateWithCheck('Is he drinking?', 'en', 'sw')
+    expect(res.fidelity).toBe(1)
+    expect(res.flags).toEqual(['term-changed'])
   })
 
   it('flags changed numbers and says which', async () => {

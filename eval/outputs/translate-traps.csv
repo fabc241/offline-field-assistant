@@ -1,0 +1,5 @@
+id,source,translation,back_translation,fidelity,flags,trap_fired,caught
+t01,Is he drinking?,"Je, anakunywa pombe?",Does he drink alcohol?,0.944,term-changed,yes,yes
+t02,Give him oral rehydration solution after every loose stool.,Mpe dawa ya kumuongezea maji kinywani kila anapopata kinyesi.,Give him a mouthwash every time he has a bowel movement.,0.857,term-changed,yes,yes
+t03,Give the child 5 ml of the syrup twice a day.,Mpe mtoto 5 ml ya mchuzi mara mbili kwa siku.,Give the child 5 ml of the broth twice a day.,0.926,term-changed,yes,yes
+t04,"After every loose stool, give him ORS to drink.","Kila anapopata kinyesi kizito, mpe ORS anywe.","Whenever he has a heavy stool, give him ORS to drink.",0.915,term-changed,yes,yes

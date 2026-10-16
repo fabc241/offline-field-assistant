@@ -32,6 +32,7 @@ npm run ofa -- license install var/license/dev.ofalicense
 | `npm run ofa -- doctor [--verify] [--load]` | Checks models, memory, GPU; `--load` loads each model |
 | `npm run ofa -- translate --from en --to sw "…"` | Translates with a back-translation check (`--plain`: no check, `--json`: full result; no text: reads stdin) |
 | `npm run eval:translate` | F1 eval: intake set in both directions for each installed AfriSLM size → `eval/outputs/` |
+| `npm run eval:term-traps` | Terminology traps: sentences where a clinical term has come back with another meaning (alcohol, mouthwash, broth); counts the ones `term-changed` catches and its flags on every saved English round trip → `eval/outputs/` |
 | `npm run ofa -- stt --lang sw clip.wav` | Speech to text with the language forced (`--json`: segments and timings; `--model NAME`: another Whisper in the manifest) |
 | `npm run fetch-fleurs` | Online, once: 150 FLEURS test clips each in Swahili and English → `var/eval-audio/` |
 | `npm run eval:make-intake-audio` | Renders 30 intake sentences per language with Chatterbox → `var/eval-audio/` |

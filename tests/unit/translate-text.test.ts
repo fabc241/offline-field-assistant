@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { cosine, countNegations, looksUntranslated, mentionsClockTime } from '../../src/features/translate/checks.js'
+import { cosine, countNegations, looksUntranslated, mentionsClockTime, wrongMeanings } from '../../src/features/translate/checks.js'
 import { diffQuantities, extractQuantities, formatQuantity, splitGluedSwahili } from '../../src/features/translate/quantities.js'
 import { reassemble, segment, splitSentences } from '../../src/features/translate/segment.js'
 import type { Lang } from '../../src/core/engines.js'
@@ -83,6 +83,17 @@ describe('checks', () => {
     expect(countNegations("Don't drink alcohol and never drive.")).toBe(2)
     expect(countNegations('The child is unable to drink.')).toBe(countNegations('The child cannot drink.'))
     expect(countNegations('Take 8 tablets.')).toBe(0)
+  })
+
+  it('spots a known wrong meaning the back-translation brings in', () => {
+    expect(wrongMeanings('Is he drinking?', 'Does he drink alcohol?')).toEqual(['alcohol'])
+    expect(wrongMeanings('Give him oral rehydration solution after every loose stool.', 'Give him a mouthwash every time he has a bowel movement.')).toEqual(['mouthwash'])
+    expect(wrongMeanings('Give the child 5 ml of the syrup twice a day.', 'Give the child 5 ml of the broth twice a day.')).toEqual(['broth'])
+    expect(wrongMeanings('After every loose stool, give him ORS to drink.', 'Whenever he has a heavy stool, give him ORS to drink.')).toEqual(['hard stool'])
+    // Faithful round trips, including ones that mention the same thing.
+    expect(wrongMeanings('Do not drink alcohol.', 'Do not drink alcohol.')).toEqual([])
+    expect(wrongMeanings('Is he drinking?', 'Is he drinking?')).toEqual([])
+    expect(wrongMeanings('Has the child drunk any water?', 'Has the child drunk water?')).toEqual([])
   })
 
   it('spots clock times in both languages', () => {

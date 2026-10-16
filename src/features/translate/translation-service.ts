@@ -9,7 +9,7 @@
  */
 import { performance } from 'node:perf_hooks'
 import type { Embedder, Lang, Translator } from '../../core/engines.js'
-import { cosine, countNegations, looksUntranslated, mentionsClockTime } from './checks.js'
+import { cosine, countNegations, looksUntranslated, mentionsClockTime, wrongMeanings } from './checks.js'
 import { hasRepetitionLoop } from '../speech/transcript.js'
 import { diffQuantities, extractQuantities, formatQuantity, type QuantityDiff } from './quantities.js'
 import { reassemble, segment, type Line } from './segment.js'
@@ -22,6 +22,7 @@ export const FLAGS = [
   'untranslated',
   'numbers-changed',
   'negation-changed',
+  'term-changed',
   'low-fidelity',
   'clock-time'
 ] as const
@@ -34,6 +35,7 @@ export const FLAG_HELP: Record<Flag, string> = {
   untranslated: 'The text came back untranslated. Rephrase and try again.',
   'numbers-changed': 'A number, dose or duration differs. Confirm it out loud.',
   'negation-changed': 'A "not" or "no" was lost or added. Confirm the instruction.',
+  'term-changed': 'A word came back with another meaning (such as alcohol, mouthwash, broth or a hard stool). Use other words or a phrasebook phrase.',
   'low-fidelity': 'The back-translation drifts from the original. Rephrase more simply.',
   'clock-time': 'Swahili counts hours from 6 a.m. (8 a.m. is "saa mbili asubuhi"). Confirm the time.'
 }
@@ -204,6 +206,8 @@ export class TranslationService {
     if (looksUntranslated(source, translation)) flags.add('untranslated')
     if (!numbersOk) flags.add('numbers-changed')
     if (from === 'en' && countNegations(source) !== countNegations(back)) flags.add('negation-changed')
+    // The fidelity score misses these: one changed term barely moves it (0.93–0.94 on the traps).
+    if (from === 'en' && wrongMeanings(source, back).length) flags.add('term-changed')
     if (fidelity < this.threshold[from]) flags.add('low-fidelity')
     if (clock) flags.add('clock-time')
 

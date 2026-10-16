@@ -7,7 +7,7 @@ import type { Responses } from '../../../../src/app/contract.js'
 import type { Lang } from '../../../../src/core/engines.js'
 import { call, messageOf } from '../api.js'
 import { fileBytes, fill, h, icon, pickFile, toast } from '../dom.js'
-import { flagView } from '../flags.js'
+import { flagView, speakable } from '../flags.js'
 import { LANG_NAME, app, prefs } from '../state.js'
 import { audioBar, errorNotice, langTrio, lockedView, playButton } from '../widgets.js'
 import type { Section, Shell } from './section.js'
@@ -158,7 +158,7 @@ export function documentsSection(shell: Shell): Section {
       { class: 'segments' },
       h('div', { class: 'seg-head' }, h('span', null, `Original (${LANG_NAME[doc.from]})`), h('span', null, `Translation (${LANG_NAME[doc.to]})`), h('span', null, '')),
       segs.map(({ s, i }) => {
-        const canSpeak = !s.kept && s.translation.trim() && app.can('read-aloud')
+        const canSpeak = speakable(s) && app.can('read-aloud')
         const row = h(
           'div',
           { class: 'seg' },
@@ -181,8 +181,9 @@ export function documentsSection(shell: Shell): Section {
       })
     )
 
+    // A part whose translation should not be used (a broken or changed translation) is never read aloud.
     const allText = segs
-      .filter(({ s }) => !s.kept)
+      .filter(({ s }) => speakable(s))
       .map(({ s }) => s.translation)
       .join('\n')
       .slice(0, 2000)

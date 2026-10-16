@@ -3,7 +3,7 @@ import os from 'node:os'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { toSpeechWav } from '../../electron/renderer/src/audio.js'
-import { DOC_HELP, FLAG_ADVICE, FLAG_TITLE } from '../../electron/renderer/src/flags.js'
+import { DOC_HELP, FLAG_ADVICE, FLAG_TITLE, speakable } from '../../electron/renderer/src/flags.js'
 import { buildRenderer } from '../../scripts/build-electron.js'
 import { SPEECH_SAMPLE_RATE, decodeWav } from '../../src/core/audio.js'
 import { DOC_FLAGS, DOC_FLAG_HELP } from '../../src/features/documents/document-service.js'
@@ -35,6 +35,16 @@ describe('warnings on screen', () => {
 
   it('gives the document service’s own advice', () => {
     expect(DOC_HELP).toEqual(DOC_FLAG_HELP)
+  })
+
+  it('never reads aloud a document part whose translation should not be used', () => {
+    expect(speakable({ translation: 'Chukua kidonge 1 mara tatu kwa siku.', flags: [] })).toBe(true)
+    // Hard to read on the paper, but the translation itself is usable.
+    expect(speakable({ translation: 'Usimpe mtoto chini ya miezi 6.', flags: ['low-confidence'] })).toBe(true)
+    expect(speakable({ translation: 'Mafuta ya kuzuia ugonjwa wa ugonjwa wa ugonjwa wa', flags: ['translation-loop'] })).toBe(false)
+    expect(speakable({ translation: 'Chukua vidonge 3', flags: ['numbers-changed'] })).toBe(false)
+    expect(speakable({ translation: '15/10/2026', flags: [], kept: 'no-words' })).toBe(false)
+    expect(speakable({ translation: '  ', flags: [] })).toBe(false)
   })
 })
 

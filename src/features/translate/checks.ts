@@ -26,6 +26,29 @@ export function mentionsClockTime(text: string, lang: Lang): boolean {
   return SW_CLOCK.test(text) || (SW_SAA.test(text) && SW_TIME_OF_DAY.test(text))
 }
 
+/**
+ * Clinical terms the translator has been seen to turn into another meaning,
+ * as that meaning reads in the English back-translation. Each comes from
+ * eval/datasets/term-traps.csv; add a row there before adding one here. Only
+ * words that are wrong whenever the source lacks them: "rinse" or "drunk"
+ * can be faithful paraphrases, so they are left out.
+ */
+const WRONG_MEANINGS: { meaning: string; pattern: RegExp }[] = [
+  // "Is he drinking?" → "Je, anakunywa pombe?"
+  { meaning: 'alcohol', pattern: /\b(?:alcohol\w*|beer|wine|liquor)\b/i },
+  // "oral rehydration solution" → "a mouthwash"
+  { meaning: 'mouthwash', pattern: /\bmouth\s?wash\w*|\bgargl\w*/i },
+  // "syrup" → "mchuzi", broth
+  { meaning: 'broth', pattern: /\b(?:broth|soup|gravy)\b/i },
+  // "loose stool" → "kinyesi kizito", a heavy (hard) stool
+  { meaning: 'hard stool', pattern: /\b(?:heavy|hard|thick)\s+stools?\b/i }
+]
+
+/** Known wrong meanings that the back-translation brings in and the English source does not mention. */
+export function wrongMeanings(source: string, back: string): string[] {
+  return WRONG_MEANINGS.filter(({ pattern }) => pattern.test(back) && !pattern.test(source)).map((m) => m.meaning)
+}
+
 const words = (text: string) => text.toLowerCase().match(/\p{L}+/gu) ?? []
 
 /** The model echoed the source instead of translating it. */

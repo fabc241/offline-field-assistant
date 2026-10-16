@@ -94,6 +94,22 @@ translations overlap across 0.6–0.75.
   without a reference: "vomiting" → "ukimwaga" (2B; all models read it back as
   vomiting) and "convulsions" → "mshtuko" rather than the usual "degedege".
   Fixed phrasebook entries (F6) are the mitigation for critical phrases.
+- **Known wrong meanings are now flagged (`term-changed`).** Recording the demo
+  video turned up two more terminology errors that passed every check: "Is he
+  drinking?" → "Je, anakunywa pombe?" (read back as "Does he drink alcohol?",
+  fidelity 0.94) and "oral rehydration solution" → read back as "a mouthwash"
+  (0.86); checking the video's replacement line found "loose stool" → "kinyesi
+  kizito", a heavy stool (0.92). With "syrup" → broth they form `eval/datasets/term-traps.csv`
+  (`npm run eval:term-traps`). The fidelity threshold cannot separate them
+  (faithful round trips go as low as 0.81), and a generic "the back-translation
+  adds a content word" rule caught all three but also 22/60 faithful round
+  trips (stomach → "abdomen", pass urine → "urinate"). `term-changed` instead
+  lists the wrong meanings themselves (alcohol, mouthwash, broth, hard stool) and
+  fires when the back-translation has one the English source lacks: 4/4 traps caught, and
+  on the 367 English round trips saved by the other evals (three sizes,
+  cross-model back-translations, documents) it fires only on i45, the real
+  syrup → broth error. It catches only meanings on its list: a new trap goes
+  into the dataset first, then into the list in `checks.ts`.
 - **Same-model round trips can mask errors**, so the service accepts a separate
   `backTranslator`. On this set, 2B forward with 0.8B or 4B back flagged nothing
   new and added one false flag (4B reads "nikikuchunguza" as "spy on you"); the

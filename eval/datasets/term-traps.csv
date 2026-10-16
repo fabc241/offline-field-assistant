@@ -1,0 +1,5 @@
+id,en,wrong_meaning,seen
+t01,Is he drinking?,\balcohol|\bbeer|\bwine|\bdrunk,2B: "Je anakunywa pombe?" read back as "Does he drink alcohol?" (demo video recording)
+t02,Give him oral rehydration solution after every loose stool.,mouth ?wash|\brinse|\bgargle,2B: read back as "Give him a mouthwash every time he has a bowel movement" (demo video recording)
+t03,Give the child 5 ml of the syrup twice a day.,\bbroth|\bsoup|\bsauce|\bpaste|\bgravy,2B: "mchuzi" read back as "broth" (F1 eval i45)
+t04,"After every loose stool, give him ORS to drink.",\b(?:heavy|hard|thick)\s+stools?\b,"2B: ""kinyesi kizito"" read back as ""heavy stool"" (demo video script check)"

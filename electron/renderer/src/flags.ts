@@ -20,6 +20,7 @@ export const FLAG_TITLE: Record<string, string> = {
   untranslated: 'Not translated',
   'numbers-changed': 'Check the numbers',
   'negation-changed': 'Check “not” and “no”',
+  'term-changed': 'Meaning changed',
   'low-fidelity': 'Meaning may have drifted',
   'clock-time': 'Check the time',
   'no-audio': 'Part was not spoken',
@@ -29,9 +30,16 @@ export const FLAG_TITLE: Record<string, string> = {
 }
 
 /** Flags after which the result should not be used at all. */
-const SEVERE = new Set(['no-speech', 'repetition', 'empty-output', 'translation-loop', 'untranslated', 'numbers-changed', 'negation-changed'])
+const SEVERE = new Set(['no-speech', 'repetition', 'empty-output', 'translation-loop', 'untranslated', 'numbers-changed', 'negation-changed', 'term-changed'])
 
 export const isSevere = (flag: string) => SEVERE.has(flag)
+
+/**
+ * Whether a translated part of a document may be read aloud: it has words to
+ * say, and none of its warnings says the translation should not be used.
+ */
+export const speakable = (part: { kept?: unknown; translation: string; flags: readonly string[] }) =>
+  !part.kept && !!part.translation.trim() && !part.flags.some(isSevere)
 
 export function flagView(flag: string): HTMLElement {
   return h(
