@@ -55,6 +55,12 @@ export interface OcrEngine {
   recognize(image: Uint8Array): Promise<OcrBlock[]>
 }
 
+/**
+ * Calls that only return a result may be retried after a GPU allocation
+ * failure (see QvacRuntime.use). Speech is not: it streams audio as it goes.
+ */
+const RETRY = { retryOnGpuMemory: true }
+
 /** ISO 639-1 codes, as whisper.cpp expects. */
 const WHISPER_LANG: Record<Lang, string> = { en: 'en', sw: 'sw' }
 
@@ -68,9 +74,7 @@ const EMBEDDINGGEMMA_PROMPT: Record<EmbedTask, string> = {
 export function qvacTranslator(runtime: QvacRuntime, spec: ModelSpec = MODEL_SPECS.translator): Translator {
   return {
     async translate(text, from, to) {
-      const out = await runtime.use(spec, (modelId) =>
-        runtime.sdk.translate({ modelId, text, from: SDK_LANG[from], to: SDK_LANG[to] })
-      )
+      const out = await runtime.use(spec, (modelId) => runtime.sdk.translate({ modelId, text, from: SDK_LANG[from], to: SDK_LANG[to] }), RETRY)
       return out.trim()
     }
   }
@@ -81,7 +85,7 @@ export function qvacEmbedder(runtime: QvacRuntime, spec: ModelSpec = MODEL_SPECS
     async embed(texts, task) {
       if (texts.length === 0) return []
       const prompted = texts.map((t) => EMBEDDINGGEMMA_PROMPT[task] + t)
-      return runtime.use(spec, (modelId) => runtime.sdk.embed({ modelId, texts: prompted }))
+      return runtime.use(spec, (modelId) => runtime.sdk.embed({ modelId, texts: prompted }), RETRY)
     }
   }
 }
@@ -99,7 +103,7 @@ export function qvacTranscriber(runtime: QvacRuntime, spec: ModelSpec = MODEL_SP
           state.language = language
         }
         return runtime.sdk.transcribe({ modelId, audio: samples })
-      })
+      }, RETRY)
     }
   }
 }
@@ -130,7 +134,7 @@ export function qvacSpeaker(runtime: QvacRuntime, spec: (lang: Lang) => ModelSpe
 export function qvacOcr(runtime: QvacRuntime, spec: ModelSpec = MODEL_SPECS.ocr): OcrEngine {
   return {
     async recognize(image) {
-      return runtime.use(spec, (modelId) => runtime.sdk.ocr({ modelId, image, paragraph: false }))
+      return runtime.use(spec, (modelId) => runtime.sdk.ocr({ modelId, image, paragraph: false }), RETRY)
     }
   }
 }

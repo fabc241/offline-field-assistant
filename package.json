@@ -1,8 +1,9 @@
 {
   "name": "offline-field-assistant",
+  "productName": "Offline Field Assistant",
   "version": "0.1.0",
   "private": true,
-  "description": "Offline English-Swahili field assistant for clinic intake staff (headless core).",
+  "description": "Offline English-Swahili field assistant for clinic intake staff: headless core, CLI and a windowless Electron app.",
   "type": "module",
   "engines": {
     "node": ">=22.17"
@@ -16,10 +17,13 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --dir tests/unit",
     "test:models": "vitest run --dir tests/models --no-file-parallelism",
-    "eval": "npm run eval:translate && npm run eval:stt && npm run eval:tts && npm run eval:converse && npm run eval:packs && npm run eval:phrasebook && npm run eval:guide && npm run eval:documents && npm run eval:platform",
+    "eval": "npm run eval:translate && npm run eval:stt && npm run eval:tts && npm run eval:converse && npm run eval:packs && npm run eval:phrasebook && npm run eval:guide && npm run eval:documents && npm run eval:platform && npm run eval:packaging",
     "eval:translate": "tsx eval/run-translate.ts",
-    "electron:smoke": "electron .",
-    "package": "electron-forge package --arch=arm64",
+    "build:electron": "tsx scripts/build-electron.ts",
+    "electron:smoke": "npm run build:electron && electron . --ipc-smoke",
+    "package": "tsx scripts/package.ts",
+    "package:release": "tsx scripts/package.ts --release",
+    "release-gate": "scripts/release-gate.sh",
     "audit:net": "scripts/net-audit.sh",
     "fetch-fleurs": "tsx scripts/fetch-fleurs.ts",
     "eval:make-intake-audio": "tsx eval/make-intake-audio.ts",
@@ -32,7 +36,8 @@
     "eval:phrasebook": "tsx eval/run-phrasebook.ts",
     "eval:guide": "tsx eval/run-guide.ts",
     "eval:documents": "tsx eval/run-documents.ts",
-    "eval:platform": "tsx eval/run-platform.ts"
+    "eval:platform": "tsx eval/run-platform.ts",
+    "eval:packaging": "tsx eval/run-packaging.ts"
   },
   "dependencies": {
     "@napi-rs/canvas": "1.0.10",
@@ -43,15 +48,15 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "7.11.2",
-    "@electron-forge/maker-zip": "7.11.2",
     "@electron-forge/plugin-base": "7.11.2",
     "@types/node": "26.6.5",
     "electron": "44.7.1",
+    "esbuild": "0.28.2",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
     "vitest": "5.0.4"
   },
-  "main": "electron/main.mjs",
+  "main": "build/main.mjs",
   "config": {
     "forge": "./forge.config.cjs"
   },

@@ -72,6 +72,12 @@ export interface ModelSpec {
   config?: Record<string, unknown>
   /** `modelConfig` keys whose value is another manifest model, e.g. { s3genModelSrc: 'TTS_S3GEN_…' }. */
   companions?: Record<string, string>
+  /**
+   * Runs with no other model loaded. For a model whose working memory, not
+   * its weights, is what fills the GPU (OCR on a large page), and which reads
+   * worse rather than failing when it runs short.
+   */
+  exclusive?: boolean
 }
 
 /**
@@ -116,11 +122,30 @@ const gb = (bytes: number) => (bytes / 1024 ** 3).toFixed(1)
 /** Share of physical memory the models may use when the SDK reports it. */
 const SYSTEM_MEMORY_SHARE = 0.7
 
+export interface UseOptions {
+  /**
+   * `fn` has no side effects before it fails (OCR, embedding, translation,
+   * transcription), so it may run again after a GPU allocation failure.
+   */
+  retryOnGpuMemory?: boolean
+}
+
+/**
+ * How the engines report that Metal could not allocate. The budget counts
+ * weights, not working memory: OCR on a large photo failed this way next to
+ * the ~5.8 GB conversation set, and worked once those models were unloaded.
+ */
+export const GPU_MEMORY_ERROR = /graph_compute failed|out of memory|failed to allocate/i
+
 export class QvacRuntime {
+  /** Calls that succeeded on a retry after a GPU allocation failure. */
+  recoveries = 0
   private readonly entries = new Map<string, Entry>()
   private readonly acquiring = new Map<string, Promise<Entry>>()
   private readonly used = new Set<string>()
   private admission: Promise<unknown> = Promise.resolve()
+  /** An exclusive model's call in progress. */
+  private exclusiveTurn: Promise<unknown> | undefined
   private budgetPromise: Promise<number> | undefined
 
   constructor(
@@ -131,8 +156,47 @@ export class QvacRuntime {
     private readonly now: () => number = Date.now
   ) {}
 
-  /** Runs `fn` with a loaded model; calls for the same model are serialized. */
-  async use<T>(spec: ModelSpec, fn: (modelId: string, state: InstanceState) => Promise<T>): Promise<T> {
+  /**
+   * Runs `fn` with a loaded model; calls for the same model are serialized.
+   * With `retryOnGpuMemory`, a GPU allocation failure frees the other idle
+   * models, reloads this one and runs `fn` once more.
+   */
+  async use<T>(spec: ModelSpec, fn: (modelId: string, state: InstanceState) => Promise<T>, opts: UseOptions = {}): Promise<T> {
+    try {
+      return await this.run(spec, fn)
+    } catch (err) {
+      if (!opts.retryOnGpuMemory || !GPU_MEMORY_ERROR.test((err as Error)?.message ?? '')) throw err
+      const key = specKey(spec)
+      const idle = [...this.entries.values()].filter((e) => e.key !== key && e.active === 0)
+      // A failed compute can leave the model itself in a bad state: reload it too.
+      await Promise.all([...idle.map((e) => this.unload(e.key)), this.unload(key)])
+      this.recoveries++
+      return this.run(spec, fn)
+    }
+  }
+
+  private async run<T>(spec: ModelSpec, fn: (modelId: string, state: InstanceState) => Promise<T>): Promise<T> {
+    if (!spec.exclusive) {
+      // Wait out an exclusive model's turn: nothing may load beside it.
+      while (this.exclusiveTurn) await this.exclusiveTurn.catch(() => undefined)
+      return this.runLoaded(spec, fn)
+    }
+    while (this.exclusiveTurn) await this.exclusiveTurn.catch(() => undefined)
+    const turn = (async () => {
+      const key = specKey(spec)
+      // unload() lets each model's calls in flight finish first.
+      await Promise.all([...this.entries.keys()].filter((k) => k !== key).map((k) => this.unload(k)))
+      return this.runLoaded(spec, fn)
+    })()
+    this.exclusiveTurn = turn
+    try {
+      return await turn
+    } finally {
+      if (this.exclusiveTurn === turn) this.exclusiveTurn = undefined
+    }
+  }
+
+  private async runLoaded<T>(spec: ModelSpec, fn: (modelId: string, state: InstanceState) => Promise<T>): Promise<T> {
     const entry = await this.acquire(spec)
     entry.active++
     const run = entry.queue.then(async () => fn(await entry.modelId, entry.state))

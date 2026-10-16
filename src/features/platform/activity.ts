@@ -23,6 +23,7 @@ export const ACTIVITY_FEATURES = [
   'guide',
   'phrasebook',
   'packs',
+  'models',
   'license',
   'logs'
 ] as const

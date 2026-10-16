@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
 import { MODEL_SPECS } from '../core/catalog.js'
-import { PROJECT_ROOT, type AppConfig } from '../core/config.js'
+import type { AppConfig } from '../core/config.js'
 import { qvacEmbedder } from '../core/engines.js'
 import { ModelStore } from '../core/model-store.js'
 import { QvacRuntime, createSdkPort } from '../core/qvac.js'
@@ -70,7 +70,7 @@ const subcommands: Record<string, Sub> = {
         embeddingModel: { name: spec.name, sha256: store.entry(spec.name).sha256 }
       })
       const { id, version } = built.manifest
-      const out = values.out ?? path.join(PROJECT_ROOT, 'var/pack-builds', `${id}-${version}.ofapack`)
+      const out = values.out ?? path.join(config.dataDir, 'pack-builds', `${id}-${version}.ofapack`)
       await fs.mkdir(path.dirname(path.resolve(out)), { recursive: true })
       await fs.writeFile(out, built.bytes)
       const { cards, phrases } = built.source.content

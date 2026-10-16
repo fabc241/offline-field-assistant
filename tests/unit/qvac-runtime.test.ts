@@ -159,4 +159,61 @@ describe('QvacRuntime', () => {
     expect(rt.loaded()).toHaveLength(0)
     await expect(rt.use({ name: 'A' }, async (id) => id)).resolves.toBe('id-1')
   })
+
+  it('after a GPU allocation failure, frees the idle models, reloads this one and retries once', async () => {
+    const sdk = new FakeSdk()
+    const rt = new QvacRuntime(store, sdk, { memoryBudgetBytes: 10 * GB })
+    await rt.use({ name: 'B' }, async () => undefined)
+    await rt.use({ name: 'T' }, async () => undefined)
+    let calls = 0
+    const ocr = async (id: string) => {
+      calls++
+      if (calls === 1) throw new Error('StepDetectionInference: ggml_backend_graph_compute failed')
+      return id
+    }
+    const id = await rt.use({ name: 'A' }, ocr, { retryOnGpuMemory: true })
+    expect(calls).toBe(2)
+    expect(rt.recoveries).toBe(1)
+    expect(rt.loaded().map((m) => m.name)).toEqual(['A'])
+    expect(sdk.loads.map((l) => path.basename(l.modelSrc))).toEqual(['B.bin', 'T.bin', 'A.bin', 'A.bin'])
+    expect(id).toBe('id-4')
+  })
+
+  it('does not retry other errors, or calls that did not ask for it', async () => {
+    const rt = new QvacRuntime(store, new FakeSdk(), { memoryBudgetBytes: 10 * GB })
+    let calls = 0
+    const failing = (message: string) => async () => {
+      calls++
+      throw new Error(message)
+    }
+    await expect(rt.use({ name: 'A' }, failing('bad input'), { retryOnGpuMemory: true })).rejects.toThrow('bad input')
+    await expect(rt.use({ name: 'A' }, failing('ggml_backend_graph_compute failed'))).rejects.toThrow('graph_compute')
+    expect(calls).toBe(2)
+    expect(rt.recoveries).toBe(0)
+  })
+
+  it('runs an exclusive model alone: others finish, unload, and wait for it', async () => {
+    const sdk = new FakeSdk()
+    const rt = new QvacRuntime(store, sdk, { memoryBudgetBytes: 10 * GB })
+    const order: string[] = []
+    let releaseB!: () => void
+    const bRunning = rt.use({ name: 'B' }, () => new Promise<void>((r) => (releaseB = () => (order.push('B done'), r()))))
+    await new Promise((r) => setTimeout(r, 0))
+    let releaseA!: () => void
+    const aRunning = rt.use({ name: 'A', exclusive: true }, () => {
+      order.push(`A runs beside ${rt.loaded().map((m) => m.name).join(',')}`)
+      return new Promise<void>((r) => (releaseA = r))
+    })
+    const cWaiting = rt.use({ name: 'C' }, async () => void order.push('C runs'))
+    await new Promise((r) => setTimeout(r, 0))
+    expect(order).toEqual([])
+    releaseB()
+    await bRunning
+    await new Promise((r) => setTimeout(r, 0))
+    expect(order).toEqual(['B done', 'A runs beside A'])
+    releaseA()
+    await Promise.all([aRunning, cWaiting])
+    expect(order).toEqual(['B done', 'A runs beside A', 'C runs'])
+    expect(rt.loaded().map((m) => m.name).sort()).toEqual(['A', 'C'])
+  })
 })

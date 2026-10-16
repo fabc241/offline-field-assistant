@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
-import { PROJECT_ROOT, type AppConfig } from '../core/config.js'
+import type { AppConfig } from '../core/config.js'
 import { ModelStore } from '../core/model-store.js'
 import { QvacRuntime, createSdkPort } from '../core/qvac.js'
 import { TURN_FLAG_HELP, isSide, type Turn, type TurnEvent } from '../features/conversation/conversation-service.js'
@@ -35,7 +35,7 @@ export async function converseCommand(config: AppConfig, args: string[], session
   if (!(await session.require('conversation', 'turn'))) return false
 
   const runtime = new QvacRuntime(await ModelStore.open(config.modelsDir), createSdkPort(), config)
-  const audioDir = path.resolve(values['out-dir'] ?? path.join(PROJECT_ROOT, 'var/conversation'))
+  const audioDir = path.resolve(values['out-dir'] ?? path.join(config.dataDir, 'conversation'))
   const { service, warmUp } = await createConversation(runtime, config, { audioDir })
   const player = values.play ? new AfplayQueue() : undefined
   const log = (line: string) => values.json || console.log(line)

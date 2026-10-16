@@ -250,7 +250,7 @@ function readContent(manifest: PackManifest, files: Map<string, Uint8Array>) {
 }
 
 /** JSON that must be byte-identical to its canonical form, so no byte of it can change unnoticed. */
-function parseCanonicalJson(bytes: Uint8Array, name: string): unknown {
+export function parseCanonicalJson(bytes: Uint8Array, name: string): unknown {
   let value: unknown
   try {
     value = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes))

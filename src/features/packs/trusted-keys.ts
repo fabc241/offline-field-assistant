@@ -4,7 +4,9 @@
  *
  * The development key signs the placeholder sample pack. Its private half is
  * keys/ofa-dev-2026.key.pem on the dev machine (git-ignored); replace it with
- * the vendor's release key before any device leaves the building (F10).
+ * the vendor's release key before any device leaves the building:
+ * `npm run package:release` refuses any key labelled "not for release". The
+ * same keys sign model packs (features/models/model-pack.ts).
  */
 import { trustedKey, type TrustedKey } from './signing.js'
 

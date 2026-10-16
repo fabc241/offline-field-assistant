@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Hardened-runtime exceptions for the app, its Electron helpers and the QVAC
+  Bare worker (Contents/Resources/app/node_modules/bare-runtime-darwin-arm64/bin/bare).
+  - allow-jit, allow-unsigned-executable-memory: V8, in Electron and in Bare.
+  - disable-library-validation: the native add-ons (.node, .bare: llama.cpp,
+    whisper.cpp, the TTS and OCR engines, sharp, the canvas renderer) and the
+    dylibs they load are signed by their publishers or not at all, not with
+    this app's team id.
+  - audio-input, camera: push-to-talk and point-the-camera translate in the
+    coming renderer; macOS still asks the user (Info.plist usage strings).
+  No network entitlement exists to drop outside the App Sandbox; the release
+  gate checks for sockets instead.
+-->
+<plist version="1.0">
+  <dict>
+    <key>com.apple.security.cs.allow-jit</key>
+    <true/>
+    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+    <true/>
+    <key>com.apple.security.cs.disable-library-validation</key>
+    <true/>
+    <key>com.apple.security.device.audio-input</key>
+    <true/>
+    <key>com.apple.security.device.camera</key>
+    <true/>
+  </dict>
+</plist>

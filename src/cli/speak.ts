@@ -3,7 +3,7 @@ import path from 'node:path'
 import { performance } from 'node:perf_hooks'
 import { parseArgs } from 'node:util'
 import { encodeWav } from '../core/audio.js'
-import { PROJECT_ROOT, type AppConfig } from '../core/config.js'
+import type { AppConfig } from '../core/config.js'
 import { isLang, qvacSpeaker } from '../core/engines.js'
 import { ModelStore } from '../core/model-store.js'
 import { QvacRuntime, createSdkPort } from '../core/qvac.js'
@@ -40,7 +40,7 @@ export async function speakCommand(config: AppConfig, args: string[], session: S
     return false
   }
   if (!(await session.require('read-aloud', 'speak'))) return false
-  const out = path.resolve(values.out ?? path.join(PROJECT_ROOT, 'var/speech', `${lang}-${stamp()}.wav`))
+  const out = path.resolve(values.out ?? path.join(config.dataDir, 'speech', `${lang}-${stamp()}.wav`))
 
   const runtime = new QvacRuntime(await ModelStore.open(config.modelsDir), createSdkPort(), config)
   const spec = await speakerSpecs(config.voices, { chunkTokens })

@@ -1021,3 +1021,122 @@ raw lines, copied back in, are 3 × unknown-key: unreadable.
   use the unbranded Electron binary, so its safeStorage key sits in a
   Keychain item called "Electron Safe Storage"; the packaged app will have
   its own.
+
+## F10 — Packaging: Electron app, model pack, release gate (2026-10-16; gate run on the dev Mac, not on a clean machine)
+
+- **App** (`electron/main.ts`, bundled with esbuild into `build/`): a tray
+  icon and a hidden, sandboxed page (context isolation, no Node, CSP
+  `default-src 'none'`, every non-`file:` request cancelled, every permission
+  refused, navigation and new windows blocked). The page's only way in is
+  `window.ofa.invoke(channel, request)` from the preload. There are 22
+  channels for the F1–F9 services (`src/app/contract.ts`). The main process
+  checks each request against a zod schema. Audio and documents travel as
+  bytes, never as paths. Each call answers with an envelope that carries an
+  error code (`not-licensed`, `pack-refused`, `unreadable-input`, …), and
+  conversation turns can stream their partial results on `ofa:event`.
+  `src/app/services.ts` gates and logs each call as the matching `ofa`
+  command does, with no Electron in it, so unit tests drive it with a fake
+  SDK. The same binary runs any `ofa` command in-process
+  (`offline-field-assistant ofa doctor`), so a clinic Mac needs no Node.
+  Everything lives in `OFA_HOME`, by default
+  `~/Library/Application Support/OfflineFieldAssistant`. The log key is kept
+  with safeStorage.
+- **Model pack** (`src/features/models/model-pack.ts`, `ofa models …`): a
+  folder holding `manifest.json`, `manifest.sig` and `files/`, signed with
+  the F5 Ed25519 code and pack keys. Models are too big for the `.ofapack`
+  ZIP (4 GB limit, read into memory). Install checks the signature before
+  anything else, hashes each file as it copies it into a staging folder, and
+  swaps the files in only once all of them are there. A model already on
+  the device with the signed hash is kept. Older versions are refused, and
+  the files of models a newer pack dropped are removed.
+- **Packaging** (`npm run package`): Forge with the QVAC plugin, arm64, with
+  an allowlist of `build/`, production `node_modules` and the worker bundle.
+  Signing is inside out (`scripts/macos-sign.ts`): every Mach-O file, then
+  every bundle, then the app, all with the hardened runtime and
+  `electron/entitlements.plist`. The signatures are checked, then the app is
+  zipped with ditto. `npm run package:release` adds notarytool and stapler,
+  and refuses to run without a Developer ID identity, a notary profile and
+  the vendor's own keys.
+- **Release gate** (`scripts/release-gate.sh`, shell only): installs the app
+  from its zip, then the license, the model pack and the content pack
+  through the app's own binary. It then runs `ofa doctor --verify --load`
+  and the IPC smoke suite: 25 calls made from the hidden page, each answer
+  checked. Every process in the app's tree is watched with lsof throughout.
+
+| Check | Result |
+|---|---|
+| Unit tests (`npm test`) | 352/352 pass (33 new: model pack, IPC services and contract, runtime, packaging) |
+| Real-model and system tests (`npm run test:models`) | 42/42 pass (2 new: `ofa` commands in-process in Electron, IPC smoke suite in the hidden window) |
+| IPC smoke, dev Electron and packaged app | 25/25 both |
+| Release gate (packaged app, scratch app home) | **PASS**: 6/6 steps, 0 non-loopback sockets in any step |
+
+### Results (M4, 16 GB, macOS 27)
+
+| Measure | Result |
+|---|---|
+| App | 647 MB (Electron 287 MB, node_modules 348 MB, worker bundle 10 MB); zip 260 MB |
+| Signing | 71 Mach-O files and 8 bundles, all hardened runtime; `codesign --verify --deep --strict` valid; ad hoc (this Mac has no Developer ID certificate), so Gatekeeper: **rejected** |
+| Entitlements | allow-jit, allow-unsigned-executable-memory, disable-library-validation, audio-input, camera |
+| `npm run package` | 24 s (bundle, Forge, sign 2.3 s, check, zip 15 s) |
+| `npm run package:release` on this tree | refused: no identity, no notary profile, 2 development keys |
+| Model pack | 8 models, 4.42 GB; build 5.7 s (APFS clones, sources hashed), sign 1.8 s, verify 1.8 s (hash everything) |
+| Model pack install, internal SSD | fresh 7.5 s (0.59 GB/s, copy and hash); same pack again 1.7 s (nothing copied) |
+| Gate: install from zip / license / model pack / content pack | 4 s / 2.5 s / 10.3 s / 0.2 s |
+| Gate: `doctor --verify --load` | 10.4 s; loads 0.7–1.6 s per model from the installed pack |
+| Gate: IPC smoke | 51.8 s for 25 calls; e.g. translate en→sw with check 3.4 s (first load), speech 2.1 s for 9.8 s of Swahili, conversation turn first audio 4.1 s, scanned PDF 8.4 s, photo translated 16.9 s |
+
+| Model pack change | Refused as |
+|---|---|
+| One byte changed in the middle of Whisper (1.5 GB) after signing, fresh device | hash-mismatch after 8.1 s of copying; nothing left behind |
+| The same, over installed models with an older Whisper | hash-mismatch; installed models and manifest unchanged, no staging left |
+| `manifest.json` version edited | bad-signature |
+| Signed with an unknown key | unknown-key |
+| Version 0.9.0 over 1.0.0 | downgrade |
+
+### Findings
+- **OCR next to the conversation models read worse, with no error.** In the
+  first app smoke run the conversation set (~5.8 GB) was still loaded when a
+  document came in. A scanned page then gave 2 of its 7 text blocks, or none,
+  and the next OCR call failed with `ggml_backend_graph_compute failed`. The
+  runtime's budget counts weights, not the detector's working memory on a
+  large page. OCR now runs **exclusive**: the runtime lets the other models
+  finish their calls, unloads them, and holds new calls until OCR is done
+  (`ModelSpec.exclusive`). The next conversation turn reloads its models
+  (~10 s, F4). Pure calls (OCR, embedding, translation, transcription) are
+  also retried once after a GPU allocation error, with the idle models freed
+  first. The smoke suite now needs at least 6 of 7 blocks from each page,
+  because "found something" would have passed the broken read.
+- **The hardened runtime works with these entitlements.** The ad hoc,
+  hardened app loads the Bare worker, all five engines, sharp, the canvas
+  renderer and pdf.js. HEIC goes through `sips`. Library validation has to
+  stay off: the add-ons are not signed with the app's team id.
+- **Networking could not be switched off from inside the test.**
+  `sandbox-exec` with IP denied stops Chromium's helpers from starting their
+  own sandbox, so the gate samples every process's sockets with lsof every
+  0.2 s, as F0 and F9 did. A connection shorter than that could be missed.
+  The real gate is a clean Mac with networking off. On top of that the app
+  cancels every non-`file:` request from its page and starts Chromium with
+  background networking, component updates and pings off. The QVAC worker
+  talks to the app over a Unix socket only.
+- **Keychain prompts on ad hoc builds.** safeStorage keeps its key in the
+  Keychain item "<app name> Safe Storage", which only the code identity that
+  made it can read without asking. The first packaged run tried to read an
+  item a dev `electron .` run had made, and macOS showed a prompt: the run
+  hung until it was stopped. Dev runs now name themselves "Offline Field
+  Assistant Dev", so they get their own item. Each ad hoc build is still a new
+  identity, so the gate on this Mac runs with `--key-store keychain`: a
+  scratch item owned by `/usr/bin/security`, deleted afterwards. A Developer
+  ID build keeps its identity across versions and does not hit this. The
+  packaged app's safeStorage path was therefore **not** exercised here; F9
+  exercised the same code in dev Electron.
+- **Not done here, needs the vendor:** signing with a Developer ID
+  certificate, notarization, release keys in place of the development keys,
+  and the gate on a clean macOS 14 machine with networking off, with a
+  license issued for that machine. The gate script and the kit layout are
+  ready for it.
+- `translate a photo` flags `translation-loop` on one segment of the
+  medicine label: the F1 check catching the translator repeating itself, as
+  designed.
+- The `.ofapack` and model-pack keys are the same pack keys, so whoever can
+  sign content can also sign models. Separating them is one more
+  `trusted-keys` list, if a program needs it.

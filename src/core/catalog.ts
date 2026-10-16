@@ -119,11 +119,16 @@ export const ttsSpec = (language: Lang, opts: TtsOptions = {}): ModelSpec => ({
  * applied, tilt removed), so the engine's retry of unsure lines turned 90° and
  * 270° is off: it found nothing more on the F8 dev documents. `overrides` are
  * for the F8 A/B.
+ *
+ * Exclusive: next to the conversation models (~5.8 GB) the detector ran
+ * short of GPU memory on a scanned page and silently found 2 of its 7 text
+ * blocks, or none (F10). Alone it finds all 7.
  */
 export const ocrSpec = (overrides: Record<string, unknown> = {}): ModelSpec => ({
   name: MODEL_CATALOG.ocrRecognizer,
   config: { langList: ['en'], backendDevice: 'metal', defaultRotationAngles: [], ...overrides },
-  companions: { detectorModelSrc: MODEL_CATALOG.ocrDetector }
+  companions: { detectorModelSrc: MODEL_CATALOG.ocrDetector },
+  exclusive: true
 })
 
 /**

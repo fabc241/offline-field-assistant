@@ -13,6 +13,14 @@ import { SLUG, compareVersions, isVersion } from './manifest.js'
 const VERSIONS_FILE = 'versions.json'
 const VersionsSchema = z.record(z.string().regex(SLUG), z.string().refine(isVersion))
 
+/** No pack is installed, or more than one and none was chosen. */
+export class NoPackError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'NoPackError'
+  }
+}
+
 export interface InstalledPack {
   id: string
   /** Newest version installed so far: the floor for the next install. */
@@ -26,12 +34,12 @@ export class PackStore {
     private readonly loader: PackLoader
   ) {}
 
-  /** Verifies a pack and installs it, replacing an older version of the same pack. */
-  async install(file: string): Promise<LoadedPack> {
-    const bytes = await fs.readFile(file)
+  /** Verifies a pack (file path or bytes) and installs it, replacing an older version of the same pack. */
+  async install(pack: string | Uint8Array): Promise<LoadedPack> {
+    const bytes = typeof pack === 'string' ? await fs.readFile(pack) : pack
     const versions = await this.versions()
-    const pack = await this.loader.verifyAndLoad(bytes)
-    const { id, version } = pack.manifest
+    const loaded = await this.loader.verifyAndLoad(bytes)
+    const { id, version } = loaded.manifest
     const floor = versions[id]
     if (floor && compareVersions(version, floor) < 0) {
       throw new PackError('downgrade', `Pack ${id} ${version} is older than version ${floor}, which this device already had`)
@@ -42,15 +50,24 @@ export class PackStore {
     if (!floor || compareVersions(version, floor) > 0) {
       await writeAtomic(path.join(this.dir, VERSIONS_FILE), JSON.stringify({ ...versions, [id]: version }, null, 2) + '\n')
     }
-    return pack
+    return loaded
   }
 
   /** Loads an installed pack, verifying it again; refuses one older than the newest installed. */
   async load(id: string): Promise<LoadedPack> {
     if (!SLUG.test(id)) throw new Error(`"${id}" is not a pack id`)
     const floor = (await this.versions())[id]
-    if (!floor) throw new Error(`Pack ${id} is not installed`)
+    if (!floor) throw new NoPackError(`Pack ${id} is not installed`)
     return this.loader.verifyAndLoad(this.packFile(id), { minVersion: floor })
+  }
+
+  /** Loads the pack given, or the only one installed. */
+  async loadDefault(id: string | undefined): Promise<LoadedPack> {
+    if (id) return this.load(id)
+    const installed = await this.list()
+    if (!installed.length) throw new NoPackError(`No packs installed in ${this.dir}; install one with ofa pack install`)
+    if (installed.length > 1) throw new NoPackError(`${installed.length} packs are installed (${installed.map((p) => p.id).join(', ')}); choose one with --pack`)
+    return this.load(installed[0]!.id)
   }
 
   async list(): Promise<InstalledPack[]> {

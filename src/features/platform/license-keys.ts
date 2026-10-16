@@ -5,7 +5,8 @@
  *
  * The development key's private half is keys/ofa-license-dev-2026.key.pem on
  * the dev machine (git-ignored); replace it with the vendor's release key
- * before any device leaves the building (F10).
+ * before any device leaves the building: `npm run package:release` refuses
+ * any key labelled "not for release".
  */
 import { trustedKey, type TrustedKey } from '../packs/signing.js'
 

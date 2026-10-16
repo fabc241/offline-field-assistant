@@ -3,7 +3,10 @@ import { ALL_MODEL_NAMES, MODEL_SPECS } from '../core/catalog.js'
 import type { AppConfig } from '../core/config.js'
 import { ModelStore } from '../core/model-store.js'
 import { QvacRuntime, createSdkPort, sdkVersion, systemResources } from '../core/qvac.js'
+import { installedModelPack } from '../features/models/model-pack.js'
+import { TRUSTED_PACK_KEYS } from '../features/packs/trusted-keys.js'
 import { LICENSE_FEATURES, allows } from '../features/platform/license.js'
+import { describePack } from './models.js'
 import type { Session } from './session.js'
 
 /** One load per runtime model, with the companions it cannot load without. */
@@ -18,6 +21,9 @@ export async function doctor(config: AppConfig, session: Session, opts: { verify
 
   console.log(`QVAC SDK        ${version}`)
   console.log(`Models dir      ${config.modelsDir}`)
+  const pack = await installedModelPack(config.modelsDir, TRUSTED_PACK_KEYS)
+  if (pack.status === 'invalid') healthy = false
+  console.log(`Model pack      ${describePack(pack)}`)
   if (store.manifest.sdkVersion !== version) {
     console.log(`⚠ manifest was written with SDK ${store.manifest.sdkVersion}`)
   }

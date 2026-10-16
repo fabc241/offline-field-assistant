@@ -1,4 +1,4 @@
-import type { LoadRequest, OcrBlock, PcmChunk, SdkPort, TranscriptSegment } from '../../src/core/qvac.js'
+import type { LoadRequest, OcrBlock, PcmChunk, SdkPort, TranscriptSegment, TranslateRequest } from '../../src/core/qvac.js'
 
 /** Records calls; inference methods return canned values. */
 export class FakeSdk implements SdkPort {
@@ -29,7 +29,7 @@ export class FakeSdk implements SdkPort {
   async systemMemoryBytes() {
     return this.memory
   }
-  async translate() {
+  async translate(_req: TranslateRequest) {
     return ''
   }
   async embed(req: { modelId: string; texts: string[] }) {

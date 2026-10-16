@@ -2,7 +2,8 @@
 
 Offline English ↔ Swahili assistant for clinic intake staff, built on the QVAC SDK
 (`@qvac/sdk` 0.21.0, pinned). This repo contains the headless core, a CLI (`ofa`)
-and a windowless Electron shell. The UI comes later and will call the same services.
+and a windowless Electron app that serves the same services over typed IPC
+(`src/app/contract.ts`). The UI comes later and will call them through `window.ofa`.
 
 > Content in `content/sample/` is placeholder data and is **NOT clinically vetted**.
 
@@ -60,8 +61,14 @@ npm run ofa -- license install var/license/dev.ofalicense
 | `npm run ofa -- logs status` / `logs export [--out FILE]` / `logs wipe --yes` | The encrypted activity log (`OFA_LOG_DIR`, default `var/logs/`): what is kept and whether every line checks out / decrypted records for review, one JSON per line (`--since`, `--until`) / deletes every file and the log key |
 | `npm run eval:platform` | F9 eval: Keychain and Electron safeStorage timings, log speed, every-bit tamper sweeps of a log and a license, license scenarios, and the real CLI checked to log metadata only → `eval/outputs/` |
 | `npm run eval:guide` | F7 eval: top-3 hit rate on 100 questions per kind and language, out-of-scope questions answered "no match", fusion A/B, spoken questions read by Chatterbox and heard by Whisper → `eval/outputs/` |
-| `npm run electron:smoke` | Runs the Electron main process, which loads a model and exits |
-| `npm run package` | Packages the arm64 app with Electron Forge + the QVAC plugin |
+| `npm run ofa -- models status` / `models install DIR` | The installed models and the signed model pack they came from / verifies a model pack (e.g. on a USB stick) and installs it into `OFA_MODELS_DIR`, hashing every file as it copies |
+| `npm run ofa -- models build --out DIR` / `models sign --key KEY DIR` / `models verify DIR` | Vendor only: packs this machine's runtime models into a model pack (APFS clones), signs it with a pack key, checks one (`--id`, `--version`, `--models A,B`) |
+| `npm run build:electron` | Bundles the Electron main process, preload, hidden page and tray icon into `build/` |
+| `npm run electron:smoke` | Builds, then runs the IPC smoke suite in the hidden window against the real models (`OFA_HOME`, `OFA_MODELS_DIR` as for any run) |
+| `npm run package` | Packages the arm64 app (Forge + QVAC plugin), signs it inside out with the hardened runtime (Developer ID from `OFA_SIGN_IDENTITY`, else ad hoc), checks the signatures and zips it → `out/` |
+| `npm run package:release` | The same, refused unless `OFA_SIGN_IDENTITY` is a Developer ID Application identity, `OFA_NOTARY_PROFILE` is set and no development key is trusted; notarizes and staples |
+| `npm run release-gate -- KIT [--home DIR] [--key-store keychain]` | The release gate, shell only (runs on a clean Mac without Node): installs the app from its zip, then the license, model pack and content pack, runs `ofa doctor --verify --load` and the IPC smoke suite, with every process watched for sockets |
+| `npm run eval:packaging` | F10 eval: package, release-policy refusal, model pack build/sign/verify/install with full-size tamper refusals, and the release gate on a kit in `var/release-kit/` → `eval/outputs/` |
 
 ## Reference voices
 
@@ -114,8 +121,10 @@ original must stay visible beside the translation.
 
 HEIC photos are converted with macOS's `sips` (the prebuilt image library
 has no HEVC decoder). Elsewhere, HEIC is refused with a request for JPEG.
-`sharp` and `@napi-rs/canvas` are native modules: packaging (F10) must unpack
-them from the asar archive.
+`sharp` and `@napi-rs/canvas` are native modules; the packaged app has no
+asar archive (the QVAC plugin turns it off), so they load as they are.
+OCR runs with no other model loaded: next to the conversation models it ran
+short of GPU memory and silently found fewer lines.
 
 ## License and activity log
 
@@ -139,6 +148,56 @@ edited, moved, duplicated or removed from the middle of a session shows up in
 `logs status` and `logs export`; lines cut from the very end, or a whole day
 deleted, do not. `logs wipe` deletes the key too, so copies of old lines left
 on the disk can no longer be read.
+
+## The app and its packaging
+
+`npm run package` makes `out/Offline Field Assistant-darwin-arm64/` and a zip.
+The app has no window yet: a tray icon (Quit, license and models status) and
+a hidden, sandboxed page whose only way in is `window.ofa.invoke(channel,
+request)`. Each channel's request is checked against a schema in the main
+process; audio and documents travel as bytes, never as paths; every call
+resolves to `{ ok, value }` or `{ ok: false, error: { code, message } }`,
+checks the license and is logged like the matching `ofa` command. The page
+may load nothing but its own file, and every permission request is refused.
+
+The same binary runs any `ofa` command without Node:
+
+```bash
+"/Applications/Offline Field Assistant.app/Contents/MacOS/offline-field-assistant" ofa doctor --verify --load
+```
+
+The installed app keeps everything in `~/Library/Application Support/OfflineFieldAssistant`
+(`OFA_HOME`): `models/`, `packs/`, `license/`, `logs/`, and the log key
+encrypted with safeStorage (`log-key.bin`). Models do not ship in the app:
+they come as a signed **model pack**, a folder (`manifest.json`,
+`manifest.sig`, `files/`) signed with a pack key, copied to a USB stick and
+installed with `ofa models install /Volumes/USB/ofa-models-1.0.0`. The
+signature is checked first, every file is hashed as it is copied, and the old
+models are replaced only once every new file is in; an older pack never
+replaces a newer one.
+
+Signing: every Mach-O file (Electron helpers, the QVAC Bare worker, each
+`.node` and `.bare` add-on) gets the hardened runtime and
+`electron/entitlements.plist` (JIT, unsigned executable memory, library
+validation off for the add-ons, microphone and camera for the coming UI).
+Without a Developer ID certificate the app is signed ad hoc: it runs here
+under the hardened runtime, but Gatekeeper refuses it elsewhere. A release
+needs, on the vendor's machine:
+
+1. A "Developer ID Application" certificate in the Keychain and
+   `OFA_SIGN_IDENTITY="Developer ID Application: NAME (TEAMID)"`.
+2. `xcrun notarytool store-credentials NAME` and `OFA_NOTARY_PROFILE=NAME`.
+3. The vendor's release keys in `src/features/packs/trusted-keys.ts` and
+   `src/features/platform/license-keys.ts`, in place of the development
+   keys (labelled "not for release"; `package:release` refuses them).
+
+The release gate: on a clean Mac with networking off, copy a kit (the zip,
+the model pack as `models/`, a content pack, a license issued for that Mac's
+`ofa license device-id`, and `tests/fixtures` as `fixtures/`) and run
+`release-gate.sh KIT`. `npm run eval:packaging` builds such a kit in
+`var/release-kit/` on the dev machine. Ad hoc builds are a new code identity
+each time, so macOS asks before one reads the Keychain item another made:
+on a dev Mac, run the gate with `--key-store keychain`.
 
 ## Rules
 

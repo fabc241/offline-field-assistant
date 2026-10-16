@@ -1,0 +1,381 @@
+{
+  "when": "2026-10-15T22:46:12.667Z",
+  "machine": "Apple M4, 16 GB, macOS 27.0.1",
+  "package": {
+    "version": "0.1.0",
+    "kind": "development",
+    "developmentKeys": true,
+    "app": "out/Offline Field Assistant-darwin-arm64/Offline Field Assistant.app",
+    "zip": "out/offline-field-assistant-0.1.0-arm64.zip",
+    "appBytes": 678752256,
+    "zipBytes": 272784058,
+    "signed": {
+      "identity": "ad hoc",
+      "files": 71,
+      "bundles": 8,
+      "entitlements": [
+        "com.apple.security.cs.allow-jit",
+        "com.apple.security.cs.allow-unsigned-executable-memory",
+        "com.apple.security.cs.disable-library-validation",
+        "com.apple.security.device.audio-input",
+        "com.apple.security.device.camera"
+      ],
+      "hardened": true
+    },
+    "notarized": false,
+    "gatekeeper": "Offline Field Assistant.app: rejected",
+    "totalMs": 23828,
+    "wallSeconds": 0
+  },
+  "releasePolicy": {
+    "refused": true,
+    "problems": [
+      "OFA_SIGN_IDENTITY is not set: a release is signed with a \"Developer ID Application\" certificate",
+      "OFA_NOTARY_PROFILE is not set: create one with xcrun notarytool store-credentials",
+      "The pack key \"OFA development key 2026 (not for release)\" (af9afd9a72d9ad17) is a development key: replace it with the vendor's release key in src/features/packs/trusted-keys.ts",
+      "The license key \"OFA development license key 2026 (not for release)\" (ba0bb4e4672d3c79) is a development key: replace it with the vendor's release key in src/features/platform/license-keys.ts"
+    ]
+  },
+  "modelPack": {
+    "id": "ofa-models",
+    "version": "1.0.0",
+    "models": 8,
+    "gb": 4.42,
+    "signedBy": {
+      "keyId": "af9afd9a72d9ad17",
+      "label": "OFA development key 2026 (not for release)"
+    },
+    "seconds": {
+      "build": 5.7,
+      "sign": 1.8,
+      "verify": 1.8,
+      "installFresh": 7.5,
+      "reinstallSame": 1.7
+    },
+    "fresh": {
+      "copied": 8,
+      "gbPerSecond": 0.59
+    },
+    "reinstall": {
+      "copied": 0,
+      "kept": 8
+    },
+    "refusals": {
+      "byteFlippedInLargestModel": {
+        "model": "WHISPER_LARGE_V3_TURBO",
+        "freshDevice": {
+          "result": "hash-mismatch",
+          "seconds": 8.1,
+          "filesLeft": []
+        },
+        "overInstalledModels": {
+          "result": "hash-mismatch",
+          "installedModelsUnchanged": true
+        }
+      },
+      "manifestEdited": "bad-signature",
+      "unknownKey": "unknown-key",
+      "olderVersion": "downgrade"
+    }
+  },
+  "gate": {
+    "exit": 0,
+    "seconds": 81.3,
+    "signature": "valid",
+    "authority": "ad hoc",
+    "gatekeeper": "rejected",
+    "home": "/var/folders/dn/sx9dydhn62zbz_yz1yr_tsr80000gn/T/ofa-eval-packaging-YgzVKy/app-home",
+    "keyStore": "keychain",
+    "failedSteps": "0",
+    "steps": [
+      {
+        "step": "install-app",
+        "exit": 0,
+        "seconds": 4,
+        "sockets": 0
+      },
+      {
+        "step": "license-install",
+        "exit": 0,
+        "seconds": 2.5,
+        "sockets": 0
+      },
+      {
+        "step": "models-install",
+        "exit": 0,
+        "seconds": 10.3,
+        "sockets": 0
+      },
+      {
+        "step": "pack-install",
+        "exit": 0,
+        "seconds": 0.2,
+        "sockets": 0
+      },
+      {
+        "step": "doctor",
+        "exit": 0,
+        "seconds": 10.4,
+        "sockets": 0
+      },
+      {
+        "step": "ipc-smoke",
+        "exit": 0,
+        "seconds": 51.8,
+        "sockets": 0
+      }
+    ],
+    "appHomeGb": 4.45,
+    "doctorLoadSeconds": {
+      "TRANSLATEPSY_AFRISLM_2B_TRANSLATION_Q4_K_M": 1.2,
+      "WHISPER_LARGE_V3_TURBO": 1.4,
+      "TTS_T3_MULTILINGUAL_CHATTERBOX_Q4_0": 1.3,
+      "EMBEDDINGGEMMA_300M_Q8_0": 1.6,
+      "OCR_LATIN": 0.7
+    },
+    "smoke": {
+      "ok": true,
+      "passed": 25,
+      "failed": 0,
+      "seconds": 50.8,
+      "steps": [
+        {
+          "name": "app status",
+          "channel": "app.status",
+          "ok": true,
+          "ms": 4,
+          "facts": {
+            "license": "valid",
+            "modelPack": "ofa-models@1.0.0",
+            "packs": [
+              "sample-intake@0.2.0"
+            ]
+          }
+        },
+        {
+          "name": "unknown channel refused",
+          "channel": "fs.readFile",
+          "ok": true,
+          "ms": 0
+        },
+        {
+          "name": "malformed request refused",
+          "channel": "translate.text",
+          "ok": true,
+          "ms": 1
+        },
+        {
+          "name": "path instead of bytes refused",
+          "channel": "documents.read",
+          "ok": true,
+          "ms": 0
+        },
+        {
+          "name": "translate en→sw with check",
+          "channel": "translate.text",
+          "ok": true,
+          "ms": 3403,
+          "facts": {
+            "translation": "Mtoto amekuwa na homa kwa siku 3.",
+            "flags": []
+          }
+        },
+        {
+          "name": "translate sw→en, no check",
+          "channel": "translate.text",
+          "ok": true,
+          "ms": 229,
+          "facts": {
+            "translation": "The child has a fever."
+          }
+        },
+        {
+          "name": "speech to text (sw)",
+          "channel": "speech.transcribe",
+          "ok": true,
+          "ms": 2127,
+          "facts": {
+            "text": "Wanandoa hawa wanaweza kujagua kutengeneza mpango wa ulufi wa mtoto wao.",
+            "audioMs": 9780,
+            "transcribeMs": 2116
+          }
+        },
+        {
+          "name": "speech to text (en)",
+          "channel": "speech.transcribe",
+          "ok": true,
+          "ms": 1016,
+          "facts": {
+            "text": "He was subsequently relocated to Addenbrooke's Hospital in Cambridge.",
+            "audioMs": 6840,
+            "transcribeMs": 1007
+          }
+        },
+        {
+          "name": "read aloud (sw)",
+          "channel": "voice.speak",
+          "ok": true,
+          "ms": 3135,
+          "facts": {
+            "audioMs": 2570,
+            "firstAudioMs": 2038
+          }
+        },
+        {
+          "name": "conversation turn, streamed",
+          "channel": "conversation.turn",
+          "ok": true,
+          "ms": 4501,
+          "facts": {
+            "heard": "He was subsequently relocated to Addenbrooke's Hospital in Cambridge.",
+            "translation": "Baadaye alihamishiwa kwenye Hospitali ya Addenbrooke huko Cambridge.",
+            "firstAudioMs": 4111,
+            "events": [
+              "transcript",
+              "translation",
+              "audio",
+              "check"
+            ]
+          }
+        },
+        {
+          "name": "phrasebook list",
+          "channel": "phrasebook.list",
+          "ok": true,
+          "ms": 10
+        },
+        {
+          "name": "phrasebook search (sw)",
+          "channel": "phrasebook.search",
+          "ok": true,
+          "ms": 1
+        },
+        {
+          "name": "phrase recording",
+          "channel": "phrasebook.recording",
+          "ok": true,
+          "ms": 2
+        },
+        {
+          "name": "ask the guide (sw)",
+          "channel": "guide.search",
+          "ok": true,
+          "ms": 16,
+          "facts": {
+            "status": "match",
+            "mode": "hybrid",
+            "card": "fever-child"
+          }
+        },
+        {
+          "name": "guide card",
+          "channel": "guide.card",
+          "ok": true,
+          "ms": 1
+        },
+        {
+          "name": "ask the guide by voice",
+          "channel": "guide.ask",
+          "ok": true,
+          "ms": 1114,
+          "facts": {
+            "heard": "Wanandoa hawa wanaweza kujagua kutengeneza mpango wa ulufi wa mtoto wao.",
+            "status": "no-match"
+          }
+        },
+        {
+          "name": "read a photo (sharp + OCR)",
+          "channel": "documents.read",
+          "ok": true,
+          "ms": 5407,
+          "facts": {
+            "kind": "jpeg",
+            "pages": [
+              "ocr"
+            ],
+            "segments": 7,
+            "readMs": 5407
+          }
+        },
+        {
+          "name": "read a scanned PDF (canvas + OCR)",
+          "channel": "documents.read",
+          "ok": true,
+          "ms": 8395,
+          "facts": {
+            "kind": "pdf",
+            "pages": [
+              "ocr"
+            ],
+            "segments": 7,
+            "readMs": 8393
+          }
+        },
+        {
+          "name": "read a HEIC photo (sips)",
+          "channel": "documents.read",
+          "ok": true,
+          "ms": 4447,
+          "facts": {
+            "kind": "heic",
+            "pages": [
+              "ocr"
+            ],
+            "segments": 6,
+            "readMs": 4446
+          }
+        },
+        {
+          "name": "translate a photo",
+          "channel": "documents.translate",
+          "ok": true,
+          "ms": 16887,
+          "facts": {
+            "segments": 7,
+            "flags": [
+              "translation-loop"
+            ],
+            "totalMs": 16876
+          }
+        },
+        {
+          "name": "license status",
+          "channel": "license.status",
+          "ok": true,
+          "ms": 1
+        },
+        {
+          "name": "models status",
+          "channel": "models.status",
+          "ok": true,
+          "ms": 3
+        },
+        {
+          "name": "packs list",
+          "channel": "packs.list",
+          "ok": true,
+          "ms": 0
+        },
+        {
+          "name": "activity log intact",
+          "channel": "logs.status",
+          "ok": true,
+          "ms": 32,
+          "facts": {
+            "lines": 18,
+            "problems": 0
+          }
+        },
+        {
+          "name": "log holds metadata only",
+          "channel": "logs.export",
+          "ok": true,
+          "ms": 14,
+          "facts": {
+            "records": 18
+          }
+        }
+      ]
+    }
+  }
+}
