@@ -57,8 +57,8 @@ describe('Forge packaging', () => {
     }
   })
 
-  it('is a menu-bar app that explains its microphone and camera use', () => {
-    expect(config.packagerConfig.extendInfo).toMatchObject({ LSUIElement: true })
+  it('is a Dock app that explains its microphone and camera use', () => {
+    expect(config.packagerConfig.extendInfo).toMatchObject({ LSUIElement: false })
     expect(String(config.packagerConfig.extendInfo.NSMicrophoneUsageDescription)).toMatch(/on this Mac only/)
     expect(String(config.packagerConfig.extendInfo.NSCameraUsageDescription)).toMatch(/on this Mac only/)
   })

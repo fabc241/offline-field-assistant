@@ -26,8 +26,8 @@ module.exports = {
       // Links to dev tools that pruning removes; strict signature checks refuse dangling links.
       file === '/node_modules/.bin' || file.startsWith('/node_modules/.bin/'),
     extendInfo: {
-      // Menu-bar (tray) app: no Dock icon.
-      LSUIElement: true,
+      // A window app with a Dock icon (the tray icon stays for status and Quit).
+      LSUIElement: false,
       NSMicrophoneUsageDescription: 'Push-to-talk: the app turns speech into text and translates it, on this Mac only.',
       NSCameraUsageDescription: 'Point-the-camera translate: the app reads printed text and translates it, on this Mac only.'
     }

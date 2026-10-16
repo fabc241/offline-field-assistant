@@ -1,9 +1,9 @@
 # Offline Field Assistant (headless core)
 
 Offline English ↔ Swahili assistant for clinic intake staff, built on the QVAC SDK
-(`@qvac/sdk` 0.21.0, pinned). This repo contains the headless core, a CLI (`ofa`)
-and a windowless Electron app that serves the same services over typed IPC
-(`src/app/contract.ts`). The UI comes later and will call them through `window.ofa`.
+(`@qvac/sdk` 0.21.0, pinned). This repo contains the core, a CLI (`ofa`)
+and an Electron app whose window (`electron/renderer/`) calls the same services
+over typed IPC (`src/app/contract.ts`) through `window.ofa`.
 
 > Content in `content/sample/` is placeholder data and is **NOT clinically vetted**.
 
@@ -63,8 +63,9 @@ npm run ofa -- license install var/license/dev.ofalicense
 | `npm run eval:guide` | F7 eval: top-3 hit rate on 100 questions per kind and language, out-of-scope questions answered "no match", fusion A/B, spoken questions read by Chatterbox and heard by Whisper → `eval/outputs/` |
 | `npm run ofa -- models status` / `models install DIR` | The installed models and the signed model pack they came from / verifies a model pack (e.g. on a USB stick) and installs it into `OFA_MODELS_DIR`, hashing every file as it copies |
 | `npm run ofa -- models build --out DIR` / `models sign --key KEY DIR` / `models verify DIR` | Vendor only: packs this machine's runtime models into a model pack (APFS clones), signs it with a pack key, checks one (`--id`, `--version`, `--models A,B`) |
-| `npm run build:electron` | Bundles the Electron main process, preload, hidden page and tray icon into `build/` |
-| `npm run electron:smoke` | Builds, then runs the IPC smoke suite in the hidden window against the real models (`OFA_HOME`, `OFA_MODELS_DIR` as for any run) |
+| `npm run build:electron` | Bundles the Electron main process, preload, the window's page and the tray icon into `build/` |
+| `npm run ui:preview` | The window's page in a browser at http://localhost:5178, with sample data in place of the services (`?license=read-only`, `?models=missing`, `?pack=none` show those states) |
+| `npm run electron:smoke` | Builds, then checks the page starts and runs the IPC smoke suite in a hidden window against the real models (`OFA_HOME`, `OFA_MODELS_DIR` as for any run; on the dev machine `OFA_HOME=$PWD/var OFA_MODELS_DIR=$PWD/models`) |
 | `npm run package` | Packages the arm64 app (Forge + QVAC plugin), signs it inside out with the hardened runtime (Developer ID from `OFA_SIGN_IDENTITY`, else ad hoc), checks the signatures and zips it → `out/` |
 | `npm run package:release` | The same, refused unless `OFA_SIGN_IDENTITY` is a Developer ID Application identity, `OFA_NOTARY_PROFILE` is set and no development key is trusted; notarizes and staples |
 | `npm run release-gate -- KIT [--home DIR] [--key-store keychain]` | The release gate, shell only (runs on a clean Mac without Node): installs the app from its zip, then the license, model pack and content pack, runs `ofa doctor --verify --load` and the IPC smoke suite, with every process watched for sockets |
@@ -152,13 +153,15 @@ on the disk can no longer be read.
 ## The app and its packaging
 
 `npm run package` makes `out/Offline Field Assistant-darwin-arm64/` and a zip.
-The app has no window yet: a tray icon (Quit, license and models status) and
-a hidden, sandboxed page whose only way in is `window.ofa.invoke(channel,
-request)`. Each channel's request is checked against a schema in the main
+The app is a window with a Dock icon, plus a tray icon (Open, Quit, license
+and models status). Closing the window keeps the app and its loaded models
+running; Quit ends it. The window's page is sandboxed and its only way in is
+`window.ofa.invoke(channel, request)`. Each channel's request is checked against a schema in the main
 process; audio and documents travel as bytes, never as paths; every call
 resolves to `{ ok, value }` or `{ ok: false, error: { code, message } }`,
 checks the license and is logged like the matching `ofa` command. The page
-may load nothing but its own file, and every permission request is refused.
+may load nothing but its own files; the only permission it gets is the
+microphone and camera, for its own page, and macOS still asks once.
 
 The same binary runs any `ofa` command without Node:
 
@@ -198,6 +201,30 @@ the model pack as `models/`, a content pack, a license issued for that Mac's
 `var/release-kit/` on the dev machine. Ad hoc builds are a new code identity
 each time, so macOS asks before one reads the Keychain item another made:
 on a dev Mac, run the gate with `--key-store keychain`.
+
+## The window
+
+Six sections, reached from the menu (☰) or ⌘1–⌘6, each in light and dark
+(System, Light or Dark in Settings › General):
+
+1. **Conversation**: a column per person, each in their own language. Hold the
+   button (Space for the clinician, Return for the patient) to talk; the
+   translation is read aloud as soon as it exists. The clinician's column
+   shows the back-translation check and every warning.
+2. **Phrasebook**: phrases by category, searchable in both languages, played
+   as recorded.
+3. **Ask the guide**: a typed or spoken question; the best card opens with
+   its danger signs first, or "no match" when none fits.
+4. **Documents**: a photo, camera still or PDF, translated part by part beside
+   the original, with unclear parts marked.
+5. **Translate & read aloud**: typed text, translated with the check; either
+   side read aloud.
+6. **Settings**: appearance, licence, models, content packs, activity log, help.
+
+Sections the licence does not cover say so and link to Settings › Licence.
+The page is plain TypeScript (`electron/renderer/src/`), one stylesheet with
+the colour tokens for both themes (`electron/renderer/styles.css`), and no
+framework.
 
 ## Rules
 
