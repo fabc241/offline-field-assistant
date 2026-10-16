@@ -3,6 +3,7 @@
   "productName": "Offline Field Assistant",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "description": "Offline English-Swahili field assistant for clinic intake staff: headless core, CLI and a windowless Electron app.",
   "type": "module",
   "engines": {
