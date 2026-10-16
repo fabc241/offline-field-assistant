@@ -204,8 +204,9 @@ on a dev Mac, run the gate with `--key-store keychain`.
 
 ## The window
 
-Six sections, reached from the menu (☰) or ⌘1–⌘6, each in light and dark
-(System, Light or Dark in Settings › General):
+Six sections, listed in a sidebar that is always shown (☰ switches it
+between names and icons only) and reached with ⌘1–⌘6, each in light and
+dark (System, Light or Dark in Settings › General):
 
 1. **Conversation**: a column per person, each in their own language. Hold the
    button (Space for the clinician, Return for the patient) to talk; the

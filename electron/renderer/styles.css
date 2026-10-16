@@ -578,43 +578,24 @@ kbd {
   overflow: auto;
 }
 
-/* Navigation drawer */
+/* Sidebar: the six sections, always in view */
 
-.scrim {
-  position: fixed;
-  inset: var(--topbar) 0 0 0;
-  background: rgb(5 15 19 / 32%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.18s;
-  z-index: 20;
+.frame {
+  display: flex;
+  flex: 1;
+  min-height: 0;
 }
 
-.drawer {
-  position: fixed;
-  top: var(--topbar);
-  bottom: 0;
-  left: 0;
-  width: 19rem;
-  padding: 0.8rem;
-  border-right: 1px solid var(--line);
-  background: var(--surface);
-  box-shadow: var(--shadow-pop);
-  transform: translateX(-105%);
-  transition: transform 0.2s ease;
-  z-index: 21;
+.sidebar {
   display: flex;
+  flex: none;
   flex-direction: column;
   gap: 2px;
-}
-
-.nav-open .scrim {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.nav-open .drawer {
-  transform: none;
+  width: 14rem;
+  padding: 0.75rem 0.6rem;
+  border-right: 1px solid var(--line);
+  background: var(--surface);
+  overflow-y: auto;
 }
 
 .nav-item {
@@ -623,7 +604,7 @@ kbd {
   align-items: center;
   gap: 0.6rem;
   width: 100%;
-  padding: 0.55rem 0.6rem;
+  padding: 0.5rem 0.55rem;
   border: 0;
   border-radius: var(--r-md);
   background: transparent;
@@ -654,6 +635,10 @@ kbd {
   color: var(--accent);
 }
 
+.nav-text {
+  min-width: 0;
+}
+
 .nav-name {
   display: block;
   font-weight: 600;
@@ -663,6 +648,7 @@ kbd {
   display: block;
   color: var(--muted);
   font-size: var(--f-xs);
+  line-height: 1.3;
 }
 
 .nav-meta {
@@ -673,6 +659,35 @@ kbd {
   height: 1px;
   margin: 0.5rem 0.4rem;
   background: var(--line);
+}
+
+/* Icons only: chosen with the menu button, or forced by a narrow window. */
+.sidebar-compact .sidebar {
+  width: auto;
+}
+
+.sidebar-compact .nav-item {
+  grid-template-columns: 2.2rem;
+  padding: 0.4rem;
+}
+
+.sidebar-compact .nav-text,
+.sidebar-compact .nav-meta {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .sidebar {
+    width: auto;
+  }
+  .nav-item {
+    grid-template-columns: 2.2rem;
+    padding: 0.4rem;
+  }
+  .nav-text,
+  .nav-meta {
+    display: none;
+  }
 }
 
 /* Popover for the privacy badge */

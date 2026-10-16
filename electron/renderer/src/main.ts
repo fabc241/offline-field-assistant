@@ -1,7 +1,7 @@
 /**
- * The window: a top bar (menu, the shown section's own controls, the
- * privacy badge), banners for anything that limits the app, and the six
- * sections. Sections are built once and kept, so a conversation or a
+ * The window: a top bar (the shown section's own controls, the privacy
+ * badge), banners for anything that limits the app, a sidebar that always
+ * lists the six sections, and the sections themselves. Sections are built once and kept, so a conversation or a
  * translated document is still there after a look at the phrasebook.
  *
  * Bundled to build/renderer/app.js by scripts/build-electron.ts.
@@ -34,7 +34,7 @@ const sections: Section[] = [
 const byId = new Map(sections.map((s) => [s.id, s]))
 let current: Section | null = null
 
-const menuBtn = h('button', { class: 'icon-btn', 'aria-label': 'Sections', 'aria-expanded': 'false', 'aria-controls': 'drawer', title: 'Sections' }, icon('menu'))
+const menuBtn = h('button', { class: 'icon-btn', 'aria-label': 'Show or hide section names', 'aria-controls': 'sidebar', title: 'Show or hide section names' }, icon('menu'))
 const center = h('div', { class: 'topbar-center' })
 const badge = h('button', { class: 'status-badge', 'aria-haspopup': 'dialog' }, icon('shield'), 'Secure & offline')
 const modeChip = h('span', { class: 'chip warn', hidden: true }, icon('lock'), 'Read-only')
@@ -55,8 +55,7 @@ for (const s of sections) {
   stage.appendChild(c)
 }
 
-const drawer = h('nav', { class: 'drawer', id: 'drawer', 'aria-label': 'Sections' })
-const scrim = h('div', { class: 'scrim', onclick: () => setNav(false) })
+const sidebar = h('nav', { class: 'sidebar', id: 'sidebar', 'aria-label': 'Sections' })
 const popover = h(
   'div',
   { class: 'popover', role: 'dialog', 'aria-label': 'Privacy', hidden: true },
@@ -69,38 +68,35 @@ const popover = h(
     h('li', null, 'The activity log keeps only what was used and when, encrypted, for 30 days.')
   )
 )
-document.getElementById('app')!.append(topbar, banners, stage)
-document.body.append(scrim, drawer, popover)
+document.getElementById('app')!.append(topbar, banners, h('div', { class: 'frame' }, sidebar, stage))
+document.body.append(popover)
 
-function renderDrawer() {
+function renderSidebar() {
   fill(
-    drawer,
+    sidebar,
     sections.map((s, i) => [
       s.id === 'settings' ? h('div', { class: 'nav-sep' }) : null,
       h(
         'button',
-        { class: 'nav-item', 'aria-current': s === current ? 'page' : null, onclick: () => go(s.id) },
+        { class: 'nav-item', 'aria-current': s === current ? 'page' : null, title: `${s.title} (⌘${i + 1})`, onclick: () => go(s.id) },
         h('span', { class: 'nav-icon' }, icon(s.icon)),
-        h('span', null, h('span', { class: 'nav-name' }, s.title), h('span', { class: 'nav-desc' }, s.desc)),
-        h('span', { class: 'nav-meta' }, s.feature && !app.can(s.feature) ? icon('lock') : h('kbd', null, `⌘${i + 1}`))
+        h('span', { class: 'nav-text' }, h('span', { class: 'nav-name' }, s.title)),
+        s.feature && !app.can(s.feature) ? h('span', { class: 'nav-meta', title: 'Needs a full licence' }, icon('lock')) : h('span', null)
       )
     ])
   )
 }
 
-function setNav(open: boolean) {
-  document.body.classList.toggle('nav-open', open)
-  menuBtn.setAttribute('aria-expanded', String(open))
-  if (open) {
-    popover.hidden = true
-    ;(drawer.querySelector('[aria-current="page"]') as HTMLElement | null)?.focus()
-  }
+/** Icons only, or icons with names; the choice is kept. */
+function setCompact(compact: boolean) {
+  document.body.classList.toggle('sidebar-compact', compact)
+  menuBtn.setAttribute('aria-pressed', String(!compact))
+  prefs.set('sidebar', compact ? 'compact' : 'full')
 }
 
 function go(id: SectionId, sub?: string) {
   const next = byId.get(id)
   if (!next) return
-  setNav(false)
   if (next !== current) {
     current?.hide?.()
     if (current) containers.get(current.id)!.hidden = true
@@ -109,7 +105,7 @@ function go(id: SectionId, sub?: string) {
     fill(center, next.header)
     document.title = `${next.title}, Offline Field Assistant`
     prefs.set('section', id)
-    renderDrawer()
+    renderSidebar()
     next.show?.()
   }
   if (id === 'settings' && sub) settings.open(sub)
@@ -128,7 +124,7 @@ function renderStatus() {
   else if (s?.license.warnings.includes('expires-soon'))
     items.push(banner('warn', `The licence expires in ${s.license.daysLeft} days. Ask your organisation for a new one.`, 'Licence settings', () => go('settings', 'licence')))
   fill(banners, items)
-  renderDrawer()
+  renderSidebar()
 }
 
 function banner(tone: 'warn' | 'danger', text: string, action?: string, onClick?: () => void) {
@@ -141,7 +137,8 @@ function banner(tone: 'warn' | 'danger', text: string, action?: string, onClick?
   )
 }
 
-menuBtn.addEventListener('click', () => setNav(!document.body.classList.contains('nav-open')))
+menuBtn.addEventListener('click', () => setCompact(!document.body.classList.contains('sidebar-compact')))
+setCompact(prefs.get('sidebar', 'full') === 'compact')
 badge.addEventListener('click', (e) => {
   e.stopPropagation()
   popover.hidden = !popover.hidden
@@ -157,11 +154,10 @@ document.addEventListener('keydown', (e) => {
     return
   }
   if (e.key === 'Escape') {
-    if (document.body.classList.contains('nav-open')) return setNav(false)
     if (!popover.hidden) return void (popover.hidden = true)
     if (player.key) return player.stop()
   }
-  if (document.body.classList.contains('nav-open') || document.querySelector('dialog[open]')) return
+  if (document.querySelector('dialog[open]')) return
   current?.keydown?.(e)
 })
 document.addEventListener('keyup', (e) => {
